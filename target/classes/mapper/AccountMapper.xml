@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgl.recruitms.dao.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.Account">
+    <id column="N_FUND_NO" jdbcType="INTEGER" property="nFundNo" />
+    <result column="S_USER_NO" jdbcType="VARCHAR" property="sUserNo" />
+    <result column="S_USERNAME" jdbcType="VARCHAR" property="sUsername" />
+    <result column="S_PASSWORD" jdbcType="VARCHAR" property="sPassword" />
+    <result column="S_USER_TYPE" jdbcType="VARCHAR" property="sUserType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    N_FUND_NO, S_USER_NO, S_USERNAME, S_PASSWORD, S_USER_TYPE
+  </sql>
+  <select id="selectByExample" parameterType="com.hgl.recruitms.model.AccountExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_rms_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_rms_account
+    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_rms_account
+    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.AccountExample">
+    delete from t_rms_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hgl.recruitms.model.Account">
+    insert into t_rms_account (N_FUND_NO, S_USER_NO, S_USERNAME, 
+      S_PASSWORD, S_USER_TYPE)
+    values (#{nFundNo,jdbcType=INTEGER}, #{sUserNo,jdbcType=VARCHAR}, #{sUsername,jdbcType=VARCHAR}, 
+      #{sPassword,jdbcType=VARCHAR}, #{sUserType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hgl.recruitms.model.Account">
+    insert into t_rms_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nFundNo != null">
+        N_FUND_NO,
+      </if>
+      <if test="sUserNo != null">
+        S_USER_NO,
+      </if>
+      <if test="sUsername != null">
+        S_USERNAME,
+      </if>
+      <if test="sPassword != null">
+        S_PASSWORD,
+      </if>
+      <if test="sUserType != null">
+        S_USER_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nFundNo != null">
+        #{nFundNo,jdbcType=INTEGER},
+      </if>
+      <if test="sUserNo != null">
+        #{sUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sUsername != null">
+        #{sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="sPassword != null">
+        #{sPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sUserType != null">
+        #{sUserType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hgl.recruitms.model.AccountExample" resultType="java.lang.Long">
+    select count(*) from t_rms_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_rms_account
+    <set>
+      <if test="record.nFundNo != null">
+        N_FUND_NO = #{record.nFundNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.sUserNo != null">
+        S_USER_NO = #{record.sUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sUsername != null">
+        S_USERNAME = #{record.sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sPassword != null">
+        S_PASSWORD = #{record.sPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sUserType != null">
+        S_USER_TYPE = #{record.sUserType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_rms_account
+    set N_FUND_NO = #{record.nFundNo,jdbcType=INTEGER},
+      S_USER_NO = #{record.sUserNo,jdbcType=VARCHAR},
+      S_USERNAME = #{record.sUsername,jdbcType=VARCHAR},
+      S_PASSWORD = #{record.sPassword,jdbcType=VARCHAR},
+      S_USER_TYPE = #{record.sUserType,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.Account">
+    update t_rms_account
+    <set>
+      <if test="sUserNo != null">
+        S_USER_NO = #{sUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sUsername != null">
+        S_USERNAME = #{sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="sPassword != null">
+        S_PASSWORD = #{sPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sUserType != null">
+        S_USER_TYPE = #{sUserType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.Account">
+    update t_rms_account
+    set S_USER_NO = #{sUserNo,jdbcType=VARCHAR},
+      S_USERNAME = #{sUsername,jdbcType=VARCHAR},
+      S_PASSWORD = #{sPassword,jdbcType=VARCHAR},
+      S_USER_TYPE = #{sUserType,jdbcType=VARCHAR}
+    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+  </update>
+</mapper>

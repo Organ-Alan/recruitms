@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+     http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd 
+     http://www.springframework.org/schema/task 
+     http://www.springframework.org/schema/task/spring-task.xsd">
+	<context:annotation-config />
+
+	<bean class="com.hgl.recruitms.common.EncryptPropertyPlaceholderConfigurer">
+		<property name="location" value="${configPath:classpath:}/config.properties" />
+		<property name="encryptedProps">
+			<set>
+				<value>jdbc.password</value>
+			</set>
+		</property>
+	</bean>
+
+
+	<!-- 扫描文件（自动将controller层注入） -->
+	<context:component-scan base-package="com.hgl.recruitms">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<task:executor id="executor" pool-size="5" />
+	<task:scheduler id="scheduler" pool-size="10" />
+	<task:annotation-driven executor="executor"
+		scheduler="scheduler" />
+
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<!-- 使用annotation注解方式配置事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 数据库连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClass}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.password}" />  
+        <property name="acquireIncrement" value="${dataSource.acquireIncrement}" />
+        <!-- 初始化连接大小 -->
+       	<property name="initialPoolSize" value="${dataSource.initialPoolSize}" />
+       	<!-- 获取连接最大等待时间 -->
+        <property name="maxIdleTime" value="${dataSource.maxIdleTime}" />
+        <!-- 连接池最大空闲 -->
+        <property name="maxPoolSize" value="${dataSource.maxPoolSize}" />
+        <!-- 连接池最小空闲 -->
+        <property name="minPoolSize" value="${dataSource.minPoolSize}" />
+        <property name="checkoutTimeout" value="${dataSource.checkoutTimeout}" />
+        <property name="breakAfterAcquireFailure" value="false" />
+        <property name="idleConnectionTestPeriod" value="1800" />
+        <property name="testConnectionOnCheckin" value="true" />
+	</bean>
+
+	<!-- <bean class="com.efunds.pms.common.util.SpringUtil" lazy-init="false"/> 
+		动态加载任务的主调度jobDetail <bean id="quartzJobFactory" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="durability" value="true" /> <property name="jobClass" value="com.efunds.pms.common.quartzjob.core.MainQuartzJob"></property> 
+		</bean> 主任务定时计划，生产上建议每天晚上10点后执行以更新每日新的任务配置 <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="quartzJobFactory" /> <property name="cronExpression" 
+		value="0 0 0/1 * * ?" /> </bean> <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" 
+		lazy-init="false" autowire="no"> <property name="schedulerName" value="rulerScheduler" 
+		/> <property name="applicationContextSchedulerContextKey" value="applicationContextKey" 
+		/> <property name="triggers"> <list> <ref bean="cronTrigger" /> </list> </property> 
+		</bean> -->
+
+	<!-- <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" 
+		lazy-init="false" autowire="no"> <property name="dataSource"> <ref bean="dataSource"/> 
+		</property> <property name="applicationContextSchedulerContextKey" value="applicationContextKey" 
+		/> <property name="configLocation" value="classpath:/quartz.properties"/> 
+		<property name="autoStartup" value="true"/> <property name="triggers"> <list> 
+		<ref bean="cronTrigger" /> </list> </property> </bean> -->
+
+	<import resource="spring-mybatis.xml" />
+	<import resource="classpath*:/spring-module-*.xml" />
+</beans>
