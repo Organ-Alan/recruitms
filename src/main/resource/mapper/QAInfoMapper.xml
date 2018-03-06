@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgl.recruitms.dao.QAInfoMapper">
+  <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.QAInfo">
+    <id column="N_QA_ID" jdbcType="INTEGER" property="nQaId" />
+    <result column="S_SORT_NO" jdbcType="INTEGER" property="sSortNo" />
+    <result column="S_QUESTION" jdbcType="VARCHAR" property="sQuestion" />
+    <result column="S_ANSWER" jdbcType="VARCHAR" property="sAnswer" />
+    <result column="S_REMARK" jdbcType="VARCHAR" property="sRemark" />
+    <result column="C_VALID_FLAG" jdbcType="CHAR" property="cValidFlag" />
+    <result column="D_CREATE_TIME" jdbcType="TIMESTAMP" property="dCreateTime" />
+    <result column="S_CREATOR" jdbcType="VARCHAR" property="sCreator" />
+    <result column="S_CREATOR_NO" jdbcType="INTEGER" property="sCreatorNo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    N_QA_ID, S_SORT_NO, S_QUESTION, S_ANSWER, S_REMARK, C_VALID_FLAG, D_CREATE_TIME, 
+    S_CREATOR, S_CREATOR_NO
+  </sql>
+  <select id="selectByExample" parameterType="com.hgl.recruitms.model.QAInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_rms_qainfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_rms_qainfo
+    where N_QA_ID = #{nQaId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_rms_qainfo
+    where N_QA_ID = #{nQaId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.QAInfoExample">
+    delete from t_rms_qainfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hgl.recruitms.model.QAInfo">
+    insert into t_rms_qainfo (N_QA_ID, S_SORT_NO, S_QUESTION, 
+      S_ANSWER, S_REMARK, C_VALID_FLAG, 
+      D_CREATE_TIME, S_CREATOR, S_CREATOR_NO
+      )
+    values (#{nQaId,jdbcType=INTEGER}, #{sSortNo,jdbcType=INTEGER}, #{sQuestion,jdbcType=VARCHAR}, 
+      #{sAnswer,jdbcType=VARCHAR}, #{sRemark,jdbcType=VARCHAR}, #{cValidFlag,jdbcType=CHAR}, 
+      #{dCreateTime,jdbcType=TIMESTAMP}, #{sCreator,jdbcType=VARCHAR}, #{sCreatorNo,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hgl.recruitms.model.QAInfo">
+    insert into t_rms_qainfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nQaId != null">
+        N_QA_ID,
+      </if>
+      <if test="sSortNo != null">
+        S_SORT_NO,
+      </if>
+      <if test="sQuestion != null">
+        S_QUESTION,
+      </if>
+      <if test="sAnswer != null">
+        S_ANSWER,
+      </if>
+      <if test="sRemark != null">
+        S_REMARK,
+      </if>
+      <if test="cValidFlag != null">
+        C_VALID_FLAG,
+      </if>
+      <if test="dCreateTime != null">
+        D_CREATE_TIME,
+      </if>
+      <if test="sCreator != null">
+        S_CREATOR,
+      </if>
+      <if test="sCreatorNo != null">
+        S_CREATOR_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nQaId != null">
+        #{nQaId,jdbcType=INTEGER},
+      </if>
+      <if test="sSortNo != null">
+        #{sSortNo,jdbcType=INTEGER},
+      </if>
+      <if test="sQuestion != null">
+        #{sQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="sAnswer != null">
+        #{sAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="sRemark != null">
+        #{sRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="cValidFlag != null">
+        #{cValidFlag,jdbcType=CHAR},
+      </if>
+      <if test="dCreateTime != null">
+        #{dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sCreator != null">
+        #{sCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="sCreatorNo != null">
+        #{sCreatorNo,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hgl.recruitms.model.QAInfoExample" resultType="java.lang.Long">
+    select count(*) from t_rms_qainfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_rms_qainfo
+    <set>
+      <if test="record.nQaId != null">
+        N_QA_ID = #{record.nQaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sSortNo != null">
+        S_SORT_NO = #{record.sSortNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.sQuestion != null">
+        S_QUESTION = #{record.sQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sAnswer != null">
+        S_ANSWER = #{record.sAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sRemark != null">
+        S_REMARK = #{record.sRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cValidFlag != null">
+        C_VALID_FLAG = #{record.cValidFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.dCreateTime != null">
+        D_CREATE_TIME = #{record.dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sCreator != null">
+        S_CREATOR = #{record.sCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sCreatorNo != null">
+        S_CREATOR_NO = #{record.sCreatorNo,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_rms_qainfo
+    set N_QA_ID = #{record.nQaId,jdbcType=INTEGER},
+      S_SORT_NO = #{record.sSortNo,jdbcType=INTEGER},
+      S_QUESTION = #{record.sQuestion,jdbcType=VARCHAR},
+      S_ANSWER = #{record.sAnswer,jdbcType=VARCHAR},
+      S_REMARK = #{record.sRemark,jdbcType=VARCHAR},
+      C_VALID_FLAG = #{record.cValidFlag,jdbcType=CHAR},
+      D_CREATE_TIME = #{record.dCreateTime,jdbcType=TIMESTAMP},
+      S_CREATOR = #{record.sCreator,jdbcType=VARCHAR},
+      S_CREATOR_NO = #{record.sCreatorNo,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.QAInfo">
+    update t_rms_qainfo
+    <set>
+      <if test="sSortNo != null">
+        S_SORT_NO = #{sSortNo,jdbcType=INTEGER},
+      </if>
+      <if test="sQuestion != null">
+        S_QUESTION = #{sQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="sAnswer != null">
+        S_ANSWER = #{sAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="sRemark != null">
+        S_REMARK = #{sRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="cValidFlag != null">
+        C_VALID_FLAG = #{cValidFlag,jdbcType=CHAR},
+      </if>
+      <if test="dCreateTime != null">
+        D_CREATE_TIME = #{dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sCreator != null">
+        S_CREATOR = #{sCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="sCreatorNo != null">
+        S_CREATOR_NO = #{sCreatorNo,jdbcType=INTEGER},
+      </if>
+    </set>
+    where N_QA_ID = #{nQaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.QAInfo">
+    update t_rms_qainfo
+    set S_SORT_NO = #{sSortNo,jdbcType=INTEGER},
+      S_QUESTION = #{sQuestion,jdbcType=VARCHAR},
+      S_ANSWER = #{sAnswer,jdbcType=VARCHAR},
+      S_REMARK = #{sRemark,jdbcType=VARCHAR},
+      C_VALID_FLAG = #{cValidFlag,jdbcType=CHAR},
+      D_CREATE_TIME = #{dCreateTime,jdbcType=TIMESTAMP},
+      S_CREATOR = #{sCreator,jdbcType=VARCHAR},
+      S_CREATOR_NO = #{sCreatorNo,jdbcType=INTEGER}
+    where N_QA_ID = #{nQaId,jdbcType=INTEGER}
+  </update>
+</mapper>

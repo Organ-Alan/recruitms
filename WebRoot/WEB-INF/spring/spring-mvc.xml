@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean class="com.hgl.recruitms.common.EncryptPropertyPlaceholderConfigurer">
+		<property name="location" value="${configPath:classpath:}/config.properties" />
+		<property name="encryptedProps">
+			<!-- 下面是需要加解密的配置项的键名 -->
+			<set>
+				<value>jdbc.password</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- ①：对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+    <context:component-scan base-package="com.hgl.recruitms" use-default-filters="false">
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:cors>  
+	    	<mvc:mapping path="/recruitms/**"
+	        allowed-origins="*"
+	        allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+	        allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, token"
+	        allow-credentials="true" />
+	</mvc:cors>
+    
+    <!-- 支持文件上传（form形式）servlet3才开始支持 -->
+	<bean id="multipartResolver"
+	        class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</bean>
+	
+	<!-- 启动Springmvc注解驱动 -->
+    <mvc:annotation-driven>
+    	<mvc:message-converters>  
+            <bean  
+                class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
+                <property name="objectMapper">  
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">  
+                        <!-- 处理responseBody 里面日期类型 -->  
+                        <property name="dateFormat">  
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />  
+                            </bean>  
+                        </property>  
+                        <!-- 时区指定 -->  
+                        <property name="timeZone" value="GMT+8" />
+                    </bean>  
+                </property>  
+            </bean>  
+        </mvc:message-converters>  
+    </mvc:annotation-driven>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/recruitms/**" />
+            <mvc:exclude-mapping path="/static/**"/>
+            <bean class="com.hgl.recruitms.common.web.interceptor.AuthInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/recruitms/**" />
+            <mvc:exclude-mapping path="/static/**"/>
+            <bean class="com.hgl.recruitms.common.web.interceptor.TimeAnalysis" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
+</beans>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml"></property>
+	</bean>
+
+ 	<!-- 这个是一般的配置方式
+ 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.efunds.pms"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactorys"></property>
+	</bean>
+	 -->
+	 <!-- 这个是重写的一种配置方法，
+	 目的是能将 basePackage的包扫描范围扩大(com.efunds.pms)的同时（这样就不能精准到具体的模块了），
+	 通过classNameRegexPattern配置mapper或dao类名后缀来防止冲突问题。
+	 所以要求的dao层的接口类命令规范是：类名以mapper或dao结尾。
+	 -->
+	<bean class="com.hgl.recruitms.common.MapperScannerConfigurerEx">
+		<property name="basePackage" value="com.hgl.recruitms"></property>
+		<property name="classNameRegexPattern" value="(?i).*(mapper|dao)"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<aop:config>
+		<aop:pointcut expression="@within(org.springframework.stereotype.Service)"
+			id="serviceMethod" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Throwable"/>
+		</tx:attributes>
+	</tx:advice>
+</beans>

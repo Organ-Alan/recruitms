@@ -2,19 +2,18 @@
 <web-app
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance http://www.springmodules.org/schema/cache/springmodules-cache.xsd http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd"
 	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
-	id="WebApp_ID" version="3.1">
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
 	<display-name>recruitms</display-name>
 	<!-- 读取spring配置文件 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring.xml</param-value>
+		<param-value>/WEB-INF/spring/spring.xml</param-value>
 	</context-param>
 
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter
-		</filter-class>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
@@ -22,8 +21,7 @@
 	</filter>
 	<filter>
 		<filter-name>struts2</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
-		</filter-class>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>characterEncodingFilter</filter-name>
@@ -31,17 +29,15 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<!-- springMVC核心配置 -->
 	<servlet>
 		<servlet-name>spring</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>WEB-INF/spring.xml</param-value>
+			<param-value>WEB-INF/spring/spring-mvc.xml</param-value>
 		</init-param>
 		<multipart-config>
 			<max-file-size>5242880B</max-file-size><!-- 5MB，没效果，听说要用注解的方式 -->
@@ -84,6 +80,10 @@
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.woff</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.woff2</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>

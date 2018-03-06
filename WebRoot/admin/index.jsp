@@ -6,10 +6,9 @@
 			+ path + "/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en" class="fullscreen-bg">
+<html lang="en">
 <head>
-<title>Dashboard | Klorofil - Free Bootstrap Dashboard Template</title>
-<meta charset="utf-8">
+<title>广州大学华软软件学院 招生管理系统</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -60,10 +59,8 @@
 				</div>
 			</form>
 			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro"
-					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
-					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
-					<span>UPGRADE TO PRO</span></a>
+				<a class="btn btn-success update-pro" id="logout" href="#"
+					title="注销" target="_blank"><i class="lnr lnr-exit"></i> <span>&nbsp;&nbsp;&nbsp;注销</span></a>
 			</div>
 			<div id="navbar-menu">
 				<ul class="nav navbar-nav navbar-right">
@@ -114,35 +111,91 @@
 		<!-- END NAVBAR -->
 		<!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
-			<div class="sidebar-scroll">
+			<div class="sidebar-scroll" style="width:260px;height:560px; overflow:scroll;overflow-y:auto;overflow-x:hidden; border:1px solid;">
 				<nav>
 				<ul class="nav">
 					<li><a href="index.html" class="active"><i
-							class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-					<li><a href="elements.html" class=""><i
-							class="lnr lnr-code"></i> <span>Elements</span></a></li>
-					<li><a href="charts.html" class=""><i
-							class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
-					<li><a href="panels.html" class=""><i class="lnr lnr-cog"></i>
-							<span>Panels</span></a></li>
-					<li><a href="notifications.html" class=""><i
-							class="lnr lnr-alarm"></i> <span>Notifications</span></a></li>
-					<li><a href="#subPages" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span>
+							class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li><a href="#subPages1" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-code"></i> <span>Elements</span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages" class="collapse ">
+						<div id="subPages1" class="collapse ">
+							<ul class="nav">
+								<li><a href="studentInfo.jsp" class="">TablesList</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
+					<li><a href="#subPages2" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>Charts</span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages2" class="collapse ">
 							<ul class="nav">
 								<li><a href="page-profile.html" class="">Profile</a></li>
 								<li><a href="page-login.html" class="">Login</a></li>
 								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
 							</ul>
 						</div></li>
-					<li><a href="tables.html" class=""><i class="lnr lnr-dice"></i>
-							<span>Tables</span></a></li>
-					<li><a href="typography.html" class=""><i
-							class="lnr lnr-text-format"></i> <span>Typography</span></a></li>
-					<li><a href="icons.html" class=""><i
-							class="lnr lnr-linearicons"></i> <span>Icons</span></a></li>
+					<li><a href="#subPages4" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-cog"></i> <span>Panels</span><i
+							class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages4" class="collapse ">
+							<ul class="nav">
+								<li><a href="page-profile.html" class="">Profile</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
+					<li><a href="#subPages5" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-alarm"></i> <span>Notifications</span><i
+							class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages5" class="collapse ">
+							<ul class="nav">
+								<li><a href="page-profile.html" class="">Profile</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
+					<li><a href="#subPages6" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages6" class="collapse ">
+							<ul class="nav">
+								<li><a href="page-profile.html" class="">Profile</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
+					<li><a href="#subPages7" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-dice"></i> <span>Tables</span><i
+							class="icon-submenu lnr lnr-chevron-left"></i> </a>
+						<div id="subPages7" class="collapse ">
+							<ul class="nav">
+								<li><a href="page-profile.html" class="">Profile</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
+					<li><a href="#subPages8" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-text-format"></i> <span>Typography</span><i
+							class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages8" class="collapse ">
+							<ul class="nav">
+								<li><a href="page-profile.html" class="">Profile</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
+					<li><a href="#subPages9" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-linearicons"></i> <span>Icons</span><i
+							class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages9" class="collapse ">
+							<ul class="nav">
+								<li><a href="page-profile.html" class="">Profile</a></li>
+								<li><a href="page-login.html" class="">Login</a></li>
+								<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+							</ul>
+						</div></li>
 				</ul>
 				</nav>
 			</div>
@@ -591,6 +644,12 @@
 		src="../assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
 	<script src="../assets/vendor/chartist/js/chartist.min.js"></script>
 	<script src="../assets/scripts/klorofil-common.js"></script>
+	<script type="text/javascript" src="../js/jquery-1.9.1.js">
+	$("#loginout").on("click",function(){
+		localStorage.removeItem("token");
+		location.href="login.jsp";
+	});
+	</script>
 	<script>
 	$(function() {
 		var data, options;
@@ -708,6 +767,7 @@
 		}
 
 	});
+	
 	</script>
 </body>
 

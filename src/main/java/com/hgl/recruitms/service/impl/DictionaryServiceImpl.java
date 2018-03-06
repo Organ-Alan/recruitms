@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +47,13 @@ public class DictionaryServiceImpl implements DictionaryService {
 			criteria.andSItemCodeIn(itemNoList);
 		}
 		//过滤已经失效的字典数据
-		criteria.andCValidFlagEqualTo(DataStatusEnum.DICTVALID.getCode());
+		criteria.andCValidFlagEqualTo(DataStatusEnum.VALID.getCode());
 		// 返回全量字典值
 		results = dictionaryMapper.selectByExample(example);
 
 		// 根据字典编码，格式化全量字典值
 		for (Dictionary Dictionary : results) {
-			// 获取字典编码，如FUND_CATEGORY等
+			// 获取字典编码，如user_type等
 			String sItemCode = Dictionary.getsItemCode();
 			logger.debug("sItemCode:", sItemCode);
 			// 把不同字典编码的字典值组装成List返回前端遍历展示
@@ -68,7 +68,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 	}
 
 	/**
-	 * TODO 获取选中字典信息.
+	 *  获取选中字典信息.
 	 * 
 	 * @see com.DictionaryService.pms.common.sys.service.DictionaryService#getDictBynDictNo(java.lang.Integer)
 	 */
@@ -87,7 +87,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 	}
 
 	/**
-	 * TODO 新增字典信息.
+	 *  新增字典信息.
 	 * 
 	 * @see com.DictionaryService.pms.common.sys.service.DictionaryService#insertDictInfo(com.efunds.pms.common.sys.model.Dictionary)
 	 */
@@ -102,7 +102,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 	}
 
 	/**
-	 * TODO 编辑字典信息.
+	 *  编辑字典信息.
 	 * 
 	 * @see com.DictionaryService.pms.common.sys.service.DictionaryService#updateDictInfo(com.efunds.pms.common.sys.model.Dictionary)
 	 */
@@ -118,21 +118,22 @@ public class DictionaryServiceImpl implements DictionaryService {
 	}
 
 	/**
-	 * TODO 根据字典内部编码删除字典信息(软删除，修改字典数据状态).
+	 *  根据字典内部编码删除字典信息(软删除，修改字典数据状态).
 	 * 
 	 * @see com.DictionaryService.pms.common.sys.service.DictionaryService#delDictInfo(com.efunds.pms.common.sys.model.Dictionary)
 	 */
 	@Override
 	public boolean delDictInfo(Integer nDictNo) {
 		// 修改字典表的数据状态sValidFlag值为删除状态
-		Dictionary Dictionary = dictionaryMapper.selectByPrimaryKey(nDictNo);
-		Dictionary.setcValidFlag(DataStatusEnum.DICTINVALID.getCode());
-		int isSuccess = dictionaryMapper.updateByPrimaryKeySelective(Dictionary);
+		Dictionary dictionary = dictionaryMapper.selectByPrimaryKey(nDictNo);
+		System.out.println(dictionary.getcValidFlag());
+		dictionary.setcValidFlag(DataStatusEnum.INVALID.getCode());
+		int isSuccess = dictionaryMapper.updateByPrimaryKeySelective(dictionary);
 		return isSuccess > 0;
 	}
 
 	/**
-	 * TODO 分页查询字典信息列表.
+	 *  分页查询字典信息列表.
 	 * 
 	 * @see com.DictionaryService.pms.common.sys.service.DictionaryService#listDictionaryByNameAndCode(java.lang.Integer,
 	 *      java.lang.Integer, java.lang.String, java.lang.String)
@@ -145,7 +146,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 		Criteria criteria = example.createCriteria();
 		criteria.andNDictNoIsNotNull();
 		// 过滤数据状态为删除状态的字典
-		criteria.andCValidFlagEqualTo(DataStatusEnum.DICTVALID.getCode());
+		criteria.andCValidFlagEqualTo(DataStatusEnum.VALID.getCode());
 		logger.debug("获取字典信息列表：字典名称" + sItemValue + "   字典编码：" + sItemCode);
 		// 模糊查询
 		if (StringUtils.hasText(sItemValue)) {
@@ -164,7 +165,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 	}
 
 	/**
-	 * TODO 根据字典编码及序号定位到具体字典值.
+	 *  根据字典编码及序号定位到具体字典值.
 	 * 
 	 * @see com.DictionaryService.pms.common.sys.service.DictionaryService#getDicByItemCodeAndSortNo(java.lang.String,
 	 *      java.lang.String)

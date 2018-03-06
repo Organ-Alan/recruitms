@@ -997,7 +997,7 @@ ul.activity-list > li {
     width: 42%;
     height: 100%;
     padding: 0 30px;
-    text-align: center; }
+    text-align: right; }
     .auth-box .left:before {
       display: inline-block;
       vertical-align: middle;

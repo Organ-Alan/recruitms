@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.hgl.recruitms.common.test.BaseSpringMvcTest;
-import com.hgl.recruitms.common.web.util.JsonUtil;
+import com.hgl.recruitms.common.util.JsonUtil;
 import com.hgl.recruitms.model.Dictionary;
 
 
@@ -45,7 +45,7 @@ public class DictionaryControllerTest extends BaseSpringMvcTest {
 		String pageIndex = "1";
 		String pageSize = "10";
 		String sItemValue = "";
-		String sItemCode = "user";
+		String sItemCode = "USER";
 		perform(MockMvcRequestBuilders.get("/recruitms/v1/common/dict/listDictionarys").param("pageIndex", pageIndex)
 				.param("pageSize", pageSize).param("sItemValue", sItemValue).param("sItemCode", sItemCode)
 				.contentType(MediaType.APPLICATION_JSON));
@@ -75,7 +75,7 @@ public class DictionaryControllerTest extends BaseSpringMvcTest {
 		Dictionary dictionary = new Dictionary();
 		dictionary.setsItemCode("Test");
 		dictionary.setsItemKey("test");
-		dictionary.setsSortNo("test");
+		dictionary.setsSortNo("1");
 		dictionary.setsItemValue("Test");
 		dictionary.setcValidFlag("1");
 		perform(MockMvcRequestBuilders.post("/recruitms/v1/common/dict/dictionary")

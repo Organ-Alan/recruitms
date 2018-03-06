@@ -20,8 +20,19 @@ public class CommonControllerTest extends BaseSpringMvcTest {
 
 	@Test
 	public void validate() throws Exception {
-		perform(MockMvcRequestBuilders.post("/recruitms/v1/common/Account")
-				.param("sUsername", "test")
-				.param("sPassword", "test"));
+		perform(MockMvcRequestBuilders.post("/recruitms/v1/common/login")
+				.param("sUsername", "admin")
+				.param("sPassword", "111111"));
+	}
+	@Test
+	public void listAuditPage() throws Exception {
+		perform(
+                MockMvcRequestBuilders.get("/recruitms/v1/common/listAuditPage")
+                .param("pageIndex", "1")
+                .param("pageSize", "10")
+                .param("sDeptCode", "")
+                .param("sFullName", "")
+                .param("sStatus", ""));
+		
 	}
 }

@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.hgl.recruitms.common.test.BaseSpringMvcTest;
-import com.hgl.recruitms.common.web.util.JsonUtil;
+import com.hgl.recruitms.common.util.JsonUtil;
 
 public class ControllerTest extends BaseSpringMvcTest{
 	

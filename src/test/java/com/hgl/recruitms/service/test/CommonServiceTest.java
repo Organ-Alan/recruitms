@@ -1,7 +1,10 @@
 package com.hgl.recruitms.service.test;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.test.BaseSpringContextTest;
-import com.hgl.recruitms.common.web.util.JsonUtil;
-import com.hgl.recruitms.model.Dictionary;
-import com.hgl.recruitms.service.DictionaryService;
+import com.hgl.recruitms.common.util.JsonUtil;
+import com.hgl.recruitms.enums.AuditStatusEnum;
+import com.hgl.recruitms.model.AuditInfo;
+import com.hgl.recruitms.model.Department;
+import com.hgl.recruitms.service.CommonService;
 
 
 /**  
@@ -27,96 +32,72 @@ import com.hgl.recruitms.service.DictionaryService;
 public class CommonServiceTest extends BaseSpringContextTest {
 	static Logger logger = LoggerFactory.getLogger(CommonServiceTest.class);
 	@Autowired
-	private DictionaryService dictionaryService;
+	private CommonService<Department> commonService;
+	
+	@Test
+	public void checkDiffAndInsert() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, SecurityException, IntrospectionException {
+		Department department1 = new Department();
+		department1.setnDeptNo(123);
+		department1.setsDeptCode("test");
+		department1.setsFullName("test");
+		department1.setsShortName("test");
+		
+		Department department2 = new Department();
+		department1.setnDeptNo(123);
+		department1.setsDeptCode("test1");
+		department1.setsFullName("test");
+		department1.setsShortName("test");
 
-	/**
-	 * getDictListByItemNo:测试字典各个字典编码的信息. <br/>
-	 * 
-	 * @author huanggl
-	 */
-	@Test
-	public void getDictListByItemNo() {
-		List<String> itemNoList = new ArrayList<String>();
-		itemNoList.add("user_type");
-		HashMap<String, List<Dictionary>> list = dictionaryService.getDictMapByItemCodes(itemNoList);
-		logger.debug(JsonUtil.serialize(list));
-	}
-
-	/**
-	 * listDictionaryByNameAndCode:分页查询字典信息列表. <br/>
-	 * 
-	 * @author huanggl
-	 */
-	@Test
-	public void listDictionaryByNameAndCode() {
-		Integer pageIndex = 1;
-		Integer pageSize = 10;
-		String sItemValue = "";
-		String sItemCode = "user";
-		PageInfo<Dictionary> dictionarys = dictionaryService.listDictionaryByNameAndCode(pageIndex, pageSize, sItemValue, sItemCode);
-		System.out.println(JsonUtil.serialize(dictionarys));
-	}
-
-	/**  
-	 * getDictBynDictNo:根据字典内部编码获取字典值. <br/>  
-	 * @author huanggl  
-	 */
-	@Test
-	public void getDictBynDictNo() {
-		Integer nDictNo = 68;
-		Dictionary dictionary = dictionaryService.getDictBynDictNo(nDictNo);
-		System.out.println(JsonUtil.serialize(dictionary));
+		commonService.checkDiffAndInsert(department1, department2, null, "admin", "超级管理员");
 	}
 	
-	/**  
-	 * insertDictInfo:新增字典表信息. <br/>  
-	 * @author huanggl  
-	 */
 	@Test
-	public void insertDictInfo() {
-		//创设测试字典值，在删除时也用此测试数据，以免造成字典表数据混乱
-		Dictionary Dictionary = new Dictionary();
-		Dictionary.setsItemCode("Test");
-		Dictionary.setsItemKey("test");
-		Dictionary.setsSortNo("test");
-		Dictionary.setsItemValue("Test");
-		Dictionary.setcValidFlag("1");
-		System.out.println(JsonUtil.serialize(Dictionary));
-		System.out.println(dictionaryService.insertDictInfo(Dictionary));
+	public void updateAuditStatus() {
+		List<Integer> auditNoList = new ArrayList<>();
+		//auditNoList.add(16051);
+		//auditNoList.add(16050);
+		auditNoList.add(1);
+		
+		List<Department> departments = new ArrayList<Department>();
+		Department obj = new Department();
+		obj.setsFullName("test");
+		obj.setnDeptNo(123);
+		departments.add(obj);
+		
+		List<Integer> nDeptNoList = new ArrayList<Integer>();
+		nDeptNoList.add(1);
+		commonService.updateAuditStatus(departments, auditNoList, AuditStatusEnum.REFUSE, nDeptNoList, "admin", "超级管理员");  //通过
+		System.out.println(departments.toString());
 	}
 	
-	/**  
-	 * updateDictInfo:修改字典表信息. <br/>  
-	 * @author huanggl  
-	 */
 	@Test
-	public void updateDictInfo() {
-		//该部分测试只对test数据进行测试，以免造成字典表数据混乱
-		Dictionary Dictionary = new Dictionary();
-		Dictionary.setnDictNo(124);
-		Dictionary.setsItemCode("Test2");
-		System.out.println(dictionaryService.updateDictInfo(Dictionary));
+	public void listAuditPage(){
+		int pageIndex = 1;
+		int pageSize = 10;
+		String sDeptCode = "";
+		String sFullName = "";
+		String sStatus = "3";
+		
+		PageInfo<AuditInfo> list =  commonService.listAuditPage(pageIndex, pageSize, sDeptCode, sFullName, sStatus);
+		System.out.println(JsonUtil.serialize(list));
 	}
 	
-	/**  
-	 * delDictInfo:删除字典表信息. <br/>  
-	 * @author huanggl  
-	 */
 	@Test
-	public void delDictInfo() {
-		//删除必须只删除Test数据，以免造成字典表数据丢失
-		System.out.println(dictionaryService.delDictInfo(124));
+	public void getPassAuditListByStatus(){
+		List<Integer> sAuditNoList = new ArrayList<Integer>();
+		sAuditNoList.add(276);
+		sAuditNoList.add(277);
+		sAuditNoList.add(278);
+		
+		List<AuditInfo> list = commonService.getPassAuditListByStatus(sAuditNoList);
+		System.out.println(list);
 	}
 	
-	/**  
-	 * getDicByItemCodeAndSortNo:通过字典编码及序号获取字典值. <br/>  
-	 * @author huanggl  
-	 */
-	@Test 
-	public void getDicByItemCodeAndSortNo() {
-		String sItemCode = "FUND_CATEGORY";
-		String sItemKey = "gp";
-		Dictionary dictionary = dictionaryService.getDicByItemCodeAndKey(sItemCode, sItemKey);
-		System.out.println(JsonUtil.serialize(dictionary));
+	@Test
+	public void test() throws ParseException, NoSuchFieldException, SecurityException{
+		Calendar now = Calendar.getInstance();
+		Calendar nowDate = Calendar.getInstance();
+		nowDate.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+		System.out.println(nowDate.getTime());
 	}
 }

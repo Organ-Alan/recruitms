@@ -1,7 +1,9 @@
 package com.hgl.recruitms.model;
 
+import java.util.Date;
+
 public class Account {
-    private Integer nFundNo;
+    private Integer nAcnNo;
 
     private String sUserNo;
 
@@ -11,17 +13,21 @@ public class Account {
 
     private String sUserType;
 
-    public Integer getnFundNo() {
-        return nFundNo;
+    private Date dRgTime;
+
+    private String sExtValue1;
+
+    public Integer getnAcnNo() {
+        return nAcnNo;
     }
 
-    public Account withnFundNo(Integer nFundNo) {
-        this.setnFundNo(nFundNo);
+    public Account withnAcnNo(Integer nAcnNo) {
+        this.setnAcnNo(nAcnNo);
         return this;
     }
 
-    public void setnFundNo(Integer nFundNo) {
-        this.nFundNo = nFundNo;
+    public void setnAcnNo(Integer nAcnNo) {
+        this.nAcnNo = nAcnNo;
     }
 
     public String getsUserNo() {
@@ -76,17 +82,45 @@ public class Account {
         this.sUserType = sUserType == null ? null : sUserType.trim();
     }
 
+    public Date getdRgTime() {
+        return dRgTime;
+    }
+
+    public Account withdRgTime(Date dRgTime) {
+        this.setdRgTime(dRgTime);
+        return this;
+    }
+
+    public void setdRgTime(Date dRgTime) {
+        this.dRgTime = dRgTime;
+    }
+
+    public String getsExtValue1() {
+        return sExtValue1;
+    }
+
+    public Account withsExtValue1(String sExtValue1) {
+        this.setsExtValue1(sExtValue1);
+        return this;
+    }
+
+    public void setsExtValue1(String sExtValue1) {
+        this.sExtValue1 = sExtValue1 == null ? null : sExtValue1.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", nFundNo=").append(nFundNo);
+        sb.append(", nAcnNo=").append(nAcnNo);
         sb.append(", sUserNo=").append(sUserNo);
         sb.append(", sUsername=").append(sUsername);
         sb.append(", sPassword=").append(sPassword);
         sb.append(", sUserType=").append(sUserType);
+        sb.append(", dRgTime=").append(dRgTime);
+        sb.append(", sExtValue1=").append(sExtValue1);
         sb.append("]");
         return sb.toString();
     }

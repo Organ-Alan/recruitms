@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgl.recruitms.dao.RecruitInfoMapper">
+  <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.RecruitInfo">
+    <id column="N_STUDENT_ID" jdbcType="INTEGER" property="nStudentId" />
+    <result column="S_CANDIDATE_NUM" jdbcType="VARCHAR" property="sCandidateNum" />
+    <result column="S_STUDENT_NAME" jdbcType="VARCHAR" property="sStudentName" />
+    <result column="S_STUDENT_NO" jdbcType="VARCHAR" property="sStudentNo" />
+    <result column="N_AGE" jdbcType="INTEGER" property="nAge" />
+    <result column="C_SEX" jdbcType="VARCHAR" property="cSex" />
+    <result column="S_ADDRESS" jdbcType="VARCHAR" property="sAddress" />
+    <result column="S_CONTACT" jdbcType="VARCHAR" property="sContact" />
+    <result column="S_EMAIL" jdbcType="VARCHAR" property="sEmail" />
+    <result column="S_OTHER_CTACT" jdbcType="VARCHAR" property="sOtherCtact" />
+    <result column="S_ENROL_MAJOR" jdbcType="VARCHAR" property="sEnrolMajor" />
+    <result column="S_ADMITED_MAJOR" jdbcType="VARCHAR" property="sAdmitedMajor" />
+    <result column="S_ADMITED_NO" jdbcType="INTEGER" property="sAdmitedNo" />
+    <result column="S_GRADE" jdbcType="VARCHAR" property="sGrade" />
+    <result column="S_POLITIIS" jdbcType="VARCHAR" property="sPolitiis" />
+    <result column="S_PAY_FLAG" jdbcType="CHAR" property="sPayFlag" />
+    <result column="S_OPERATOR" jdbcType="VARCHAR" property="sOperator" />
+    <result column="S_OPERATOR_NO" jdbcType="VARCHAR" property="sOperatorNo" />
+    <result column="D_OPERATE_TIME" jdbcType="TIMESTAMP" property="dOperateTime" />
+    <result column="S_STATUS" jdbcType="VARCHAR" property="sStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, S_STUDENT_NO, N_AGE, C_SEX, S_ADDRESS, 
+    S_CONTACT, S_EMAIL, S_OTHER_CTACT, S_ENROL_MAJOR, S_ADMITED_MAJOR, S_ADMITED_NO, 
+    S_GRADE, S_POLITIIS, S_PAY_FLAG, S_OPERATOR, S_OPERATOR_NO, D_OPERATE_TIME, S_STATUS
+  </sql>
+  <select id="selectByExample" parameterType="com.hgl.recruitms.model.RecruitInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_rms_recruitinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_rms_recruitinfo
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_rms_recruitinfo
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.RecruitInfoExample">
+    delete from t_rms_recruitinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hgl.recruitms.model.RecruitInfo">
+    insert into t_rms_recruitinfo (N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, 
+      S_STUDENT_NO, N_AGE, C_SEX, 
+      S_ADDRESS, S_CONTACT, S_EMAIL, 
+      S_OTHER_CTACT, S_ENROL_MAJOR, S_ADMITED_MAJOR, 
+      S_ADMITED_NO, S_GRADE, S_POLITIIS, 
+      S_PAY_FLAG, S_OPERATOR, S_OPERATOR_NO, 
+      D_OPERATE_TIME, S_STATUS)
+    values (#{nStudentId,jdbcType=INTEGER}, #{sCandidateNum,jdbcType=VARCHAR}, #{sStudentName,jdbcType=VARCHAR}, 
+      #{sStudentNo,jdbcType=VARCHAR}, #{nAge,jdbcType=INTEGER}, #{cSex,jdbcType=VARCHAR}, 
+      #{sAddress,jdbcType=VARCHAR}, #{sContact,jdbcType=VARCHAR}, #{sEmail,jdbcType=VARCHAR}, 
+      #{sOtherCtact,jdbcType=VARCHAR}, #{sEnrolMajor,jdbcType=VARCHAR}, #{sAdmitedMajor,jdbcType=VARCHAR}, 
+      #{sAdmitedNo,jdbcType=INTEGER}, #{sGrade,jdbcType=VARCHAR}, #{sPolitiis,jdbcType=VARCHAR}, 
+      #{sPayFlag,jdbcType=CHAR}, #{sOperator,jdbcType=VARCHAR}, #{sOperatorNo,jdbcType=VARCHAR}, 
+      #{dOperateTime,jdbcType=TIMESTAMP}, #{sStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hgl.recruitms.model.RecruitInfo">
+    insert into t_rms_recruitinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nStudentId != null">
+        N_STUDENT_ID,
+      </if>
+      <if test="sCandidateNum != null">
+        S_CANDIDATE_NUM,
+      </if>
+      <if test="sStudentName != null">
+        S_STUDENT_NAME,
+      </if>
+      <if test="sStudentNo != null">
+        S_STUDENT_NO,
+      </if>
+      <if test="nAge != null">
+        N_AGE,
+      </if>
+      <if test="cSex != null">
+        C_SEX,
+      </if>
+      <if test="sAddress != null">
+        S_ADDRESS,
+      </if>
+      <if test="sContact != null">
+        S_CONTACT,
+      </if>
+      <if test="sEmail != null">
+        S_EMAIL,
+      </if>
+      <if test="sOtherCtact != null">
+        S_OTHER_CTACT,
+      </if>
+      <if test="sEnrolMajor != null">
+        S_ENROL_MAJOR,
+      </if>
+      <if test="sAdmitedMajor != null">
+        S_ADMITED_MAJOR,
+      </if>
+      <if test="sAdmitedNo != null">
+        S_ADMITED_NO,
+      </if>
+      <if test="sGrade != null">
+        S_GRADE,
+      </if>
+      <if test="sPolitiis != null">
+        S_POLITIIS,
+      </if>
+      <if test="sPayFlag != null">
+        S_PAY_FLAG,
+      </if>
+      <if test="sOperator != null">
+        S_OPERATOR,
+      </if>
+      <if test="sOperatorNo != null">
+        S_OPERATOR_NO,
+      </if>
+      <if test="dOperateTime != null">
+        D_OPERATE_TIME,
+      </if>
+      <if test="sStatus != null">
+        S_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nStudentId != null">
+        #{nStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="sCandidateNum != null">
+        #{sCandidateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sStudentName != null">
+        #{sStudentName,jdbcType=VARCHAR},
+      </if>
+      <if test="sStudentNo != null">
+        #{sStudentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="nAge != null">
+        #{nAge,jdbcType=INTEGER},
+      </if>
+      <if test="cSex != null">
+        #{cSex,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddress != null">
+        #{sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sContact != null">
+        #{sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEmail != null">
+        #{sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sOtherCtact != null">
+        #{sOtherCtact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEnrolMajor != null">
+        #{sEnrolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="sAdmitedMajor != null">
+        #{sAdmitedMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="sAdmitedNo != null">
+        #{sAdmitedNo,jdbcType=INTEGER},
+      </if>
+      <if test="sGrade != null">
+        #{sGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="sPolitiis != null">
+        #{sPolitiis,jdbcType=VARCHAR},
+      </if>
+      <if test="sPayFlag != null">
+        #{sPayFlag,jdbcType=CHAR},
+      </if>
+      <if test="sOperator != null">
+        #{sOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="sOperatorNo != null">
+        #{sOperatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dOperateTime != null">
+        #{dOperateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sStatus != null">
+        #{sStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hgl.recruitms.model.RecruitInfoExample" resultType="java.lang.Long">
+    select count(*) from t_rms_recruitinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_rms_recruitinfo
+    <set>
+      <if test="record.nStudentId != null">
+        N_STUDENT_ID = #{record.nStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sCandidateNum != null">
+        S_CANDIDATE_NUM = #{record.sCandidateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sStudentName != null">
+        S_STUDENT_NAME = #{record.sStudentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sStudentNo != null">
+        S_STUDENT_NO = #{record.sStudentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nAge != null">
+        N_AGE = #{record.nAge,jdbcType=INTEGER},
+      </if>
+      <if test="record.cSex != null">
+        C_SEX = #{record.cSex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sAddress != null">
+        S_ADDRESS = #{record.sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sContact != null">
+        S_CONTACT = #{record.sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sEmail != null">
+        S_EMAIL = #{record.sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sOtherCtact != null">
+        S_OTHER_CTACT = #{record.sOtherCtact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sEnrolMajor != null">
+        S_ENROL_MAJOR = #{record.sEnrolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sAdmitedMajor != null">
+        S_ADMITED_MAJOR = #{record.sAdmitedMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sAdmitedNo != null">
+        S_ADMITED_NO = #{record.sAdmitedNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.sGrade != null">
+        S_GRADE = #{record.sGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sPolitiis != null">
+        S_POLITIIS = #{record.sPolitiis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sPayFlag != null">
+        S_PAY_FLAG = #{record.sPayFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.sOperator != null">
+        S_OPERATOR = #{record.sOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sOperatorNo != null">
+        S_OPERATOR_NO = #{record.sOperatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dOperateTime != null">
+        D_OPERATE_TIME = #{record.dOperateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sStatus != null">
+        S_STATUS = #{record.sStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_rms_recruitinfo
+    set N_STUDENT_ID = #{record.nStudentId,jdbcType=INTEGER},
+      S_CANDIDATE_NUM = #{record.sCandidateNum,jdbcType=VARCHAR},
+      S_STUDENT_NAME = #{record.sStudentName,jdbcType=VARCHAR},
+      S_STUDENT_NO = #{record.sStudentNo,jdbcType=VARCHAR},
+      N_AGE = #{record.nAge,jdbcType=INTEGER},
+      C_SEX = #{record.cSex,jdbcType=VARCHAR},
+      S_ADDRESS = #{record.sAddress,jdbcType=VARCHAR},
+      S_CONTACT = #{record.sContact,jdbcType=VARCHAR},
+      S_EMAIL = #{record.sEmail,jdbcType=VARCHAR},
+      S_OTHER_CTACT = #{record.sOtherCtact,jdbcType=VARCHAR},
+      S_ENROL_MAJOR = #{record.sEnrolMajor,jdbcType=VARCHAR},
+      S_ADMITED_MAJOR = #{record.sAdmitedMajor,jdbcType=VARCHAR},
+      S_ADMITED_NO = #{record.sAdmitedNo,jdbcType=INTEGER},
+      S_GRADE = #{record.sGrade,jdbcType=VARCHAR},
+      S_POLITIIS = #{record.sPolitiis,jdbcType=VARCHAR},
+      S_PAY_FLAG = #{record.sPayFlag,jdbcType=CHAR},
+      S_OPERATOR = #{record.sOperator,jdbcType=VARCHAR},
+      S_OPERATOR_NO = #{record.sOperatorNo,jdbcType=VARCHAR},
+      D_OPERATE_TIME = #{record.dOperateTime,jdbcType=TIMESTAMP},
+      S_STATUS = #{record.sStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.RecruitInfo">
+    update t_rms_recruitinfo
+    <set>
+      <if test="sCandidateNum != null">
+        S_CANDIDATE_NUM = #{sCandidateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sStudentName != null">
+        S_STUDENT_NAME = #{sStudentName,jdbcType=VARCHAR},
+      </if>
+      <if test="sStudentNo != null">
+        S_STUDENT_NO = #{sStudentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="nAge != null">
+        N_AGE = #{nAge,jdbcType=INTEGER},
+      </if>
+      <if test="cSex != null">
+        C_SEX = #{cSex,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddress != null">
+        S_ADDRESS = #{sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sContact != null">
+        S_CONTACT = #{sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEmail != null">
+        S_EMAIL = #{sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sOtherCtact != null">
+        S_OTHER_CTACT = #{sOtherCtact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEnrolMajor != null">
+        S_ENROL_MAJOR = #{sEnrolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="sAdmitedMajor != null">
+        S_ADMITED_MAJOR = #{sAdmitedMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="sAdmitedNo != null">
+        S_ADMITED_NO = #{sAdmitedNo,jdbcType=INTEGER},
+      </if>
+      <if test="sGrade != null">
+        S_GRADE = #{sGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="sPolitiis != null">
+        S_POLITIIS = #{sPolitiis,jdbcType=VARCHAR},
+      </if>
+      <if test="sPayFlag != null">
+        S_PAY_FLAG = #{sPayFlag,jdbcType=CHAR},
+      </if>
+      <if test="sOperator != null">
+        S_OPERATOR = #{sOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="sOperatorNo != null">
+        S_OPERATOR_NO = #{sOperatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dOperateTime != null">
+        D_OPERATE_TIME = #{dOperateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sStatus != null">
+        S_STATUS = #{sStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.RecruitInfo">
+    update t_rms_recruitinfo
+    set S_CANDIDATE_NUM = #{sCandidateNum,jdbcType=VARCHAR},
+      S_STUDENT_NAME = #{sStudentName,jdbcType=VARCHAR},
+      S_STUDENT_NO = #{sStudentNo,jdbcType=VARCHAR},
+      N_AGE = #{nAge,jdbcType=INTEGER},
+      C_SEX = #{cSex,jdbcType=VARCHAR},
+      S_ADDRESS = #{sAddress,jdbcType=VARCHAR},
+      S_CONTACT = #{sContact,jdbcType=VARCHAR},
+      S_EMAIL = #{sEmail,jdbcType=VARCHAR},
+      S_OTHER_CTACT = #{sOtherCtact,jdbcType=VARCHAR},
+      S_ENROL_MAJOR = #{sEnrolMajor,jdbcType=VARCHAR},
+      S_ADMITED_MAJOR = #{sAdmitedMajor,jdbcType=VARCHAR},
+      S_ADMITED_NO = #{sAdmitedNo,jdbcType=INTEGER},
+      S_GRADE = #{sGrade,jdbcType=VARCHAR},
+      S_POLITIIS = #{sPolitiis,jdbcType=VARCHAR},
+      S_PAY_FLAG = #{sPayFlag,jdbcType=CHAR},
+      S_OPERATOR = #{sOperator,jdbcType=VARCHAR},
+      S_OPERATOR_NO = #{sOperatorNo,jdbcType=VARCHAR},
+      D_OPERATE_TIME = #{dOperateTime,jdbcType=TIMESTAMP},
+      S_STATUS = #{sStatus,jdbcType=VARCHAR}
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </update>
+</mapper>

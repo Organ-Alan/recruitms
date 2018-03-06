@@ -2,11 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hgl.recruitms.dao.AccountMapper">
   <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.Account">
-    <id column="N_FUND_NO" jdbcType="INTEGER" property="nFundNo" />
+    <id column="N_ACN_NO" jdbcType="INTEGER" property="nAcnNo" />
     <result column="S_USER_NO" jdbcType="VARCHAR" property="sUserNo" />
     <result column="S_USERNAME" jdbcType="VARCHAR" property="sUsername" />
     <result column="S_PASSWORD" jdbcType="VARCHAR" property="sPassword" />
     <result column="S_USER_TYPE" jdbcType="VARCHAR" property="sUserType" />
+    <result column="D_RG_TIME" jdbcType="TIMESTAMP" property="dRgTime" />
+    <result column="S_EXT_VALUE1" jdbcType="VARCHAR" property="sExtValue1" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    N_FUND_NO, S_USER_NO, S_USERNAME, S_PASSWORD, S_USER_TYPE
+    N_ACN_NO, S_USER_NO, S_USERNAME, S_PASSWORD, S_USER_TYPE, D_RG_TIME, S_EXT_VALUE1
   </sql>
   <select id="selectByExample" parameterType="com.hgl.recruitms.model.AccountExample" resultMap="BaseResultMap">
     select
@@ -87,11 +89,11 @@
     select 
     <include refid="Base_Column_List" />
     from t_rms_account
-    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+    where N_ACN_NO = #{nAcnNo,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_rms_account
-    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+    where N_ACN_NO = #{nAcnNo,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.AccountExample">
     delete from t_rms_account
@@ -100,16 +102,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.hgl.recruitms.model.Account">
-    insert into t_rms_account (N_FUND_NO, S_USER_NO, S_USERNAME, 
-      S_PASSWORD, S_USER_TYPE)
-    values (#{nFundNo,jdbcType=INTEGER}, #{sUserNo,jdbcType=VARCHAR}, #{sUsername,jdbcType=VARCHAR}, 
-      #{sPassword,jdbcType=VARCHAR}, #{sUserType,jdbcType=VARCHAR})
+    insert into t_rms_account (N_ACN_NO, S_USER_NO, S_USERNAME, 
+      S_PASSWORD, S_USER_TYPE, D_RG_TIME, 
+      S_EXT_VALUE1)
+    values (#{nAcnNo,jdbcType=INTEGER}, #{sUserNo,jdbcType=VARCHAR}, #{sUsername,jdbcType=VARCHAR}, 
+      #{sPassword,jdbcType=VARCHAR}, #{sUserType,jdbcType=VARCHAR}, #{dRgTime,jdbcType=TIMESTAMP}, 
+      #{sExtValue1,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hgl.recruitms.model.Account">
     insert into t_rms_account
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="nFundNo != null">
-        N_FUND_NO,
+      <if test="nAcnNo != null">
+        N_ACN_NO,
       </if>
       <if test="sUserNo != null">
         S_USER_NO,
@@ -123,10 +127,16 @@
       <if test="sUserType != null">
         S_USER_TYPE,
       </if>
+      <if test="dRgTime != null">
+        D_RG_TIME,
+      </if>
+      <if test="sExtValue1 != null">
+        S_EXT_VALUE1,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="nFundNo != null">
-        #{nFundNo,jdbcType=INTEGER},
+      <if test="nAcnNo != null">
+        #{nAcnNo,jdbcType=INTEGER},
       </if>
       <if test="sUserNo != null">
         #{sUserNo,jdbcType=VARCHAR},
@@ -140,6 +150,12 @@
       <if test="sUserType != null">
         #{sUserType,jdbcType=VARCHAR},
       </if>
+      <if test="dRgTime != null">
+        #{dRgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sExtValue1 != null">
+        #{sExtValue1,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.hgl.recruitms.model.AccountExample" resultType="java.lang.Long">
@@ -151,8 +167,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update t_rms_account
     <set>
-      <if test="record.nFundNo != null">
-        N_FUND_NO = #{record.nFundNo,jdbcType=INTEGER},
+      <if test="record.nAcnNo != null">
+        N_ACN_NO = #{record.nAcnNo,jdbcType=INTEGER},
       </if>
       <if test="record.sUserNo != null">
         S_USER_NO = #{record.sUserNo,jdbcType=VARCHAR},
@@ -166,6 +182,12 @@
       <if test="record.sUserType != null">
         S_USER_TYPE = #{record.sUserType,jdbcType=VARCHAR},
       </if>
+      <if test="record.dRgTime != null">
+        D_RG_TIME = #{record.dRgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sExtValue1 != null">
+        S_EXT_VALUE1 = #{record.sExtValue1,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -173,11 +195,13 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update t_rms_account
-    set N_FUND_NO = #{record.nFundNo,jdbcType=INTEGER},
+    set N_ACN_NO = #{record.nAcnNo,jdbcType=INTEGER},
       S_USER_NO = #{record.sUserNo,jdbcType=VARCHAR},
       S_USERNAME = #{record.sUsername,jdbcType=VARCHAR},
       S_PASSWORD = #{record.sPassword,jdbcType=VARCHAR},
-      S_USER_TYPE = #{record.sUserType,jdbcType=VARCHAR}
+      S_USER_TYPE = #{record.sUserType,jdbcType=VARCHAR},
+      D_RG_TIME = #{record.dRgTime,jdbcType=TIMESTAMP},
+      S_EXT_VALUE1 = #{record.sExtValue1,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,15 +221,23 @@
       <if test="sUserType != null">
         S_USER_TYPE = #{sUserType,jdbcType=VARCHAR},
       </if>
+      <if test="dRgTime != null">
+        D_RG_TIME = #{dRgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sExtValue1 != null">
+        S_EXT_VALUE1 = #{sExtValue1,jdbcType=VARCHAR},
+      </if>
     </set>
-    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+    where N_ACN_NO = #{nAcnNo,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.Account">
     update t_rms_account
     set S_USER_NO = #{sUserNo,jdbcType=VARCHAR},
       S_USERNAME = #{sUsername,jdbcType=VARCHAR},
       S_PASSWORD = #{sPassword,jdbcType=VARCHAR},
-      S_USER_TYPE = #{sUserType,jdbcType=VARCHAR}
-    where N_FUND_NO = #{nFundNo,jdbcType=INTEGER}
+      S_USER_TYPE = #{sUserType,jdbcType=VARCHAR},
+      D_RG_TIME = #{dRgTime,jdbcType=TIMESTAMP},
+      S_EXT_VALUE1 = #{sExtValue1,jdbcType=VARCHAR}
+    where N_ACN_NO = #{nAcnNo,jdbcType=INTEGER}
   </update>
 </mapper>

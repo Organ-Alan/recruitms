@@ -11,11 +11,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.hgl.recruitms.common.sys.controller.response.CommonResponseObject;
+import com.hgl.recruitms.common.controller.response.CommonResponseObject;
+import com.hgl.recruitms.common.util.JsonUtil;
 import com.hgl.recruitms.common.web.annotation.Anonymous;
 import com.hgl.recruitms.common.web.restful.response.PredefinedErrorEnum;
 import com.hgl.recruitms.common.web.restful.response.ResponseObject;
-import com.hgl.recruitms.common.web.util.JsonUtil;
 
 /**  
  * ClassName: AuthInterceptor <br/>  

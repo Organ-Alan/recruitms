@@ -14,7 +14,7 @@ package com.hgl.recruitms.enums;
  */
 public enum DataStatusEnum {
 	//添加字典数据是否有效枚举
-	DICTVALID("1", "有效"),DICTINVALID("2", "删除");
+	VALID("1", "有效"),INVALID("2", "删除");
 	private String code;
 	private String name;
 

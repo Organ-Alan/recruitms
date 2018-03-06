@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgl.recruitms.dao.AttachMapper">
+  <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.Attach">
+    <id column="N_ATTACH_ _NO" jdbcType="INTEGER" property="nAttachNo" />
+    <result column="S_ATTACH_NAME" jdbcType="VARCHAR" property="sAttachName" />
+    <result column="S_ATTACH_TYPE" jdbcType="VARCHAR" property="sAttachType" />
+    <result column="S_PATH" jdbcType="VARCHAR" property="sPath" />
+    <result column="N_VERSION" jdbcType="INTEGER" property="nVersion" />
+    <result column="S_STATUS" jdbcType="CHAR" property="sStatus" />
+    <result column="D_CREATE_TIME" jdbcType="TIMESTAMP" property="dCreateTime" />
+    <result column="S_CREATOR" jdbcType="VARCHAR" property="sCreator" />
+    <result column="S_CREATOR_NO" jdbcType="VARCHAR" property="sCreatorNo" />
+    <result column="N_LAST_ATTACH_NO" jdbcType="INTEGER" property="nLastAttachNo" />
+    <result column="S_FILE_TYPE" jdbcType="VARCHAR" property="sFileType" />
+    <result column="S_SAVE_PATH" jdbcType="VARCHAR" property="sSavePath" />
+    <result column="S_SUB_PATH" jdbcType="VARCHAR" property="sSubPath" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    "N_ATTACH_ _NO", S_ATTACH_NAME, S_ATTACH_TYPE, S_PATH, N_VERSION, S_STATUS, D_CREATE_TIME, 
+    S_CREATOR, S_CREATOR_NO, N_LAST_ATTACH_NO, S_FILE_TYPE, S_SAVE_PATH, S_SUB_PATH
+  </sql>
+  <select id="selectByExample" parameterType="com.hgl.recruitms.model.AttachExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_rms_attach
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_rms_attach
+    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_rms_attach
+    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.AttachExample">
+    delete from t_rms_attach
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hgl.recruitms.model.Attach">
+    insert into t_rms_attach ("N_ATTACH_ _NO", S_ATTACH_NAME, S_ATTACH_TYPE, 
+      S_PATH, N_VERSION, S_STATUS, 
+      D_CREATE_TIME, S_CREATOR, S_CREATOR_NO, 
+      N_LAST_ATTACH_NO, S_FILE_TYPE, S_SAVE_PATH, 
+      S_SUB_PATH)
+    values (#{nAttachNo,jdbcType=INTEGER}, #{sAttachName,jdbcType=VARCHAR}, #{sAttachType,jdbcType=VARCHAR}, 
+      #{sPath,jdbcType=VARCHAR}, #{nVersion,jdbcType=INTEGER}, #{sStatus,jdbcType=CHAR}, 
+      #{dCreateTime,jdbcType=TIMESTAMP}, #{sCreator,jdbcType=VARCHAR}, #{sCreatorNo,jdbcType=VARCHAR}, 
+      #{nLastAttachNo,jdbcType=INTEGER}, #{sFileType,jdbcType=VARCHAR}, #{sSavePath,jdbcType=VARCHAR}, 
+      #{sSubPath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hgl.recruitms.model.Attach">
+    insert into t_rms_attach
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nAttachNo != null">
+        "N_ATTACH_ _NO",
+      </if>
+      <if test="sAttachName != null">
+        S_ATTACH_NAME,
+      </if>
+      <if test="sAttachType != null">
+        S_ATTACH_TYPE,
+      </if>
+      <if test="sPath != null">
+        S_PATH,
+      </if>
+      <if test="nVersion != null">
+        N_VERSION,
+      </if>
+      <if test="sStatus != null">
+        S_STATUS,
+      </if>
+      <if test="dCreateTime != null">
+        D_CREATE_TIME,
+      </if>
+      <if test="sCreator != null">
+        S_CREATOR,
+      </if>
+      <if test="sCreatorNo != null">
+        S_CREATOR_NO,
+      </if>
+      <if test="nLastAttachNo != null">
+        N_LAST_ATTACH_NO,
+      </if>
+      <if test="sFileType != null">
+        S_FILE_TYPE,
+      </if>
+      <if test="sSavePath != null">
+        S_SAVE_PATH,
+      </if>
+      <if test="sSubPath != null">
+        S_SUB_PATH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nAttachNo != null">
+        #{nAttachNo,jdbcType=INTEGER},
+      </if>
+      <if test="sAttachName != null">
+        #{sAttachName,jdbcType=VARCHAR},
+      </if>
+      <if test="sAttachType != null">
+        #{sAttachType,jdbcType=VARCHAR},
+      </if>
+      <if test="sPath != null">
+        #{sPath,jdbcType=VARCHAR},
+      </if>
+      <if test="nVersion != null">
+        #{nVersion,jdbcType=INTEGER},
+      </if>
+      <if test="sStatus != null">
+        #{sStatus,jdbcType=CHAR},
+      </if>
+      <if test="dCreateTime != null">
+        #{dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sCreator != null">
+        #{sCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="sCreatorNo != null">
+        #{sCreatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="nLastAttachNo != null">
+        #{nLastAttachNo,jdbcType=INTEGER},
+      </if>
+      <if test="sFileType != null">
+        #{sFileType,jdbcType=VARCHAR},
+      </if>
+      <if test="sSavePath != null">
+        #{sSavePath,jdbcType=VARCHAR},
+      </if>
+      <if test="sSubPath != null">
+        #{sSubPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hgl.recruitms.model.AttachExample" resultType="java.lang.Long">
+    select count(*) from t_rms_attach
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_rms_attach
+    <set>
+      <if test="record.nAttachNo != null">
+        "N_ATTACH_ _NO" = #{record.nAttachNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.sAttachName != null">
+        S_ATTACH_NAME = #{record.sAttachName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sAttachType != null">
+        S_ATTACH_TYPE = #{record.sAttachType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sPath != null">
+        S_PATH = #{record.sPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nVersion != null">
+        N_VERSION = #{record.nVersion,jdbcType=INTEGER},
+      </if>
+      <if test="record.sStatus != null">
+        S_STATUS = #{record.sStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.dCreateTime != null">
+        D_CREATE_TIME = #{record.dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sCreator != null">
+        S_CREATOR = #{record.sCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sCreatorNo != null">
+        S_CREATOR_NO = #{record.sCreatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nLastAttachNo != null">
+        N_LAST_ATTACH_NO = #{record.nLastAttachNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.sFileType != null">
+        S_FILE_TYPE = #{record.sFileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sSavePath != null">
+        S_SAVE_PATH = #{record.sSavePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sSubPath != null">
+        S_SUB_PATH = #{record.sSubPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_rms_attach
+    set "N_ATTACH_ _NO" = #{record.nAttachNo,jdbcType=INTEGER},
+      S_ATTACH_NAME = #{record.sAttachName,jdbcType=VARCHAR},
+      S_ATTACH_TYPE = #{record.sAttachType,jdbcType=VARCHAR},
+      S_PATH = #{record.sPath,jdbcType=VARCHAR},
+      N_VERSION = #{record.nVersion,jdbcType=INTEGER},
+      S_STATUS = #{record.sStatus,jdbcType=CHAR},
+      D_CREATE_TIME = #{record.dCreateTime,jdbcType=TIMESTAMP},
+      S_CREATOR = #{record.sCreator,jdbcType=VARCHAR},
+      S_CREATOR_NO = #{record.sCreatorNo,jdbcType=VARCHAR},
+      N_LAST_ATTACH_NO = #{record.nLastAttachNo,jdbcType=INTEGER},
+      S_FILE_TYPE = #{record.sFileType,jdbcType=VARCHAR},
+      S_SAVE_PATH = #{record.sSavePath,jdbcType=VARCHAR},
+      S_SUB_PATH = #{record.sSubPath,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.Attach">
+    update t_rms_attach
+    <set>
+      <if test="sAttachName != null">
+        S_ATTACH_NAME = #{sAttachName,jdbcType=VARCHAR},
+      </if>
+      <if test="sAttachType != null">
+        S_ATTACH_TYPE = #{sAttachType,jdbcType=VARCHAR},
+      </if>
+      <if test="sPath != null">
+        S_PATH = #{sPath,jdbcType=VARCHAR},
+      </if>
+      <if test="nVersion != null">
+        N_VERSION = #{nVersion,jdbcType=INTEGER},
+      </if>
+      <if test="sStatus != null">
+        S_STATUS = #{sStatus,jdbcType=CHAR},
+      </if>
+      <if test="dCreateTime != null">
+        D_CREATE_TIME = #{dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sCreator != null">
+        S_CREATOR = #{sCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="sCreatorNo != null">
+        S_CREATOR_NO = #{sCreatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="nLastAttachNo != null">
+        N_LAST_ATTACH_NO = #{nLastAttachNo,jdbcType=INTEGER},
+      </if>
+      <if test="sFileType != null">
+        S_FILE_TYPE = #{sFileType,jdbcType=VARCHAR},
+      </if>
+      <if test="sSavePath != null">
+        S_SAVE_PATH = #{sSavePath,jdbcType=VARCHAR},
+      </if>
+      <if test="sSubPath != null">
+        S_SUB_PATH = #{sSubPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.Attach">
+    update t_rms_attach
+    set S_ATTACH_NAME = #{sAttachName,jdbcType=VARCHAR},
+      S_ATTACH_TYPE = #{sAttachType,jdbcType=VARCHAR},
+      S_PATH = #{sPath,jdbcType=VARCHAR},
+      N_VERSION = #{nVersion,jdbcType=INTEGER},
+      S_STATUS = #{sStatus,jdbcType=CHAR},
+      D_CREATE_TIME = #{dCreateTime,jdbcType=TIMESTAMP},
+      S_CREATOR = #{sCreator,jdbcType=VARCHAR},
+      S_CREATOR_NO = #{sCreatorNo,jdbcType=VARCHAR},
+      N_LAST_ATTACH_NO = #{nLastAttachNo,jdbcType=INTEGER},
+      S_FILE_TYPE = #{sFileType,jdbcType=VARCHAR},
+      S_SAVE_PATH = #{sSavePath,jdbcType=VARCHAR},
+      S_SUB_PATH = #{sSubPath,jdbcType=VARCHAR}
+    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+  </update>
+</mapper>

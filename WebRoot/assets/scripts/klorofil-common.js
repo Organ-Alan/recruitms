@@ -82,7 +82,7 @@ $(document).ready(function() {
 	// panel collapse/expand
 	var affectedElement = $('.panel-body');
 
-	$('.panel .btn-toggle-collapse').clickToggle(
+	/*$('.panel .btn-toggle-collapse').clickToggle(
 		function(e) {
 			e.preventDefault();
 
@@ -105,7 +105,7 @@ $(document).ready(function() {
 			$(this).parents('.panel').find(affectedElement).slideDown(300);
 			$(this).find('i.lnr-chevron-up').toggleClass('lnr-chevron-down');
 		}
-	);
+	);*/
 
 
 	/*-----------------------------------/
@@ -146,7 +146,7 @@ $(document).ready(function() {
 	if($('#toastr-demo').length > 0) {
 		toastr.options.timeOut = "false";
 		toastr.options.closeButton = true;
-		toastr['info']('Hi there, this is notification demo with HTML support. So, you can add HTML elements like <a href="#">this link</a>');
+		//toastr['info']('Hi there, this is notification demo with HTML support. So, you can add HTML elements like <a href="#">this link</a>');
 
 		$('.btn-toastr').on('click', function() {
 			$context = $(this).data('context');
@@ -172,8 +172,8 @@ $(document).ready(function() {
 
 			toastr.options = {
 				"timeOut": "300",
-				"onShown": function() { alert('onShown callback'); },
-				"onHidden": function() { alert('onHidden callback'); }
+				"onShown": function() {},
+				"onHidden": function() {}
 			}
 
 			toastr['info']($message);

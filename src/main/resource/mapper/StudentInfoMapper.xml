@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgl.recruitms.dao.StudentInfoMapper">
+  <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.StudentInfo">
+    <id column="N_STUDENT_ID" jdbcType="INTEGER" property="nStudentId" />
+    <result column="S_CANDIDATE_NUM" jdbcType="VARCHAR" property="sCandidateNum" />
+    <result column="S_STUDENT_NAME" jdbcType="VARCHAR" property="sStudentName" />
+    <result column="N_AGE" jdbcType="INTEGER" property="nAge" />
+    <result column="C_SEX" jdbcType="CHAR" property="cSex" />
+    <result column="S_NATIVE_PLACE" jdbcType="VARCHAR" property="sNativePlace" />
+    <result column="S_ADDRESS" jdbcType="VARCHAR" property="sAddress" />
+    <result column="S_CONTACT" jdbcType="VARCHAR" property="sContact" />
+    <result column="S_EMAIL" jdbcType="VARCHAR" property="sEmail" />
+    <result column="S_OTHER_CTACT" jdbcType="VARCHAR" property="sOtherCtact" />
+    <result column="S_ENROL_MAJOR" jdbcType="VARCHAR" property="sEnrolMajor" />
+    <result column="S_POLITIIS" jdbcType="VARCHAR" property="sPolitiis" />
+    <result column="S_DATA_FLAG" jdbcType="VARCHAR" property="sDataFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, N_AGE, C_SEX, S_NATIVE_PLACE, S_ADDRESS, 
+    S_CONTACT, S_EMAIL, S_OTHER_CTACT, S_ENROL_MAJOR, S_POLITIIS, S_DATA_FLAG
+  </sql>
+  <select id="selectByExample" parameterType="com.hgl.recruitms.model.StudentInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_rms_studentinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_rms_studentinfo
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_rms_studentinfo
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.StudentInfoExample">
+    delete from t_rms_studentinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hgl.recruitms.model.StudentInfo">
+    insert into t_rms_studentinfo (N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, 
+      N_AGE, C_SEX, S_NATIVE_PLACE, 
+      S_ADDRESS, S_CONTACT, S_EMAIL, 
+      S_OTHER_CTACT, S_ENROL_MAJOR, S_POLITIIS, 
+      S_DATA_FLAG)
+    values (#{nStudentId,jdbcType=INTEGER}, #{sCandidateNum,jdbcType=VARCHAR}, #{sStudentName,jdbcType=VARCHAR}, 
+      #{nAge,jdbcType=INTEGER}, #{cSex,jdbcType=CHAR}, #{sNativePlace,jdbcType=VARCHAR}, 
+      #{sAddress,jdbcType=VARCHAR}, #{sContact,jdbcType=VARCHAR}, #{sEmail,jdbcType=VARCHAR}, 
+      #{sOtherCtact,jdbcType=VARCHAR}, #{sEnrolMajor,jdbcType=VARCHAR}, #{sPolitiis,jdbcType=VARCHAR}, 
+      #{sDataFlag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hgl.recruitms.model.StudentInfo">
+    insert into t_rms_studentinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nStudentId != null">
+        N_STUDENT_ID,
+      </if>
+      <if test="sCandidateNum != null">
+        S_CANDIDATE_NUM,
+      </if>
+      <if test="sStudentName != null">
+        S_STUDENT_NAME,
+      </if>
+      <if test="nAge != null">
+        N_AGE,
+      </if>
+      <if test="cSex != null">
+        C_SEX,
+      </if>
+      <if test="sNativePlace != null">
+        S_NATIVE_PLACE,
+      </if>
+      <if test="sAddress != null">
+        S_ADDRESS,
+      </if>
+      <if test="sContact != null">
+        S_CONTACT,
+      </if>
+      <if test="sEmail != null">
+        S_EMAIL,
+      </if>
+      <if test="sOtherCtact != null">
+        S_OTHER_CTACT,
+      </if>
+      <if test="sEnrolMajor != null">
+        S_ENROL_MAJOR,
+      </if>
+      <if test="sPolitiis != null">
+        S_POLITIIS,
+      </if>
+      <if test="sDataFlag != null">
+        S_DATA_FLAG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nStudentId != null">
+        #{nStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="sCandidateNum != null">
+        #{sCandidateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sStudentName != null">
+        #{sStudentName,jdbcType=VARCHAR},
+      </if>
+      <if test="nAge != null">
+        #{nAge,jdbcType=INTEGER},
+      </if>
+      <if test="cSex != null">
+        #{cSex,jdbcType=CHAR},
+      </if>
+      <if test="sNativePlace != null">
+        #{sNativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddress != null">
+        #{sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sContact != null">
+        #{sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEmail != null">
+        #{sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sOtherCtact != null">
+        #{sOtherCtact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEnrolMajor != null">
+        #{sEnrolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="sPolitiis != null">
+        #{sPolitiis,jdbcType=VARCHAR},
+      </if>
+      <if test="sDataFlag != null">
+        #{sDataFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hgl.recruitms.model.StudentInfoExample" resultType="java.lang.Long">
+    select count(*) from t_rms_studentinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_rms_studentinfo
+    <set>
+      <if test="record.nStudentId != null">
+        N_STUDENT_ID = #{record.nStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sCandidateNum != null">
+        S_CANDIDATE_NUM = #{record.sCandidateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sStudentName != null">
+        S_STUDENT_NAME = #{record.sStudentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nAge != null">
+        N_AGE = #{record.nAge,jdbcType=INTEGER},
+      </if>
+      <if test="record.cSex != null">
+        C_SEX = #{record.cSex,jdbcType=CHAR},
+      </if>
+      <if test="record.sNativePlace != null">
+        S_NATIVE_PLACE = #{record.sNativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sAddress != null">
+        S_ADDRESS = #{record.sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sContact != null">
+        S_CONTACT = #{record.sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sEmail != null">
+        S_EMAIL = #{record.sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sOtherCtact != null">
+        S_OTHER_CTACT = #{record.sOtherCtact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sEnrolMajor != null">
+        S_ENROL_MAJOR = #{record.sEnrolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sPolitiis != null">
+        S_POLITIIS = #{record.sPolitiis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sDataFlag != null">
+        S_DATA_FLAG = #{record.sDataFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_rms_studentinfo
+    set N_STUDENT_ID = #{record.nStudentId,jdbcType=INTEGER},
+      S_CANDIDATE_NUM = #{record.sCandidateNum,jdbcType=VARCHAR},
+      S_STUDENT_NAME = #{record.sStudentName,jdbcType=VARCHAR},
+      N_AGE = #{record.nAge,jdbcType=INTEGER},
+      C_SEX = #{record.cSex,jdbcType=CHAR},
+      S_NATIVE_PLACE = #{record.sNativePlace,jdbcType=VARCHAR},
+      S_ADDRESS = #{record.sAddress,jdbcType=VARCHAR},
+      S_CONTACT = #{record.sContact,jdbcType=VARCHAR},
+      S_EMAIL = #{record.sEmail,jdbcType=VARCHAR},
+      S_OTHER_CTACT = #{record.sOtherCtact,jdbcType=VARCHAR},
+      S_ENROL_MAJOR = #{record.sEnrolMajor,jdbcType=VARCHAR},
+      S_POLITIIS = #{record.sPolitiis,jdbcType=VARCHAR},
+      S_DATA_FLAG = #{record.sDataFlag,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.StudentInfo">
+    update t_rms_studentinfo
+    <set>
+      <if test="sCandidateNum != null">
+        S_CANDIDATE_NUM = #{sCandidateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sStudentName != null">
+        S_STUDENT_NAME = #{sStudentName,jdbcType=VARCHAR},
+      </if>
+      <if test="nAge != null">
+        N_AGE = #{nAge,jdbcType=INTEGER},
+      </if>
+      <if test="cSex != null">
+        C_SEX = #{cSex,jdbcType=CHAR},
+      </if>
+      <if test="sNativePlace != null">
+        S_NATIVE_PLACE = #{sNativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddress != null">
+        S_ADDRESS = #{sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sContact != null">
+        S_CONTACT = #{sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEmail != null">
+        S_EMAIL = #{sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sOtherCtact != null">
+        S_OTHER_CTACT = #{sOtherCtact,jdbcType=VARCHAR},
+      </if>
+      <if test="sEnrolMajor != null">
+        S_ENROL_MAJOR = #{sEnrolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="sPolitiis != null">
+        S_POLITIIS = #{sPolitiis,jdbcType=VARCHAR},
+      </if>
+      <if test="sDataFlag != null">
+        S_DATA_FLAG = #{sDataFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.StudentInfo">
+    update t_rms_studentinfo
+    set S_CANDIDATE_NUM = #{sCandidateNum,jdbcType=VARCHAR},
+      S_STUDENT_NAME = #{sStudentName,jdbcType=VARCHAR},
+      N_AGE = #{nAge,jdbcType=INTEGER},
+      C_SEX = #{cSex,jdbcType=CHAR},
+      S_NATIVE_PLACE = #{sNativePlace,jdbcType=VARCHAR},
+      S_ADDRESS = #{sAddress,jdbcType=VARCHAR},
+      S_CONTACT = #{sContact,jdbcType=VARCHAR},
+      S_EMAIL = #{sEmail,jdbcType=VARCHAR},
+      S_OTHER_CTACT = #{sOtherCtact,jdbcType=VARCHAR},
+      S_ENROL_MAJOR = #{sEnrolMajor,jdbcType=VARCHAR},
+      S_POLITIIS = #{sPolitiis,jdbcType=VARCHAR},
+      S_DATA_FLAG = #{sDataFlag,jdbcType=VARCHAR}
+    where N_STUDENT_ID = #{nStudentId,jdbcType=INTEGER}
+  </update>
+</mapper>

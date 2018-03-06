@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.test.BaseSpringContextTest;
-import com.hgl.recruitms.common.web.util.JsonUtil;
+import com.hgl.recruitms.common.util.JsonUtil;
 import com.hgl.recruitms.model.Dictionary;
 import com.hgl.recruitms.service.DictionaryService;
 
