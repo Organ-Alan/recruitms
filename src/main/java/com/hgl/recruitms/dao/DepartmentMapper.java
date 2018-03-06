@@ -1,9 +1,12 @@
 package com.hgl.recruitms.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.hgl.recruitms.common.bean.EnrolmentInfo;
 import com.hgl.recruitms.model.Department;
 import com.hgl.recruitms.model.DepartmentExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface DepartmentMapper {
     long countByExample(DepartmentExample example);
@@ -27,4 +30,6 @@ public interface DepartmentMapper {
     int updateByPrimaryKeySelective(Department record);
 
     int updateByPrimaryKey(Department record);
+    
+    EnrolmentInfo selectEnrolmentInfo();
 }

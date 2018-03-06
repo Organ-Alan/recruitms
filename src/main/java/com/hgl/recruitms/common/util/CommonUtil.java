@@ -3,7 +3,9 @@ package com.hgl.recruitms.common.util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,12 +17,20 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * ClassName: CommonUtil <br/>
+ * date: 2018年3月6日 下午2:04:07 <br/>
+ * Description：TODO
+ * 
+ * @author huanggl
+ * @version Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.
+ */
 public class CommonUtil {
 
 	static Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	public static String ERROR = "error";
 	public static String SUCCESS = "success";
-	
+
 	public static Integer getNextVersion(Integer version) {
 		Integer nextVersion = new Integer(1);
 		try {
@@ -32,7 +42,7 @@ public class CommonUtil {
 		}
 		return nextVersion;
 	}
-	
+
 	private static Pattern p = Pattern.compile("_(\\w)");
 
 	public static String toCamelCase(String name) {
@@ -118,7 +128,6 @@ public class CommonUtil {
 		}
 		return true;
 	}
-	
 
 	public static String adjustFileName(String userAgent, String origionFileName) {
 		String fileName = null;
@@ -134,10 +143,10 @@ public class CommonUtil {
 		}
 		return fileName;
 	}
-	
+
 	public static void createExcelFromList(List<List<String>> list, String sheetName, OutputStream os)
 			throws IOException {
-		
+
 		HSSFWorkbook workBook = new HSSFWorkbook();
 		HSSFSheet sheet = workBook.createSheet(sheetName);
 		int rownum = 0;
@@ -154,5 +163,18 @@ public class CommonUtil {
 		workBook.write(os);
 		workBook.close();
 	}
-	
+
+	/**  
+	 * numberToThousands:转换成千分位. <br/>  
+	 * @author huanggl
+	 * @param number
+	 * @return  
+	 */
+	public static String numberToThousands(Integer number) {
+		BigDecimal a = new BigDecimal("123456789");
+		DecimalFormat df = new DecimalFormat(",###,##0"); // 没有小数
+//		DecimalFormat decimal = new DecimalFormat(",###,##0.0"); // 保留一位小数
+		String result = df.format(a);
+		return result;
+	}
 }

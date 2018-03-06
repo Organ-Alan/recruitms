@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.hgl.recruitms.common.bean.EnrolmentInfo;
 import com.hgl.recruitms.common.controller.response.ErrorEnum;
 import com.hgl.recruitms.common.web.restful.response.CommonResponseBuilder;
 import com.hgl.recruitms.common.web.restful.response.ResponseObject;
@@ -171,4 +172,12 @@ public class DepartmentController {
 		return builder.error(-1, "调用修改审核接口失败");
 	}
 
+	@RequestMapping(value = "/getIndexInfo", method = { RequestMethod.GET })
+	public ResponseObject<Object> getIndexInfo(){
+		EnrolmentInfo enrolmentInfo = departmentService.getEnrolmentInfo();
+		if (enrolmentInfo == null) {
+			return builder.error(-1,"初始化失败！");
+		}
+		return builder.success(enrolmentInfo);
+	}
 }

@@ -110,4 +110,11 @@ public interface RecruitInfoService {
 	 */
 	List<List<String>> exportRecruitInfo(String sStudentNo, String sStudentName, String sAdmitedMajor, String sGrade,
 			String sPayFlag, String sStatus, List<Integer> nStudentIdList, String exportType);
+	
+	/**  
+	 * getPassedAuditStu:获取审核通过的学生数目 <br/>  
+	 * @author huanggl
+	 * @return  
+	 */
+	Integer getPassedAuditStu();
 }

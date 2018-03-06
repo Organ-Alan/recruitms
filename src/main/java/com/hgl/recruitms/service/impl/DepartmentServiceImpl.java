@@ -1,5 +1,6 @@
 package com.hgl.recruitms.service.impl;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hgl.recruitms.common.bean.EnrolmentInfo;
 import com.hgl.recruitms.dao.DepartmentMapper;
 import com.hgl.recruitms.enums.AuditStatusEnum;
 import com.hgl.recruitms.enums.DataStatusEnum;
@@ -23,6 +25,7 @@ import com.hgl.recruitms.model.DepartmentExample;
 import com.hgl.recruitms.model.DepartmentExample.Criteria;
 import com.hgl.recruitms.service.CommonService;
 import com.hgl.recruitms.service.DepartmentService;
+import com.hgl.recruitms.service.RecruitInfoService;
 
 /**
  * ClassName: DepartmentServiceImpl <br/>
@@ -39,6 +42,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Autowired
 	private CommonService<Department> commonService;
+
+	@Autowired
+	private RecruitInfoService recruitInfoService;
 
 	@Autowired
 	private CommonService<Account> accountService;
@@ -186,24 +192,68 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return isSuccess > 0;
 	}
 
-	/**  
-	 * 根据专业代码获取院系专业信息 
-	 * @see com.hgl.recruitms.service.DepartmentService#getDeptByCode(java.lang.String)  
+	/**
+	 * 根据专业代码获取院系专业信息
+	 * 
+	 * @see com.hgl.recruitms.service.DepartmentService#getDeptByCode(java.lang.String)
 	 */
 	@Override
 	public Department getDeptByCode(String sDeptCode) {
 		DepartmentExample example = new DepartmentExample();
-//		example.createCriteria().andSDeptCodeEqualTo(sDeptCode);
+		// example.createCriteria().andSDeptCodeEqualTo(sDeptCode);
 		if (!StringUtils.hasText(sDeptCode)) {
-			logger.error("错误专业代码："+sDeptCode);
+			logger.error("错误专业代码：" + sDeptCode);
 			throw new RuntimeException("专业信息查询失败,请联系管理员!");
 		}
 		example.createCriteria().andSDeptCodeEqualTo(sDeptCode);
 		List<Department> departments = departmentMapper.selectByExample(example);
 		if (CollectionUtils.isEmpty(departments)) {
-			logger.error("查询该专业信息为空："+sDeptCode);
+			logger.error("查询该专业信息为空：" + sDeptCode);
 			throw new RuntimeException("专业信息查询失败,请联系管理员!");
 		}
 		return departments.get(0);
+	}
+
+	@Override
+	public EnrolmentInfo getEnrolmentInfo() {
+		EnrolmentInfo enrolmentInfo = new EnrolmentInfo();
+		EnrolmentInfo result = new EnrolmentInfo();
+		result = departmentMapper.selectEnrolmentInfo();
+		// 统计招生计划人数
+		enrolmentInfo.setnEnrolNumber(result.getnEnrolNumber());
+		logger.debug("统计出来的招生计划人数：" + result.getnEnrolNumber());
+
+		// 统计录取人数
+		Integer nAdmitedNumber = recruitInfoService.accountRecruitStudent();
+		enrolmentInfo.setnAdmitedNumber(nAdmitedNumber);
+
+		// 审核通过新生
+		Integer nRecruitNumber = recruitInfoService.getPassedAuditStu();
+		enrolmentInfo.setnRecruitNumber(nRecruitNumber);
+
+		// 报到率
+		// 创建一个数值格式化对象
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		// 设置精确到小数点后2位
+		numberFormat.setMaximumFractionDigits(4);
+		String sRateRigister = numberFormat.format((float) nRecruitNumber / (float) nAdmitedNumber * 100);
+		System.out.println("报到率为:" + result + "%");
+		enrolmentInfo.setsRateRigister(sRateRigister);
+
+		// 学院总人数
+		enrolmentInfo.setnTotalNumber(14433);
+
+		// 就业率
+		enrolmentInfo.setsRateEmployment("93.295");
+
+		// 国际班数
+		enrolmentInfo.setnInternationalClassNum(result.getnInternationalClassNum());
+		
+		//遍历全院专业信息
+		DepartmentExample example = new DepartmentExample();
+		example.createCriteria().andNDeptNoIsNotNull().andCValidFlagEqualTo(DataStatusEnum.VALID.getCode());
+		List<Department> departments = departmentMapper.selectByExample(example);
+		enrolmentInfo.setDepartment(departments);
+		return enrolmentInfo;
 	}
 }

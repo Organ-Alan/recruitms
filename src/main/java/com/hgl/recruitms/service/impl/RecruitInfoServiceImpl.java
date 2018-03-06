@@ -260,4 +260,15 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 		}
 		return table;
 	}
+
+	@Override
+	public Integer getPassedAuditStu() {
+		RecruitInfoExample example = new RecruitInfoExample();
+		example.createCriteria().andNStudentIdIsNotNull().andSStatusEqualTo(AuditStatusEnum.PASS.getCode());
+		List<RecruitInfo> recruitInfos = recruitInfoMapper.selectByExample(example);
+		if (CollectionUtils.isEmpty(recruitInfos)) {
+			return null;
+		}
+		return recruitInfos.size();
+	}
 }

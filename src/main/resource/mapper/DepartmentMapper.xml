@@ -1,306 +1,358 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hgl.recruitms.dao.DepartmentMapper">
-  <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.Department">
-    <id column="N_DEPT_NO" jdbcType="INTEGER" property="nDeptNo" />
-    <result column="S_DEPT_CODE" jdbcType="VARCHAR" property="sDeptCode" />
-    <result column="S_SHORT_NAME" jdbcType="VARCHAR" property="sShortName" />
-    <result column="S_FULL_NAME" jdbcType="VARCHAR" property="sFullName" />
-    <result column="S_REGION" jdbcType="VARCHAR" property="sRegion" />
-    <result column="S_TUITION" jdbcType="VARCHAR" property="sTuition" />
-    <result column="N_COUNT_ENROL" jdbcType="INTEGER" property="nCountEnrol" />
-    <result column="N_COUNT_EXT_RNROL" jdbcType="INTEGER" property="nCountExtRnrol" />
-    <result column="DB_ENROL_SCORE" jdbcType="DOUBLE" property="dbEnrolScore" />
-    <result column="S_REMARK" jdbcType="VARCHAR" property="sRemark" />
-    <result column="C_VALID_FLAG" jdbcType="CHAR" property="cValidFlag" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    N_DEPT_NO, S_DEPT_CODE, S_SHORT_NAME, S_FULL_NAME, S_REGION, S_TUITION, N_COUNT_ENROL, 
-    N_COUNT_EXT_RNROL, DB_ENROL_SCORE, S_REMARK, C_VALID_FLAG
-  </sql>
-  <select id="selectByExample" parameterType="com.hgl.recruitms.model.DepartmentExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from t_rms_department
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_rms_department
-    where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_rms_department
-    where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.DepartmentExample">
-    delete from t_rms_department
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.hgl.recruitms.model.Department">
-    insert into t_rms_department (N_DEPT_NO, S_DEPT_CODE, S_SHORT_NAME, 
-      S_FULL_NAME, S_REGION, S_TUITION, 
-      N_COUNT_ENROL, N_COUNT_EXT_RNROL, DB_ENROL_SCORE, 
-      S_REMARK, C_VALID_FLAG)
-    values (#{nDeptNo,jdbcType=INTEGER}, #{sDeptCode,jdbcType=VARCHAR}, #{sShortName,jdbcType=VARCHAR}, 
-      #{sFullName,jdbcType=VARCHAR}, #{sRegion,jdbcType=VARCHAR}, #{sTuition,jdbcType=VARCHAR}, 
-      #{nCountEnrol,jdbcType=INTEGER}, #{nCountExtRnrol,jdbcType=INTEGER}, #{dbEnrolScore,jdbcType=DOUBLE}, 
-      #{sRemark,jdbcType=VARCHAR}, #{cValidFlag,jdbcType=CHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.hgl.recruitms.model.Department">
-    insert into t_rms_department
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="nDeptNo != null">
-        N_DEPT_NO,
-      </if>
-      <if test="sDeptCode != null">
-        S_DEPT_CODE,
-      </if>
-      <if test="sShortName != null">
-        S_SHORT_NAME,
-      </if>
-      <if test="sFullName != null">
-        S_FULL_NAME,
-      </if>
-      <if test="sRegion != null">
-        S_REGION,
-      </if>
-      <if test="sTuition != null">
-        S_TUITION,
-      </if>
-      <if test="nCountEnrol != null">
-        N_COUNT_ENROL,
-      </if>
-      <if test="nCountExtRnrol != null">
-        N_COUNT_EXT_RNROL,
-      </if>
-      <if test="dbEnrolScore != null">
-        DB_ENROL_SCORE,
-      </if>
-      <if test="sRemark != null">
-        S_REMARK,
-      </if>
-      <if test="cValidFlag != null">
-        C_VALID_FLAG,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="nDeptNo != null">
-        #{nDeptNo,jdbcType=INTEGER},
-      </if>
-      <if test="sDeptCode != null">
-        #{sDeptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="sShortName != null">
-        #{sShortName,jdbcType=VARCHAR},
-      </if>
-      <if test="sFullName != null">
-        #{sFullName,jdbcType=VARCHAR},
-      </if>
-      <if test="sRegion != null">
-        #{sRegion,jdbcType=VARCHAR},
-      </if>
-      <if test="sTuition != null">
-        #{sTuition,jdbcType=VARCHAR},
-      </if>
-      <if test="nCountEnrol != null">
-        #{nCountEnrol,jdbcType=INTEGER},
-      </if>
-      <if test="nCountExtRnrol != null">
-        #{nCountExtRnrol,jdbcType=INTEGER},
-      </if>
-      <if test="dbEnrolScore != null">
-        #{dbEnrolScore,jdbcType=DOUBLE},
-      </if>
-      <if test="sRemark != null">
-        #{sRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="cValidFlag != null">
-        #{cValidFlag,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.hgl.recruitms.model.DepartmentExample" resultType="java.lang.Long">
-    select count(*) from t_rms_department
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update t_rms_department
-    <set>
-      <if test="record.nDeptNo != null">
-        N_DEPT_NO = #{record.nDeptNo,jdbcType=INTEGER},
-      </if>
-      <if test="record.sDeptCode != null">
-        S_DEPT_CODE = #{record.sDeptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sShortName != null">
-        S_SHORT_NAME = #{record.sShortName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sFullName != null">
-        S_FULL_NAME = #{record.sFullName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sRegion != null">
-        S_REGION = #{record.sRegion,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sTuition != null">
-        S_TUITION = #{record.sTuition,jdbcType=VARCHAR},
-      </if>
-      <if test="record.nCountEnrol != null">
-        N_COUNT_ENROL = #{record.nCountEnrol,jdbcType=INTEGER},
-      </if>
-      <if test="record.nCountExtRnrol != null">
-        N_COUNT_EXT_RNROL = #{record.nCountExtRnrol,jdbcType=INTEGER},
-      </if>
-      <if test="record.dbEnrolScore != null">
-        DB_ENROL_SCORE = #{record.dbEnrolScore,jdbcType=DOUBLE},
-      </if>
-      <if test="record.sRemark != null">
-        S_REMARK = #{record.sRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cValidFlag != null">
-        C_VALID_FLAG = #{record.cValidFlag,jdbcType=CHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update t_rms_department
-    set N_DEPT_NO = #{record.nDeptNo,jdbcType=INTEGER},
-      S_DEPT_CODE = #{record.sDeptCode,jdbcType=VARCHAR},
-      S_SHORT_NAME = #{record.sShortName,jdbcType=VARCHAR},
-      S_FULL_NAME = #{record.sFullName,jdbcType=VARCHAR},
-      S_REGION = #{record.sRegion,jdbcType=VARCHAR},
-      S_TUITION = #{record.sTuition,jdbcType=VARCHAR},
-      N_COUNT_ENROL = #{record.nCountEnrol,jdbcType=INTEGER},
-      N_COUNT_EXT_RNROL = #{record.nCountExtRnrol,jdbcType=INTEGER},
-      DB_ENROL_SCORE = #{record.dbEnrolScore,jdbcType=DOUBLE},
-      S_REMARK = #{record.sRemark,jdbcType=VARCHAR},
-      C_VALID_FLAG = #{record.cValidFlag,jdbcType=CHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.Department">
-    update t_rms_department
-    <set>
-      <if test="sDeptCode != null">
-        S_DEPT_CODE = #{sDeptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="sShortName != null">
-        S_SHORT_NAME = #{sShortName,jdbcType=VARCHAR},
-      </if>
-      <if test="sFullName != null">
-        S_FULL_NAME = #{sFullName,jdbcType=VARCHAR},
-      </if>
-      <if test="sRegion != null">
-        S_REGION = #{sRegion,jdbcType=VARCHAR},
-      </if>
-      <if test="sTuition != null">
-        S_TUITION = #{sTuition,jdbcType=VARCHAR},
-      </if>
-      <if test="nCountEnrol != null">
-        N_COUNT_ENROL = #{nCountEnrol,jdbcType=INTEGER},
-      </if>
-      <if test="nCountExtRnrol != null">
-        N_COUNT_EXT_RNROL = #{nCountExtRnrol,jdbcType=INTEGER},
-      </if>
-      <if test="dbEnrolScore != null">
-        DB_ENROL_SCORE = #{dbEnrolScore,jdbcType=DOUBLE},
-      </if>
-      <if test="sRemark != null">
-        S_REMARK = #{sRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="cValidFlag != null">
-        C_VALID_FLAG = #{cValidFlag,jdbcType=CHAR},
-      </if>
-    </set>
-    where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.Department">
-    update t_rms_department
-    set S_DEPT_CODE = #{sDeptCode,jdbcType=VARCHAR},
-      S_SHORT_NAME = #{sShortName,jdbcType=VARCHAR},
-      S_FULL_NAME = #{sFullName,jdbcType=VARCHAR},
-      S_REGION = #{sRegion,jdbcType=VARCHAR},
-      S_TUITION = #{sTuition,jdbcType=VARCHAR},
-      N_COUNT_ENROL = #{nCountEnrol,jdbcType=INTEGER},
-      N_COUNT_EXT_RNROL = #{nCountExtRnrol,jdbcType=INTEGER},
-      DB_ENROL_SCORE = #{dbEnrolScore,jdbcType=DOUBLE},
-      S_REMARK = #{sRemark,jdbcType=VARCHAR},
-      C_VALID_FLAG = #{cValidFlag,jdbcType=CHAR}
-    where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
-  </update>
+	<resultMap id="BaseResultMap" type="com.hgl.recruitms.model.Department">
+		<id column="N_DEPT_NO" jdbcType="INTEGER" property="nDeptNo" />
+		<result column="S_DEPT_CODE" jdbcType="VARCHAR" property="sDeptCode" />
+		<result column="S_SHORT_NAME" jdbcType="VARCHAR" property="sShortName" />
+		<result column="S_FULL_NAME" jdbcType="VARCHAR" property="sFullName" />
+		<result column="S_REGION" jdbcType="VARCHAR" property="sRegion" />
+		<result column="S_TUITION" jdbcType="VARCHAR" property="sTuition" />
+		<result column="N_COUNT_ENROL" jdbcType="INTEGER" property="nCountEnrol" />
+		<result column="N_COUNT_EXT_RNROL" jdbcType="INTEGER" property="nCountExtRnrol" />
+		<result column="DB_ENROL_SCORE" jdbcType="DOUBLE" property="dbEnrolScore" />
+		<result column="S_REMARK" jdbcType="VARCHAR" property="sRemark" />
+		<result column="C_VALID_FLAG" jdbcType="CHAR" property="cValidFlag" />
+	</resultMap>
+
+	<resultMap type="com.hgl.recruitms.common.bean.EnrolmentInfo"
+		id="enrolmentInfo">
+		<result column="nEnrolNumber" jdbcType="INTEGER" property="nEnrolNumber" />
+		<result column="nInternationalClassNum" jdbcType="INTEGER"
+			property="nInternationalClassNum" />
+	</resultMap>
+	<select id="selectEnrolmentInfo" resultMap="enrolmentInfo">
+		select sum(N_COUNT_ENROL) as nEnrolNumber,(select count(*) from
+		T_RMS_DEPARTMENT t where t.S_FULL_NAME like '%国际%') as
+		nInternationalClassNum from T_RMS_DEPARTMENT;
+	</select>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		N_DEPT_NO, S_DEPT_CODE, S_SHORT_NAME, S_FULL_NAME,
+		S_REGION, S_TUITION,
+		N_COUNT_ENROL,
+		N_COUNT_EXT_RNROL, DB_ENROL_SCORE,
+		S_REMARK, C_VALID_FLAG
+	</sql>
+	<select id="selectByExample" parameterType="com.hgl.recruitms.model.DepartmentExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from t_rms_department
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_rms_department
+		where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_rms_department
+		where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.hgl.recruitms.model.DepartmentExample">
+		delete from t_rms_department
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.hgl.recruitms.model.Department">
+		insert into t_rms_department
+		(N_DEPT_NO, S_DEPT_CODE, S_SHORT_NAME,
+		S_FULL_NAME, S_REGION,
+		S_TUITION,
+		N_COUNT_ENROL, N_COUNT_EXT_RNROL, DB_ENROL_SCORE,
+		S_REMARK,
+		C_VALID_FLAG)
+		values (#{nDeptNo,jdbcType=INTEGER},
+		#{sDeptCode,jdbcType=VARCHAR},
+		#{sShortName,jdbcType=VARCHAR},
+		#{sFullName,jdbcType=VARCHAR}, #{sRegion,jdbcType=VARCHAR},
+		#{sTuition,jdbcType=VARCHAR},
+		#{nCountEnrol,jdbcType=INTEGER},
+		#{nCountExtRnrol,jdbcType=INTEGER},
+		#{dbEnrolScore,jdbcType=DOUBLE},
+		#{sRemark,jdbcType=VARCHAR}, #{cValidFlag,jdbcType=CHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.hgl.recruitms.model.Department">
+		insert into t_rms_department
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="nDeptNo != null">
+				N_DEPT_NO,
+			</if>
+			<if test="sDeptCode != null">
+				S_DEPT_CODE,
+			</if>
+			<if test="sShortName != null">
+				S_SHORT_NAME,
+			</if>
+			<if test="sFullName != null">
+				S_FULL_NAME,
+			</if>
+			<if test="sRegion != null">
+				S_REGION,
+			</if>
+			<if test="sTuition != null">
+				S_TUITION,
+			</if>
+			<if test="nCountEnrol != null">
+				N_COUNT_ENROL,
+			</if>
+			<if test="nCountExtRnrol != null">
+				N_COUNT_EXT_RNROL,
+			</if>
+			<if test="dbEnrolScore != null">
+				DB_ENROL_SCORE,
+			</if>
+			<if test="sRemark != null">
+				S_REMARK,
+			</if>
+			<if test="cValidFlag != null">
+				C_VALID_FLAG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="nDeptNo != null">
+				#{nDeptNo,jdbcType=INTEGER},
+			</if>
+			<if test="sDeptCode != null">
+				#{sDeptCode,jdbcType=VARCHAR},
+			</if>
+			<if test="sShortName != null">
+				#{sShortName,jdbcType=VARCHAR},
+			</if>
+			<if test="sFullName != null">
+				#{sFullName,jdbcType=VARCHAR},
+			</if>
+			<if test="sRegion != null">
+				#{sRegion,jdbcType=VARCHAR},
+			</if>
+			<if test="sTuition != null">
+				#{sTuition,jdbcType=VARCHAR},
+			</if>
+			<if test="nCountEnrol != null">
+				#{nCountEnrol,jdbcType=INTEGER},
+			</if>
+			<if test="nCountExtRnrol != null">
+				#{nCountExtRnrol,jdbcType=INTEGER},
+			</if>
+			<if test="dbEnrolScore != null">
+				#{dbEnrolScore,jdbcType=DOUBLE},
+			</if>
+			<if test="sRemark != null">
+				#{sRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="cValidFlag != null">
+				#{cValidFlag,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.hgl.recruitms.model.DepartmentExample"
+		resultType="java.lang.Long">
+		select count(*) from t_rms_department
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update t_rms_department
+		<set>
+			<if test="record.nDeptNo != null">
+				N_DEPT_NO = #{record.nDeptNo,jdbcType=INTEGER},
+			</if>
+			<if test="record.sDeptCode != null">
+				S_DEPT_CODE = #{record.sDeptCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sShortName != null">
+				S_SHORT_NAME = #{record.sShortName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sFullName != null">
+				S_FULL_NAME = #{record.sFullName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sRegion != null">
+				S_REGION = #{record.sRegion,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sTuition != null">
+				S_TUITION = #{record.sTuition,jdbcType=VARCHAR},
+			</if>
+			<if test="record.nCountEnrol != null">
+				N_COUNT_ENROL = #{record.nCountEnrol,jdbcType=INTEGER},
+			</if>
+			<if test="record.nCountExtRnrol != null">
+				N_COUNT_EXT_RNROL =
+				#{record.nCountExtRnrol,jdbcType=INTEGER},
+			</if>
+			<if test="record.dbEnrolScore != null">
+				DB_ENROL_SCORE = #{record.dbEnrolScore,jdbcType=DOUBLE},
+			</if>
+			<if test="record.sRemark != null">
+				S_REMARK = #{record.sRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.cValidFlag != null">
+				C_VALID_FLAG = #{record.cValidFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update t_rms_department
+		set N_DEPT_NO =
+		#{record.nDeptNo,jdbcType=INTEGER},
+		S_DEPT_CODE =
+		#{record.sDeptCode,jdbcType=VARCHAR},
+		S_SHORT_NAME =
+		#{record.sShortName,jdbcType=VARCHAR},
+		S_FULL_NAME =
+		#{record.sFullName,jdbcType=VARCHAR},
+		S_REGION =
+		#{record.sRegion,jdbcType=VARCHAR},
+		S_TUITION =
+		#{record.sTuition,jdbcType=VARCHAR},
+		N_COUNT_ENROL =
+		#{record.nCountEnrol,jdbcType=INTEGER},
+		N_COUNT_EXT_RNROL =
+		#{record.nCountExtRnrol,jdbcType=INTEGER},
+		DB_ENROL_SCORE =
+		#{record.dbEnrolScore,jdbcType=DOUBLE},
+		S_REMARK =
+		#{record.sRemark,jdbcType=VARCHAR},
+		C_VALID_FLAG =
+		#{record.cValidFlag,jdbcType=CHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hgl.recruitms.model.Department">
+		update t_rms_department
+		<set>
+			<if test="sDeptCode != null">
+				S_DEPT_CODE = #{sDeptCode,jdbcType=VARCHAR},
+			</if>
+			<if test="sShortName != null">
+				S_SHORT_NAME = #{sShortName,jdbcType=VARCHAR},
+			</if>
+			<if test="sFullName != null">
+				S_FULL_NAME = #{sFullName,jdbcType=VARCHAR},
+			</if>
+			<if test="sRegion != null">
+				S_REGION = #{sRegion,jdbcType=VARCHAR},
+			</if>
+			<if test="sTuition != null">
+				S_TUITION = #{sTuition,jdbcType=VARCHAR},
+			</if>
+			<if test="nCountEnrol != null">
+				N_COUNT_ENROL = #{nCountEnrol,jdbcType=INTEGER},
+			</if>
+			<if test="nCountExtRnrol != null">
+				N_COUNT_EXT_RNROL = #{nCountExtRnrol,jdbcType=INTEGER},
+			</if>
+			<if test="dbEnrolScore != null">
+				DB_ENROL_SCORE = #{dbEnrolScore,jdbcType=DOUBLE},
+			</if>
+			<if test="sRemark != null">
+				S_REMARK = #{sRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="cValidFlag != null">
+				C_VALID_FLAG = #{cValidFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.Department">
+		update
+		t_rms_department
+		set S_DEPT_CODE = #{sDeptCode,jdbcType=VARCHAR},
+		S_SHORT_NAME = #{sShortName,jdbcType=VARCHAR},
+		S_FULL_NAME =
+		#{sFullName,jdbcType=VARCHAR},
+		S_REGION = #{sRegion,jdbcType=VARCHAR},
+		S_TUITION = #{sTuition,jdbcType=VARCHAR},
+		N_COUNT_ENROL =
+		#{nCountEnrol,jdbcType=INTEGER},
+		N_COUNT_EXT_RNROL =
+		#{nCountExtRnrol,jdbcType=INTEGER},
+		DB_ENROL_SCORE =
+		#{dbEnrolScore,jdbcType=DOUBLE},
+		S_REMARK =
+		#{sRemark,jdbcType=VARCHAR},
+		C_VALID_FLAG = #{cValidFlag,jdbcType=CHAR}
+		where N_DEPT_NO = #{nDeptNo,jdbcType=INTEGER}
+	</update>
 </mapper>

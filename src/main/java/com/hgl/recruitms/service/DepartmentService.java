@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
+import com.hgl.recruitms.common.bean.EnrolmentInfo;
 import com.hgl.recruitms.model.Department;
 
 /**
@@ -97,4 +98,6 @@ public interface DepartmentService {
 	 * @return  
 	 */
 	Department getDeptByCode(String sDeptCode);
+	
+	EnrolmentInfo getEnrolmentInfo();
 }

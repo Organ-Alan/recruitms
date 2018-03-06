@@ -13,7 +13,7 @@
 		<Root level="debug">
 			<AppenderRef ref="Console" />
 		</Root>
-		<logger name="com.efunds.pms" level="error" additivity="false">
+		<logger name="com.efunds.pms" level="debug" additivity="false">
 			<AppenderRef ref="Console" />
 		</logger>
 
