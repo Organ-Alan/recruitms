@@ -100,4 +100,14 @@ public interface DepartmentService {
 	Department getDeptByCode(String sDeptCode);
 	
 	EnrolmentInfo getEnrolmentInfo();
+	
+	/**  
+	 * listDepartments:自定义分页，包含院系的信息. <br/>  
+	 * @author huanggl
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return  
+	 */
+	PageInfo<Department> listDepartments(Integer pageIndex, Integer pageSize);
+	
 }

@@ -1,4 +1,4 @@
-package com.hgl.recruitms.common.web.interceptor;
+package com.hgl.recruitms.common.web.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,25 +18,23 @@ import com.hgl.recruitms.common.jwt.Jwt;
 import com.hgl.recruitms.common.jwt.TokenState;
 
 import net.minidev.json.JSONObject;
-
-/**  
- * ClassName: CheckToken <br/>   
- * Description：toekn校验过滤器，所有的API接口请求都要经过该过滤器(除了登陆接口)
- * @author huanggl  
- * @version   
- * Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.  
+/**
+ * toekn校验过滤器，所有的API接口请求都要经过该过滤器(除了登陆接口)
+ * @author huanggl
+ *
  */
-@WebFilter(urlPatterns="/recruitms/*")
+@WebFilter(urlPatterns="/*")
 public class CheckToken  implements Filter {
 
 
 	@Override
 	public void doFilter(ServletRequest argo, ServletResponse arg1,
 			FilterChain chain ) throws IOException, ServletException {
+		System.out.println("开始校验");
 		HttpServletRequest request=(HttpServletRequest) argo;
 		HttpServletResponse response=(HttpServletResponse) arg1;
 //		response.setHeader("Access-Control-Allow-Origin", "*");
-		if(request.getRequestURI().endsWith("/recruitms/v1/common/login")){
+		if(request.getRequestURI().endsWith("/recruitms/admin/login.jsp")){
 			//登陆接口不校验token，直接放行
 			chain.doFilter(request, response);
 			return;

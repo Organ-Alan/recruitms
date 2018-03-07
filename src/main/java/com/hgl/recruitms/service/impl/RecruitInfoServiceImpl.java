@@ -1,6 +1,7 @@
 package com.hgl.recruitms.service.impl;
 
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.hgl.recruitms.enums.AuditStatusEnum;
 import com.hgl.recruitms.enums.PayFlagEnum;
 import com.hgl.recruitms.enums.RecruitInfoColEnum;
 import com.hgl.recruitms.enums.TBHeaderEnum;
+import com.hgl.recruitms.enums.YesOrNoEnum;
 import com.hgl.recruitms.model.RecruitInfo;
 import com.hgl.recruitms.model.RecruitInfoExample;
 import com.hgl.recruitms.model.RecruitInfoExample.Criteria;
@@ -130,7 +132,7 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 	public int accountRecruitStudent() {
 		RecruitInfoExample example = new RecruitInfoExample();
 		// 过滤无效的学生信息
-		example.createCriteria().andSStatusNotEqualTo(AuditStatusEnum.REFUSE.getCode());
+		example.createCriteria().andNStudentIdIsNotNull();
 		int count = (int) recruitInfoMapper.countByExample(example);
 		return count;
 	}
@@ -261,6 +263,11 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 		return table;
 	}
 
+	/**
+	 * 获取审核通过的新生信息
+	 * 
+	 * @see com.hgl.recruitms.service.RecruitInfoService#getPassedAuditStu()
+	 */
 	@Override
 	public Integer getPassedAuditStu() {
 		RecruitInfoExample example = new RecruitInfoExample();
@@ -270,5 +277,30 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 			return null;
 		}
 		return recruitInfos.size();
+	}
+
+	/**
+	 * getRateRigister:获取新生报到率
+	 * 
+	 * @author huanggl
+	 * @return
+	 */
+	public String getRateRigister() {
+		RecruitInfoExample example = new RecruitInfoExample();
+		RecruitInfoExample unregisterExample = new RecruitInfoExample();
+		example.createCriteria().andNStudentIdIsNotNull();
+		unregisterExample.createCriteria().andNStudentIdIsNotNull().andSRegisterFlagEqualTo(YesOrNoEnum.N.getCode());
+		List<RecruitInfo> total = recruitInfoMapper.selectByExample(example);
+		List<RecruitInfo> unregisters = recruitInfoMapper.selectByExample(unregisterExample);
+		if (CollectionUtils.isEmpty(unregisters) && CollectionUtils.isEmpty(total)) {
+			throw new RuntimeException("获取报到率失败！报到学生人数为+" + total.size() + "  未注册学生人数为：" + unregisters.size());
+		}
+		// 创建一个数值格式化对象
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		// 设置精确到小数点后2位
+		numberFormat.setMaximumFractionDigits(4);
+		String sRateRigister = numberFormat.format((float) unregisters.size() / (float) total.size() * 100);
+		System.out.println("报到率为:" + sRateRigister + "%");
+		return sRateRigister;
 	}
 }

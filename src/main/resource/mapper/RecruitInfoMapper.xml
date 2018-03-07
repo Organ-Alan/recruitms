@@ -16,6 +16,7 @@
     <result column="S_ADMITED_MAJOR" jdbcType="VARCHAR" property="sAdmitedMajor" />
     <result column="S_ADMITED_NO" jdbcType="INTEGER" property="sAdmitedNo" />
     <result column="S_GRADE" jdbcType="VARCHAR" property="sGrade" />
+    <result column="S_REGISTER_FLAG" jdbcType="VARCHAR" property="sRegisterFlag" />
     <result column="S_POLITIIS" jdbcType="VARCHAR" property="sPolitiis" />
     <result column="S_PAY_FLAG" jdbcType="CHAR" property="sPayFlag" />
     <result column="S_OPERATOR" jdbcType="VARCHAR" property="sOperator" />
@@ -84,7 +85,8 @@
   <sql id="Base_Column_List">
     N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, S_STUDENT_NO, N_AGE, C_SEX, S_ADDRESS, 
     S_CONTACT, S_EMAIL, S_OTHER_CTACT, S_ENROL_MAJOR, S_ADMITED_MAJOR, S_ADMITED_NO, 
-    S_GRADE, S_POLITIIS, S_PAY_FLAG, S_OPERATOR, S_OPERATOR_NO, D_OPERATE_TIME, S_STATUS
+    S_GRADE, S_REGISTER_FLAG, S_POLITIIS, S_PAY_FLAG, S_OPERATOR, S_OPERATOR_NO, D_OPERATE_TIME, 
+    S_STATUS
   </sql>
   <select id="selectByExample" parameterType="com.hgl.recruitms.model.RecruitInfoExample" resultMap="BaseResultMap">
     select
@@ -121,16 +123,18 @@
       S_STUDENT_NO, N_AGE, C_SEX, 
       S_ADDRESS, S_CONTACT, S_EMAIL, 
       S_OTHER_CTACT, S_ENROL_MAJOR, S_ADMITED_MAJOR, 
-      S_ADMITED_NO, S_GRADE, S_POLITIIS, 
-      S_PAY_FLAG, S_OPERATOR, S_OPERATOR_NO, 
-      D_OPERATE_TIME, S_STATUS)
+      S_ADMITED_NO, S_GRADE, S_REGISTER_FLAG, 
+      S_POLITIIS, S_PAY_FLAG, S_OPERATOR, 
+      S_OPERATOR_NO, D_OPERATE_TIME, S_STATUS
+      )
     values (#{nStudentId,jdbcType=INTEGER}, #{sCandidateNum,jdbcType=VARCHAR}, #{sStudentName,jdbcType=VARCHAR}, 
       #{sStudentNo,jdbcType=VARCHAR}, #{nAge,jdbcType=INTEGER}, #{cSex,jdbcType=VARCHAR}, 
       #{sAddress,jdbcType=VARCHAR}, #{sContact,jdbcType=VARCHAR}, #{sEmail,jdbcType=VARCHAR}, 
       #{sOtherCtact,jdbcType=VARCHAR}, #{sEnrolMajor,jdbcType=VARCHAR}, #{sAdmitedMajor,jdbcType=VARCHAR}, 
-      #{sAdmitedNo,jdbcType=INTEGER}, #{sGrade,jdbcType=VARCHAR}, #{sPolitiis,jdbcType=VARCHAR}, 
-      #{sPayFlag,jdbcType=CHAR}, #{sOperator,jdbcType=VARCHAR}, #{sOperatorNo,jdbcType=VARCHAR}, 
-      #{dOperateTime,jdbcType=TIMESTAMP}, #{sStatus,jdbcType=VARCHAR})
+      #{sAdmitedNo,jdbcType=INTEGER}, #{sGrade,jdbcType=VARCHAR}, #{sRegisterFlag,jdbcType=VARCHAR}, 
+      #{sPolitiis,jdbcType=VARCHAR}, #{sPayFlag,jdbcType=CHAR}, #{sOperator,jdbcType=VARCHAR}, 
+      #{sOperatorNo,jdbcType=VARCHAR}, #{dOperateTime,jdbcType=TIMESTAMP}, #{sStatus,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hgl.recruitms.model.RecruitInfo">
     insert into t_rms_recruitinfo
@@ -176,6 +180,9 @@
       </if>
       <if test="sGrade != null">
         S_GRADE,
+      </if>
+      <if test="sRegisterFlag != null">
+        S_REGISTER_FLAG,
       </if>
       <if test="sPolitiis != null">
         S_POLITIIS,
@@ -238,6 +245,9 @@
       </if>
       <if test="sGrade != null">
         #{sGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="sRegisterFlag != null">
+        #{sRegisterFlag,jdbcType=VARCHAR},
       </if>
       <if test="sPolitiis != null">
         #{sPolitiis,jdbcType=VARCHAR},
@@ -310,6 +320,9 @@
       <if test="record.sGrade != null">
         S_GRADE = #{record.sGrade,jdbcType=VARCHAR},
       </if>
+      <if test="record.sRegisterFlag != null">
+        S_REGISTER_FLAG = #{record.sRegisterFlag,jdbcType=VARCHAR},
+      </if>
       <if test="record.sPolitiis != null">
         S_POLITIIS = #{record.sPolitiis,jdbcType=VARCHAR},
       </if>
@@ -349,6 +362,7 @@
       S_ADMITED_MAJOR = #{record.sAdmitedMajor,jdbcType=VARCHAR},
       S_ADMITED_NO = #{record.sAdmitedNo,jdbcType=INTEGER},
       S_GRADE = #{record.sGrade,jdbcType=VARCHAR},
+      S_REGISTER_FLAG = #{record.sRegisterFlag,jdbcType=VARCHAR},
       S_POLITIIS = #{record.sPolitiis,jdbcType=VARCHAR},
       S_PAY_FLAG = #{record.sPayFlag,jdbcType=CHAR},
       S_OPERATOR = #{record.sOperator,jdbcType=VARCHAR},
@@ -401,6 +415,9 @@
       <if test="sGrade != null">
         S_GRADE = #{sGrade,jdbcType=VARCHAR},
       </if>
+      <if test="sRegisterFlag != null">
+        S_REGISTER_FLAG = #{sRegisterFlag,jdbcType=VARCHAR},
+      </if>
       <if test="sPolitiis != null">
         S_POLITIIS = #{sPolitiis,jdbcType=VARCHAR},
       </if>
@@ -437,6 +454,7 @@
       S_ADMITED_MAJOR = #{sAdmitedMajor,jdbcType=VARCHAR},
       S_ADMITED_NO = #{sAdmitedNo,jdbcType=INTEGER},
       S_GRADE = #{sGrade,jdbcType=VARCHAR},
+      S_REGISTER_FLAG = #{sRegisterFlag,jdbcType=VARCHAR},
       S_POLITIIS = #{sPolitiis,jdbcType=VARCHAR},
       S_PAY_FLAG = #{sPayFlag,jdbcType=CHAR},
       S_OPERATOR = #{sOperator,jdbcType=VARCHAR},

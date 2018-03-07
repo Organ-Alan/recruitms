@@ -31,6 +31,8 @@ public class RecruitInfo {
 
     private String sGrade;
 
+    private String sRegisterFlag;
+
     private String sPolitiis;
 
     private String sPayFlag;
@@ -225,6 +227,19 @@ public class RecruitInfo {
         this.sGrade = sGrade == null ? null : sGrade.trim();
     }
 
+    public String getsRegisterFlag() {
+        return sRegisterFlag;
+    }
+
+    public RecruitInfo withsRegisterFlag(String sRegisterFlag) {
+        this.setsRegisterFlag(sRegisterFlag);
+        return this;
+    }
+
+    public void setsRegisterFlag(String sRegisterFlag) {
+        this.sRegisterFlag = sRegisterFlag == null ? null : sRegisterFlag.trim();
+    }
+
     public String getsPolitiis() {
         return sPolitiis;
     }
@@ -323,6 +338,7 @@ public class RecruitInfo {
         sb.append(", sAdmitedMajor=").append(sAdmitedMajor);
         sb.append(", sAdmitedNo=").append(sAdmitedNo);
         sb.append(", sGrade=").append(sGrade);
+        sb.append(", sRegisterFlag=").append(sRegisterFlag);
         sb.append(", sPolitiis=").append(sPolitiis);
         sb.append(", sPayFlag=").append(sPayFlag);
         sb.append(", sOperator=").append(sOperator);

@@ -117,4 +117,11 @@ public interface RecruitInfoService {
 	 * @return  
 	 */
 	Integer getPassedAuditStu();
+	
+	/**  
+	 * getRateRigister:获取新生报到率. <br/>  
+	 * @author huanggl
+	 * @return  
+	 */
+	String getRateRigister();
 }

@@ -17,20 +17,12 @@ import com.hgl.recruitms.common.web.annotation.Anonymous;
 import com.hgl.recruitms.common.web.restful.response.PredefinedErrorEnum;
 import com.hgl.recruitms.common.web.restful.response.ResponseObject;
 
-/**  
- * ClassName: AuthInterceptor <br/>  
- * date: 2017年12月6日 下午4:14:26 <br/>  
- * Description：单点登录拦截器
- * @author huanggl  
- * @version   
- * Copyright (c) 2017, 黄光亮毕业设计----All Rights Reserved.  
- */
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 	
 	private static final Logger logger = LogManager.getLogger(AuthInterceptor.class);
 	
 	private final static String TOKEN_KEY = "token";
-	public final static String REQUEST_ATTR_TOKEN_KEY = "PMS_TOKEN";
+	public final static String REQUEST_ATTR_TOKEN_KEY = "RMS_TOKEN";
 	
 	/*@Value("${token.key}")
     private String key;*/
@@ -41,7 +33,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object obj) throws Exception {
-
+		System.err.println("开始拦截==");
     	if(request.getMethod().equalsIgnoreCase("options")){
     		logger.debug("options请求，直接放开");
     		return true;

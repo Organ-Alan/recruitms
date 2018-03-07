@@ -58,12 +58,12 @@ $(document).ready(function() {
 		}
 	});
 
-	if( $('.sidebar-scroll').length > 0 ) {
-		$('.sidebar-scroll').slimScroll({
-			height: '95%',
-			wheelStep: 2,
-		});
-	}
+//	if( $('.sidebar-scroll').length > 0 ) {
+//		$('.sidebar-scroll').slimScroll({
+//			height: '95%',
+//			wheelStep: 2,
+//		});
+//	}
 
 
 	/*-----------------------------------/
@@ -112,19 +112,19 @@ $(document).ready(function() {
 	/*	PANEL SCROLLING
 	/*----------------------------------*/
 
-	if( $('.panel-scrolling').length > 0) {
-		$('.panel-scrolling .panel-body').slimScroll({
-			height: '430px',
-			wheelStep: 2,
-		});
-	}
-
-	if( $('#panel-scrolling-demo').length > 0) {
-		$('#panel-scrolling-demo .panel-body').slimScroll({
-			height: '175px',
-			wheelStep: 2,
-		});
-	}
+//	if( $('.panel-scrolling').length > 0) {
+//		$('.panel-scrolling .panel-body').slimScroll({
+//			height: '430px',
+//			wheelStep: 2,
+//		});
+//	}
+//
+//	if( $('#panel-scrolling-demo').length > 0) {
+//		$('#panel-scrolling-demo .panel-body').slimScroll({
+//			height: '175px',
+//			wheelStep: 2,
+//		});
+//	}
 
 	/*-----------------------------------/
 	/*	TODO LIST

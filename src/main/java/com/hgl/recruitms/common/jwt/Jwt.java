@@ -14,13 +14,10 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 
 import net.minidev.json.JSONObject;
-
-/**  
- * ClassName: Jwt <br/>  
- * Description：JWT 登录校验
- * @author huanggl  
- * @version   
- * Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.  
+/**
+ * 
+ * @author huanggl
+ *
  */
 public class Jwt {
 	

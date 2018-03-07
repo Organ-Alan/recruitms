@@ -8,14 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-/**  
- * ClassName: TimeAnalysis <br/>  
- * date: 2017年12月6日 下午4:15:17 <br/>  
- * Description：时间线程分析器
- * @author huanggl  
- * @version   
- * Copyright (c) 2017, 黄光亮毕业设计----All Rights Reserved.  
- */
 public class TimeAnalysis extends HandlerInterceptorAdapter {
 	private static final Logger logger = LogManager.getLogger(TimeAnalysis.class);
     private long criticalValue = 500;

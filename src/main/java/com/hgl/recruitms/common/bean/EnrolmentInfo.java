@@ -1,7 +1,6 @@
 package com.hgl.recruitms.common.bean;
 
-import java.util.List;
-
+import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.model.Department;
 
 /**
@@ -26,7 +25,7 @@ public class EnrolmentInfo {
 
 	private Integer nInternationalClassNum; //国际班数
 
-	private List<Department> Department;
+	private PageInfo<Department> departments;
 
 	public Integer getnEnrolNumber() {
 		return nEnrolNumber;
@@ -68,14 +67,6 @@ public class EnrolmentInfo {
 		this.nInternationalClassNum = nInternationalClassNum;
 	}
 
-	public List<Department> getDepartment() {
-		return Department;
-	}
-
-	public void setDepartment(List<Department> department) {
-		Department = department;
-	}
-
 	public String getsRateRigister() {
 		return sRateRigister;
 	}
@@ -90,5 +81,13 @@ public class EnrolmentInfo {
 
 	public void setsRateEmployment(String sRateEmployment) {
 		this.sRateEmployment = sRateEmployment;
+	}
+
+	public PageInfo<Department> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(PageInfo<Department> departments) {
+		this.departments = departments;
 	}
 }

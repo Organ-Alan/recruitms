@@ -1055,6 +1055,76 @@ public class RecruitInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andSRegisterFlagIsNull() {
+            addCriterion("S_REGISTER_FLAG is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagIsNotNull() {
+            addCriterion("S_REGISTER_FLAG is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagEqualTo(String value) {
+            addCriterion("S_REGISTER_FLAG =", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagNotEqualTo(String value) {
+            addCriterion("S_REGISTER_FLAG <>", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagGreaterThan(String value) {
+            addCriterion("S_REGISTER_FLAG >", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("S_REGISTER_FLAG >=", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagLessThan(String value) {
+            addCriterion("S_REGISTER_FLAG <", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagLessThanOrEqualTo(String value) {
+            addCriterion("S_REGISTER_FLAG <=", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagLike(String value) {
+            addCriterion("S_REGISTER_FLAG like", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagNotLike(String value) {
+            addCriterion("S_REGISTER_FLAG not like", value, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagIn(List<String> values) {
+            addCriterion("S_REGISTER_FLAG in", values, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagNotIn(List<String> values) {
+            addCriterion("S_REGISTER_FLAG not in", values, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagBetween(String value1, String value2) {
+            addCriterion("S_REGISTER_FLAG between", value1, value2, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagNotBetween(String value1, String value2) {
+            addCriterion("S_REGISTER_FLAG not between", value1, value2, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andSPolitiisIsNull() {
             addCriterion("S_POLITIIS is null");
             return (Criteria) this;
@@ -1517,6 +1587,11 @@ public class RecruitInfoExample {
 
         public Criteria andSGradeLikeInsensitive(String value) {
             addCriterion("upper(S_GRADE) like", value.toUpperCase(), "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSRegisterFlagLikeInsensitive(String value) {
+            addCriterion("upper(S_REGISTER_FLAG) like", value.toUpperCase(), "sRegisterFlag");
             return (Criteria) this;
         }
 

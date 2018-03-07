@@ -32,4 +32,6 @@ public interface DepartmentMapper {
     int updateByPrimaryKey(Department record);
     
     EnrolmentInfo selectEnrolmentInfo();
+    
+    List<Department> accountDepartments();
 }

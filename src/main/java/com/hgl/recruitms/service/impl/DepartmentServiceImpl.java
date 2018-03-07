@@ -1,6 +1,5 @@
 package com.hgl.recruitms.service.impl;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -224,36 +223,45 @@ public class DepartmentServiceImpl implements DepartmentService {
 		logger.debug("统计出来的招生计划人数：" + result.getnEnrolNumber());
 
 		// 统计录取人数
-		Integer nAdmitedNumber = recruitInfoService.accountRecruitStudent();
+//		Integer nAdmitedNumber = Integer.parseInt(CommonUtil.numberToThousands((long)recruitInfoService.accountRecruitStudent()));
+		Integer nAdmitedNumber =recruitInfoService.accountRecruitStudent();
 		enrolmentInfo.setnAdmitedNumber(nAdmitedNumber);
 
 		// 审核通过新生
-		Integer nRecruitNumber = recruitInfoService.getPassedAuditStu();
+//		Integer nRecruitNumber = Integer.parseInt(CommonUtil.numberToThousands((long)recruitInfoService.getPassedAuditStu()));
+		Integer nRecruitNumber =recruitInfoService.getPassedAuditStu();
 		enrolmentInfo.setnRecruitNumber(nRecruitNumber);
 
 		// 报到率
-		// 创建一个数值格式化对象
-		NumberFormat numberFormat = NumberFormat.getInstance();
-		// 设置精确到小数点后2位
-		numberFormat.setMaximumFractionDigits(4);
-		String sRateRigister = numberFormat.format((float) nRecruitNumber / (float) nAdmitedNumber * 100);
-		System.out.println("报到率为:" + result + "%");
+		String sRateRigister = recruitInfoService.getRateRigister();
 		enrolmentInfo.setsRateRigister(sRateRigister);
 
 		// 学院总人数
-		enrolmentInfo.setnTotalNumber(14433);
+		
+		Integer nTotalNumber = 14433;
+		enrolmentInfo.setnTotalNumber(nTotalNumber);
 
 		// 就业率
 		enrolmentInfo.setsRateEmployment("93.295");
 
 		// 国际班数
 		enrolmentInfo.setnInternationalClassNum(result.getnInternationalClassNum());
-		
-		//遍历全院专业信息
+
+		// 遍历全院专业信息
 		DepartmentExample example = new DepartmentExample();
 		example.createCriteria().andNDeptNoIsNotNull().andCValidFlagEqualTo(DataStatusEnum.VALID.getCode());
-		List<Department> departments = departmentMapper.selectByExample(example);
-		enrolmentInfo.setDepartment(departments);
+		PageInfo<Department> departments = listDepartments(1, 100);
+		enrolmentInfo.setDepartments(departments);
 		return enrolmentInfo;
+	}
+
+	@Override
+	public PageInfo<Department> listDepartments(Integer pageIndex, Integer pageSize) {
+		logger.debug("字典信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
+		// 调用静态方法，设置分页参数即可，随后的第一次查询的sql语句会自动被分页插件改装成带有分页查询的sql语句
+		PageHelper.startPage(pageIndex, pageSize);
+		// 获取满足条件的数据
+		List<Department> Departments = departmentMapper.accountDepartments();
+		return new PageInfo<Department>(Departments);
 	}
 }

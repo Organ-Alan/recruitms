@@ -1,13 +1,10 @@
 package com.hgl.recruitms.common.web.restful.response;
 
 
-/**  
- * ClassName: PredefinedErrorEnum <br/>  
- * date: 2017年12月6日 下午4:19:43 <br/>  
- * Description：预先定义好的错误信息（通用定义）
- * @author huanggl  
- * @version   
- * Copyright (c) 2017, 黄光亮毕业设计----All Rights Reserved.  
+/**
+ * 预先定义好的错误信息（通用定义）
+ * @author ex-zhuwd
+ *
  */
 public enum PredefinedErrorEnum {
 	

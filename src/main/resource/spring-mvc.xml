@@ -64,6 +64,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/recruitms/**" />
             <mvc:exclude-mapping path="/static/**"/>
+<!--             <mvc:exclude-mapping path="/recruitms/**/login" /> -->
             <bean class="com.hgl.recruitms.common.web.interceptor.AuthInterceptor" />
         </mvc:interceptor>
         <mvc:interceptor>

@@ -46,7 +46,7 @@ public class CommonController {
 	public ResponseObject<?> validate(@RequestParam String sUsername, @RequestParam String sPassword) {
 		// 校验返回结果
 		if (Strings.isEmpty(sUsername) || Strings.isEmpty(sPassword)) {
-			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(), "账号密码错误！");
+			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(),"登录失败！");
 		}
 		logger.debug(sUsername + "===" + sPassword);
 		// 用户名密码校验成功后，生成token返回客户端
@@ -62,7 +62,7 @@ public class CommonController {
 			return builder.success(payload);
 
 		}
-		return builder.error(ErrorEnum.LOGINFAIL.getErrorCode(), ErrorEnum.LOGINFAIL.getErrorMsg());
+		return builder.error(ErrorEnum.IllegalArgument.getErrorCode(),"账号密码错误！");
 	}
 
 	/**  

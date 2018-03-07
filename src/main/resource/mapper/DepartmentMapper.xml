@@ -22,7 +22,8 @@
 			property="nInternationalClassNum" />
 	</resultMap>
 	<select id="selectEnrolmentInfo" resultMap="enrolmentInfo">
-		select sum(N_COUNT_ENROL) as nEnrolNumber,(select count(*) from
+		select
+		sum(N_COUNT_ENROL) as nEnrolNumber,(select count(*) from
 		T_RMS_DEPARTMENT t where t.S_FULL_NAME like '%国际%') as
 		nInternationalClassNum from T_RMS_DEPARTMENT;
 	</select>
@@ -112,6 +113,21 @@
 		<if test="orderByClause != null">
 			order by ${orderByClause}
 		</if>
+	</select>
+	<resultMap type="com.hgl.recruitms.common.bean.DepartmentInfo"
+		id="departmentInfo">
+		<result column="nSortNum" jdbcType="INTEGER" property="nSortNum" />
+		<result column="sDepartmenName" jdbcType="VARCHAR" property="sDepartmenName" />
+		<result column="nCountEnrol" jdbcType="INTEGER" property="nCountEnrol" />
+		<result column="completeFlag" jdbcType="VARCHAR" property="completeFlag" />
+	</resultMap>
+	<select id="accountDepartments" parameterType="com.hgl.recruitms.model.DepartmentExample"
+		resultMap="departmentInfo">
+		select DISTINCT (@i := @i + 1) as nSortNum, d.S_ITEM_VALUE
+		as sDepartmenName,sum(t.N_COUNT_ENROL) as nCountEnrol,case when
+		sum(t.N_COUNT_ENROL)= sum(t.N_COUNT_EXT_RNROL) then 0 else 1 end as completeFlag
+		FROM T_RMS_DEPARTMENT t,T_RMS_DICTIONARY d,(select @i := 0) b where
+		d.S_ITEM_KEY = t.S_REGION group by t.S_REGION order by nSortNum asc
 	</select>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">

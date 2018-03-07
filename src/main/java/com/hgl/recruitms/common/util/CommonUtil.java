@@ -170,11 +170,10 @@ public class CommonUtil {
 	 * @param number
 	 * @return  
 	 */
-	public static String numberToThousands(Integer number) {
-		BigDecimal a = new BigDecimal("123456789");
+	public static String numberToThousands(BigDecimal number) {
 		DecimalFormat df = new DecimalFormat(",###,##0"); // 没有小数
 //		DecimalFormat decimal = new DecimalFormat(",###,##0.0"); // 保留一位小数
-		String result = df.format(a);
+		String result = df.format(number);
 		return result;
 	}
 }

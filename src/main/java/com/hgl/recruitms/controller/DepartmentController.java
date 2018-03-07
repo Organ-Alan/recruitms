@@ -3,6 +3,9 @@ package com.hgl.recruitms.controller;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.bean.EnrolmentInfo;
 import com.hgl.recruitms.common.controller.response.ErrorEnum;
+import com.hgl.recruitms.common.util.JsonUtil;
 import com.hgl.recruitms.common.web.restful.response.CommonResponseBuilder;
 import com.hgl.recruitms.common.web.restful.response.ResponseObject;
 import com.hgl.recruitms.model.Department;
@@ -173,11 +177,13 @@ public class DepartmentController {
 	}
 
 	@RequestMapping(value = "/getIndexInfo", method = { RequestMethod.GET })
-	public ResponseObject<Object> getIndexInfo(){
+	public ResponseObject<Object> getIndexInfo(HttpServletResponse response,HttpServletRequest request){
 		EnrolmentInfo enrolmentInfo = departmentService.getEnrolmentInfo();
 		if (enrolmentInfo == null) {
 			return builder.error(-1,"初始化失败！");
 		}
+		request.getSession().setAttribute("enrolmentInfo", enrolmentInfo);
+		System.out.println(JsonUtil.serialize(enrolmentInfo));
 		return builder.success(enrolmentInfo);
 	}
 }

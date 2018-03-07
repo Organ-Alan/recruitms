@@ -15,7 +15,7 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<jackson.version>1.9.13</jackson.version>
-		<servlet.version>2.5</servlet.version>
+		<servlet.version>2.6</servlet.version>
 		<javax.servlet.version>3.0.1</javax.servlet.version>
 		<jsp.version>2.0</jsp.version>
 		<jdk.version>1.8</jdk.version>
@@ -152,6 +152,13 @@
 			<artifactId>cglib</artifactId>
 			<version>2.2.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.struts.xwork/xwork-core -->
+		<dependency>
+			<groupId>org.apache.struts.xwork</groupId>
+			<artifactId>xwork-core</artifactId>
+			<version>2.3.24</version>
+		</dependency>
+
 		<!-- nimbus-jose-jwt -->
 		<dependency>
 			<groupId>com.nimbusds</groupId>

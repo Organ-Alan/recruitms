@@ -46,11 +46,9 @@
 <!-- Javascript -->
 <script src="../assets/vendor/jquery/jquery.min.js"></script>
 <script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="../assets/vendor/page/jqPaginator.min.js"></script>
 <script src="../assets/vendor/toastr/toastr.min.js"></script>
 <script src="../assets/vendor/chartist/js/chartist.min.js"></script>
 <script src="../assets/scripts/klorofil-common.js"></script>
-<script src="../js/recruitmsFuncJs/initialTool.js"></script>
 </head>
 
 <body>
@@ -217,147 +215,19 @@
 				<div class="container-fluid">
 					<!-- OVERVIEW -->
 					<div class="panel panel-headline">
-						<div class="panel-heading">
-							<h3 class="panel-title">招生统计</h3>
-							<p class="panel-subtitle">
-								Period:
-								<%=time%></p>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-3">
-									<div class="metric">
-										<span class="icon"><i class="fa fa-download"></i></span>
-										<p>
-											<span class="number">${enrolmentInfo.nEnrolNumber}</span> <span
-												class="title">计划招生人数</span>
-										</p>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="metric">
-										<span class="icon"><i class="fa fa-shopping-bag"></i></span>
-										<p>
-											<span class="number">${enrolmentInfo.nAdmitedNumber}</span> <span
-												class="title">录取人数</span>
-										</p>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="metric">
-										<span class="icon"><i class="fa fa-eye"></i></span>
-										<p>
-											<span class="number">${enrolmentInfo.nRecruitNumber}</span> <span
-												class="title">审核通过新生</span>
-										</p>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="metric">
-										<span class="icon"><i class="fa fa-bar-chart"></i></span>
-										<p>
-											<span class="number">${enrolmentInfo.sRateRigister}%</span> <span
-												class="title">报到率</span>
-										</p>
-									</div>
-								</div>
+
+						<div class="panel">
+							<div class="panel-heading">
+								<h3 class="panel-title">系统提示</h3>
 							</div>
-							<div class="row">
-								<div class="col-md-9" id="col-md-close">
-									<!-- RECENT PURCHASES -->
-									<div class="panel panel-default" id="panelOne">
-										<div class="panel-heading">
-											<h3 class="panel-title">院系统计</h3>
-											<div class="right">
-												<a data-toggle="collapse" data-parent="#accordion"
-													href="#collapseTwo"></a>
-												<button type="button" class="btn-remove">
-													<i class="lnr lnr-cross" id="closePanel"></i>
-												</button>
-											</div>
-										</div>
-										<div class="panel-body no-padding" id="collapseTwo	">
-											<table class="table table-striped">
-												<thead>
-													<tr>
-														<th>序号.</th>
-														<th>院系</th>
-														<th>招生人数</th>
-														<th>录取人数</th>
-														<th>是否已完成招生</th>
-													</tr>
-												</thead>
-												<tbody>
-													<c:forEach items="${enrolmentInfo.departments.list}"
-														var="department">
-														<tr>
-															<td><a href="#">${department.nSortNum}</a></td>
-															<td>${department.sDepartmenName}</td>
-															<td>${department.nCountEnrol}</td>
-															<td>${department.nCountEnrol}</td>
-															<c:choose>
-																<c:when test="${department.completeFlag== '0'}">
-																	<td><span class="label label-success">已完成招生</span></td>
-																</c:when>
-																<c:otherwise>
-																	<td><span class="label label-warning">未完成</span></td>
-																	</th>
-																</c:otherwise>
-															</c:choose>
-															</td>
-														</tr>
-													</c:forEach>
-												</tbody>
-											</table>
-										</div>
-										<div class="panel-footer">
-											<div class="row">
-												<div class="col-md-6" id="page_info_area"></div>
-												<div class="col-md-6"></div>
-												<div class="col-md-6" id="page_nav_area"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="weekly-summary text-right">
-										<span class="number">${enrolmentInfo.nTotalNumber}</span> <span
-											class="percentage"><i
-											class="fa fa-caret-up text-success"></i>14%</span> <span
-											class="info-label">学院总人数</span>
-									</div>
-									<div class="weekly-summary text-right">
-										<span class="number">${enrolmentInfo.sRateEmployment}%</span>
-										<span class="percentage"><i
-											class="fa fa-caret-up text-success"></i> 23%</span> <span
-											class="info-label">就业率</span>
-									</div>
-									<div class="weekly-summary text-right">
-										<span class="number">${enrolmentInfo.nInternationalClassNum}</span>
-										<span class="percentage"><i
-											class="fa fa-caret-down text-danger"></i> 8%</span> <span
-											class="info-label">国际班数</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="toastr-demo" class="panel">
 							<div class="panel-body">
-								<p class="demo-button">
-									<button type="button" class="btn btn-danger btn-toastr"
-										id="LoadError" data-context="error" data-message="数据加载失败"
-										data-position="top-center" style="display: none;"></button>
-									<button type="button" class="btn btn-success btn-toastr"
-										id="LoadSuccsse" data-context="success"
-										data-message="首页招生统计数据初始化成功！" data-position="top-right"
-										style="display: none;"></button>
-									<button type="button"
-										class="btn btn-default btn-toastr-callback"
-										id="toastr-callback1" data-context="info"
-										data-message="onShown and onHidden callback demo"
-										style="display: none;"></button>
-								</p>
-								<!-- END CALLBACK -->
+								<div class="alert alert-danger alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<i class="fa fa-times-circle"></i> ${message}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -382,8 +252,6 @@
 				success : function(resp) {
 					if (resp.code == 0) {
 						//将token存在本地存储，然后跳转到主页面
-						build_page_info(resp.data.departments);
-						build_page_nav(resp.data.departments);
 						$('#LoadSuccsse').click();
 					} else {
 						$('#LoadError').click();
@@ -396,9 +264,6 @@
 			localStorage.removeItem("token");
 			location.href = "login.jsp";
 		});
-		$('#closePanel').on('click', function(e) {
-			$('#collapseTwo').attr("style", "display:none")
-		})
 	</script>
 </body>
 
