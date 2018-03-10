@@ -16,7 +16,8 @@ public enum TBHeaderEnum {
 	//添加表头信息
 	RECRUITINFO("sGrade,sStudentNo,sStudentName,sAddress,sContact,sAdmitedMajor,sPayFlag,sStatus", "RecruitInfo"),
 	STUDENTINFO("sCandidateNum,sStudentName,nAge,sNativePlace,sAddress,sContact,sEnrolMajor", "StudentInfo"),
-	SCOREINFO("sStudentNo,sStudentName,sSubjectType,dbScore,dbChinses,dbEnglish,dbMath,sTotalScore","ScoreInfo");
+	SCOREINFO("sStudentNo,sStudentName,sSubjectType,dbScore,dbChinses,dbEnglish,dbMath,sTotalScore","ScoreInfo"),
+	DEPTINFO("sDeptCode,sShortName,sFullName,sRegion,sTuition,nCountEnrol,nCountExtRnrol,sRemark","DeptInfo");
 	private String code;
 	private String name;
 

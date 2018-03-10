@@ -1,90 +1,84 @@
 package com.hgl.recruitms.common.web.filter;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.hgl.recruitms.common.jwt.Jwt;
-import com.hgl.recruitms.common.jwt.TokenState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import net.minidev.json.JSONObject;
+import com.hgl.recruitms.common.controller.response.CommonResponseObject;
+import com.hgl.recruitms.common.util.JsonUtil;
+import com.hgl.recruitms.common.web.annotation.Anonymous;
+import com.hgl.recruitms.common.web.interceptor.AuthInterceptor;
+import com.hgl.recruitms.common.web.restful.response.PredefinedErrorEnum;
+import com.hgl.recruitms.common.web.restful.response.ResponseObject;
+
 /**
  * toekn校验过滤器，所有的API接口请求都要经过该过滤器(除了登陆接口)
+ * 
  * @author huanggl
  *
  */
-@WebFilter(urlPatterns="/*")
-public class CheckToken  implements Filter {
+public class CheckToken extends HandlerInterceptorAdapter {
 
+	private static final Logger logger = LogManager.getLogger(AuthInterceptor.class);
+	
+	private final static String TOKEN_KEY = "token";
+	public final static String REQUEST_ATTR_TOKEN_KEY = "RMS_TOKEN";
+	
+	/*@Value("${token.key}")
+    private String key;*/
+	@Autowired
+	private CommonResponseObject builder;
+	
 
 	@Override
-	public void doFilter(ServletRequest argo, ServletResponse arg1,
-			FilterChain chain ) throws IOException, ServletException {
-		System.out.println("开始校验");
-		HttpServletRequest request=(HttpServletRequest) argo;
-		HttpServletResponse response=(HttpServletResponse) arg1;
-//		response.setHeader("Access-Control-Allow-Origin", "*");
-		if(request.getRequestURI().endsWith("/recruitms/admin/login.jsp")){
-			//登陆接口不校验token，直接放行
-			chain.doFilter(request, response);
-			return;
-		}
-		//其他API接口一律校验token
-		System.out.println("开始校验token");
-		//从请求头中获取token
-		String token=request.getHeader("token");
-		Map<String, Object> resultMap=Jwt.validToken(token);
-		TokenState state=TokenState.getTokenState((String)resultMap.get("state"));
-		switch (state) {
-		case VALID:
-			//取出payload中数据,放入到request作用域中
-			request.setAttribute("data", resultMap.get("data"));
-			//放行
-			chain.doFilter(request, response);
-			break;
-		case EXPIRED:
-		case INVALID:
-			System.out.println("无效token");
-			//token过期或者无效，则输出错误信息返回给ajax
-			JSONObject outputMSg=new JSONObject();
-			outputMSg.put("success", false);
-			outputMSg.put("msg", "您的token不合法或者过期了，请重新登陆");
-			output(outputMSg.toJSONString(), response);
-			break;
-		}
-		
-		
-	}
-	
-	
-	public void output(String jsonStr,HttpServletResponse response) throws IOException{
-		response.setContentType("text/html;charset=UTF-8;");
-		PrintWriter out = response.getWriter();
-//		out.println();
-		out.write(jsonStr);
-		out.flush();
-		out.close();
-		
-	}
-	
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println("token过滤器初始化了");
-	}
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object obj) throws Exception {
 
-	@Override
-	public void destroy() {
-		
-	}
+    	if(request.getRequestURI().endsWith("/login")||request.getRequestURI().endsWith("/login.jsp")){
+    		logger.debug("options请求，直接放开");
+    		return true;
+    	}
+    	
+        if(obj instanceof HandlerMethod){
+            if(((HandlerMethod)obj).getBeanType().isAnnotationPresent(Anonymous.class)){
+                return true;
+            }else if(((HandlerMethod)obj).getMethod().isAnnotationPresent(Anonymous.class)){
+                return true;
+            }
+        }
+        
+        boolean validUser = false;   
+        //单点登录，从request中获取用户名称
+    	String sUsername = request.getRemoteUser();
+    	if(StringUtils.hasText(sUsername)){
+    		validUser = true;
+    		request.setAttribute(REQUEST_ATTR_TOKEN_KEY, sUsername);
+    	}else{
+    		//TODO 在跟CAS对接之前，从token中获取用户名
+    		String token = request.getParameter(TOKEN_KEY);
+            if(!StringUtils.hasText(token)){
+            	token = request.getHeader(TOKEN_KEY);
+            }
+            if(StringUtils.hasText(token)){
+                request.setAttribute(REQUEST_ATTR_TOKEN_KEY, token);
+            	validUser = true;
+            }
+    	}
 
+        if(!validUser){//无有效用户信息
+			ResponseObject<Object> responseObject = builder.error(PredefinedErrorEnum.UNAUTHORIZED.getErrorCode());
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.getWriter().print(JsonUtil.serialize(responseObject));
+            return false;
+        } 
+
+        return true;
+    }
 }

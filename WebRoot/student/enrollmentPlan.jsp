@@ -64,22 +64,16 @@
 					<i class="lnr lnr-arrow-left-circle"></i>
 				</button>
 			</div>
-			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro" onclick="logout()" title="注销"
-					target="_blank"><i class="lnr lnr-exit"></i> <span>&nbsp;&nbsp;&nbsp;注销</span></a>
-			</div>
 			<div id="navbar-menu">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><img src="../assets/img/user.png"
-							class="img-circle" alt="Avatar"> <span>Admin</span> <i
+						data-toggle="dropdown"><img src="../assets/img/user1.png"
+							class="img-circle" alt=""> <span id="username"></span> <i
 							class="icon-submenu lnr lnr-chevron-down"></i></a>
 						<ul class="dropdown-menu">
-							<li><a onclick="logout()"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+							<li><a onclick="logoutForStudent()"><i
+									class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
 						</ul></li>
-					<!-- <li>
-							<a class="update-pro" href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
-						</li> -->
 				</ul>
 			</div>
 		</div>
@@ -90,66 +84,14 @@
 			<div class="sidebar-scroll"
 				style="width: 100%; height: 100%; overflow: scroll; overflow-y: auto; overflow-x: hidden;">
 				<nav>
-<ul class="nav">
-					<li><a href="index.jsp" class="active"><i
-							class="lnr lnr-home"></i> <span>首页</span></a></li>
-					
-					<li><a href="#subPages1" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-code"></i> <span>考生数据提取</span>
-							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages1" class="collapse ">
-							<ul class="nav">
-								<li><a href="studentInfoList.jsp" class="">考生信息提取</a></li>
-								<li><a href="studentScoreList.jsp" class="">考生成绩抽取</a></li>
-								
-							</ul>
-						</div></li>
-					<li><a href="#subPages2" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>招生计划管理</span>
-							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages2" class="collapse ">
-							<ul class="nav">
-								<li><a href="enrollmentPlan.jsp" class="">招生信息管理</a></li>
-								<li><a href="auditList.jsp" class="">招生信息变更审核</a></li>
-							</ul>
-						</div></li>
-					<li><a href="#subPages4" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-cog"></i> <span>招生宣传管理</span><i
-							class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages4" class="collapse ">
-							<ul class="nav">
-								<li><a href="attachList.jsp" class="">招生宣传附件</a></li>
-							</ul>
-						</div></li>
-						<li><a href="#subPages3" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-cog"></i> <span>录取管理</span><i
-							class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages3" class="collapse ">
-							<ul class="nav">
-								<li><a href="recruitInfoList.jsp" class="">新生录取信息</a></li>
-								<li><a href="enrollmentNotice.jsp" class="">录取通知书管理</a></li>
-								<li><a href="enrollmentAudit.jsp" class="">录取审核</a></li>
-							</ul>
-						</div></li>
-					<li><a href="#subPages6" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-file-empty"></i> <span>综合查询功能</span>
-							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages6" class="collapse ">
-							<ul class="nav">
-								<li><a href="recruitInfoList.jsp" class="">基本信息查询</a></li>
-								<li><a href="studentScoreList.jsp" class="">成绩查询</a></li>
-								<li><a href="allAttachList.jsp" class="">文档查询</a></li>
-							</ul>
-						</div></li>
-					<li><a href="#subPages8" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-text-format"></i> <span>系统管理</span><i
-							class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages8" class="collapse ">
-							<ul class="nav">
-								<li><a href="dictionaryList.jsp" class="">字典管理</a></li>
-								<li><a href="accountInfoList.jsp" class="">账户管理</a></li>
-							</ul>
-						</div></li>
+				<ul class="nav">
+					<li><a href="index.jsp" class="active"> <i
+							class="lnr lnr-home"></i> <span>首页</span>
+					</a></li>
+					<li><a href="enrollmentPlan.jsp" class=""><i
+							class="lnr lnr-code"></i> <span>招生计划查看</span></a></li>
+					<li><a href="QAInfoList.jsp" class=""><i
+							class="lnr lnr-alarm"></i> <span>答疑</span></a></li>
 				</ul>
 				</nav>
 			</div>
@@ -171,7 +113,7 @@
 									</h3>
 								</div>
 								<div class="panel-body">
-									<form action="/recruitms/admin/listDepartments" method="get">
+									<form action="/recruitms/student/listDepartments" method="get">
 										<div>
 											<input type="hidden" id="pageIndex" name="pageIndex"
 												value="1" /> <input type="hidden" id="pageSize"
@@ -185,19 +127,13 @@
 												<button class="btn btn-primary" type="submit"
 													style="text-align: center; align-content: right;">查询</button>
 											</label>
+											<label class="form-inline" style="margin-left: 10px;">
+											<button class="btn btn-primary"
+											 type="button" onclick="window.location.href='/recruitms/student/export/deptInfoList?sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore&nDeptNoList='">导出</button>
+										</label>
 										</div>
 										<hr>
 									</form>
-									<div align="left">
-										<label class="form-inline">
-											<button class="btn btn-primary" type="button" id=""
-												data-toggle="modal" data-target="#addModal"
-												data-whatever="@mdo">新建</button>
-										</label> <label class="form-inline" style="margin-left: 10px;">
-											<button class="btn btn-primary"
-											 type="button" onclick="window.location.href='/recruitms/admin/export/deptInfoList?sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore&nDeptNoList='">导出</button>
-										</label>
-									</div>
 									<table class="table" style="table-layout: fixed;">
 										<thead>
 											<tr>
@@ -209,7 +145,6 @@
 												<th class="col-md-1" style="text-align: center;">计划招生人数</th>
 												<th class="col-md-1" style="text-align: center;">补录人数</th>
 												<th class="col-md-1" style="text-align: center;">备注</th>
-												<th class="col-md-3" style="text-align: center;">审核操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -221,17 +156,7 @@
 													<td>${deptnfo.sDeptCode}</td>
 													<td>${deptnfo.sShortName}</td>
 													<td>${deptnfo.sFullName}</td>
-													<td><c:if test="${deptnfo.sRegion == 'rjgcx'}">软件工程系</c:if>
-														<c:if test="${deptnfo.sRegion == 'wljsx'}">网络技术系</c:if>
-														<c:if test="${deptnfo.sRegion == 'dzx'}">电子系</c:if>
-														<c:if test="${deptnfo.sRegion == 'Jsjx'}">计算机系</c:if>
-														<c:if test="${deptnfo.sRegion == 'yxx'}">游戏系</c:if>
-														<c:if test="${deptnfo.sRegion == 'smmtx'}">数码媒体系</c:if>
-														<c:if test="${deptnfo.sRegion == 'glx'}">管理系</c:if>
-														<c:if test="${deptnfo.sRegion == 'gjjmx'}">国际经贸系</c:if>
-														<c:if test="${deptnfo.sRegion == 'ckx'}">财会系</c:if>
-														<c:if test="${deptnfo.sRegion == 'wyx'}">外语系</c:if>
-													</td>
+													<td>${deptnfo.sRegion}</td>
 													<td>${deptnfo.sTuition}</td>
 													<td>${deptnfo.nCountEnrol}</td>
 													<td>${deptnfo.nCountExtRnrol}</td>
@@ -239,16 +164,6 @@
 														style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
 														data-toggle="tooltip" data-placement="right"
 														title="${deptnfo.sRemark}">${deptnfo.sRemark}</td>
-													<td style="text-align: center;">
-														<button type="button" class="btn btn-primary btn-xs"
-															data-whatever="${deptnfo.nDeptNo}"
-															class="btn btn-primary" data-toggle="modal"
-															data-target="#editModal">修改</button>
-														<button type="button" class="btn btn-danger btn-xs"
-															data-whatever="${deptnfo.nDeptNo}"
-															class="btn btn-primary" data-toggle="modal"
-															data-target="#falseModal">删除</button>
-													</td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -269,12 +184,12 @@
 							                        2.首页，末页的逻辑：pn=1访问第一次，pn=${departmentListDic.pages}访问最后一页
 							                      -->
 												<li><a
-													href="/recruitms/admin/listDepartments?pageIndex=1&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore">首页</a>
+													href="/recruitms/student/listDepartments?pageIndex=1&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore">首页</a>
 												</li>
 												<!-- 如果还有前页就访问当前页码-1的页面， -->
 												<c:if test="${departmentListDic.hasPreviousPage}">
 													<li><a
-														href="/recruitms/admin/listDepartments?pageIndex=${page_Nums}&pageSize=${departmentListDic.pageNum-1}&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore"
+														href="/recruitms/student/listDepartments?pageIndex=${page_Nums}&pageSize=${departmentListDic.pageNum-1}&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -287,19 +202,19 @@
 														</c:if>
 														<c:if test="${page_Nums!=departmentListDic.pageNum }">
 															<li><a
-																href="/recruitms/admin/listDepartments?pageIndex=${page_Nums}&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore">${page_Nums}</a></li>
+																href="/recruitms/student/listDepartments?pageIndex=${page_Nums}&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore">${page_Nums}</a></li>
 														</c:if>
 													</c:forEach>
 												</li>
 												<!-- 如果还有后页就访问当前页码+1的页面， -->
 												<c:if test="${departmentListDic.hasNextPage}">
 													<li><a
-														href="/recruitms/admin/listDepartments?pageIndex=${departmentListDic.pageNum+1}&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore"
+														href="/recruitms/student/listDepartments?pageIndex=${departmentListDic.pageNum+1}&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
 												<li><a
-													href="/recruitms/admin/listDepartments?pageIndex=${departmentListDic.pages}&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore">末页</a></li>
+													href="/recruitms/student/listDepartments?pageIndex=${departmentListDic.pages}&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore">末页</a></li>
 											</ul>
 											</nav>
 										</div>
@@ -408,14 +323,14 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">录取分数：</label>
 							<div class="col-sm-6">
-								<input type="text" class="form-control" id="dbEnrolScore" name="dbEnrolScore"
+								<input type="text" class="form-control" id="sDeptCode" name="sDeptCode"
 									placeholder="请输入录取分数">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">备注：</label>
 							<div class="col-sm-6">
-								<textarea class="form-control" rows="2" id="sRemark" name="sRemark"></textarea>
+								<textarea class="form-control" rows="2" id="sDeptCode" name="sDeptCode"></textarea>
 							</div>
 						</div>
 					</form>
@@ -514,31 +429,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="falseModal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title" id="exampleModalLabel">温馨提示</h4>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<input type="hidden" id="delId">
-								<div class="col-md-6" align="center">你确定删除吗？</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-danger" onclick="delInfo()">删除</button>
-						</div>
-					</div>
-				</div>
-			</div>
 	<!-- 修改模态框end -->
 	<!-- END MAIN -->
 	<div class="clearfix"></div>
@@ -552,7 +442,7 @@
 	</div>
 	<!-- END WRAPPER -->
 	<!-- Javascript -->
-	<script src="../js/recruitmsFuncJs/initialTool.js"></script>
+	<!-- Javascript -->
 	<script src="../assets/vendor/jquery/jquery.min.js"></script>
 	<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script
@@ -561,7 +451,7 @@
 		src="../assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
 	<script src="../assets/vendor/chartist/js/chartist.min.js"></script>
 	<script src="../assets/scripts/klorofil-common.js"></script>
-	<script type="text/javascript"></script>
+	<script src="../js/recruitmsFuncJs/initialTool.js"></script>
 	<script type="text/javascript">
 		function refresh() {
 			window.location.reload();//刷新当前页面.
@@ -583,6 +473,8 @@
 		$(document)
 				.ready(
 						function() {
+							var username = localStorage.getItem("username");
+							$('#username').text(username);
 							/*-----------------------------------/
 							/*	initial index 初始化界面
 							/*----------------------------------*/
@@ -590,7 +482,7 @@
 							$
 									.ajax({
 										type : "get",
-										url : "/recruitms/admin/listDepartments?pageIndex=1&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore",
+										url : "/recruitms/student/listDepartments?pageIndex=1&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore",
 										dataType : 'json',
 										async : true,
 										success : function(resp) {
@@ -601,121 +493,26 @@
 										}
 									});					
 						})
-
-		function addInfo() {
-			var dataCollect = $('#form').serialize();
-			dataCollect = decodeURIComponent(dataCollect, true);//防止中文乱码
-			var jsondata = DataDeal.formToJson(dataCollect);//转化为json
-			$.ajax({
-				//几个参数需要注意一下
-				type : "POST",//方法类型
-				url : "/recruitms/admin/department",//url
-				data : jsondata,
-				headers : {
-					"content-Type" : "application/json",
-				},
-				success : function(result) {
-					console.log(result);//打印服务端返回的数据(调试用)
-					window.location.reload() = "enrollmentPlan.jsp";
-				},
-				error : function() {
-					alert("添加院系专业信息失败！");
-				}
-			});
-		}
-		$('#falseModal').on('show.bs.modal', function(event) {
-			var button = $(event.relatedTarget) // Button that triggered the modal
-			var recipient = button.data('whatever') // Extract info from data-* attributes
-			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-			//var url = "/recruitms/admin/RevisonreviewRecruitInfo?nStudentId=["+recipient+"]";
-			$("#delId").val(recipient);
-		})
-		
-		$('#editModal').on(
-				'show.bs.modal',
-				function(event) {
-					var button = $(event.relatedTarget) // Button that triggered the modal
-					var recipient = button.data('whatever') // Extract info from data-* attributes
-					var modal = $(this)
-					// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-					// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-					$.ajax({
-						//几个参数需要注意一下
-						type : "GET",//方法类型
-						url : "/recruitms/admin/department/" + recipient,
-						dataType : "json",
-						async : true,
-						success : function(result) {
-							console.log(result);//打印服务端返回的数据(调试用)
-							//alert(result.data.nDeptNo);
-							modal.find('#nDeptNo1').val(
-									result.data.nDeptNo);
-							modal.find('#sDeptCode1').val(
-									result.data.sDeptCode);
-							modal.find('#sShortName1').val(
-									result.data.sShortName);
-							modal.find('#sFullName1').val(
-									result.data.sFullName);
-							modal.find('#sRegion1').val(result.data.sRegion);
-							modal.find('#sTuition1').val(result.data.sTuition);
-							modal.find('#nCountEnrol1').val(result.data.nCountEnrol);
-							modal.find('#nCountExtRnrol1').val(result.data.nCountExtRnrol);
-							modal.find('#dbEnrolScore1').val(
-									result.data.dbEnrolScore);
-							modal.find('#sRemark1')
-									.val(result.data.sRemark);
-						},
-						error : function() {
-							alert("获取院系专业信息失败！");
-						}
-					});
-				})
-				
-		function delInfo() {
-				var delId = $('#delId').val();
-				$.ajax({
-					//几个参数需要注意一下
-					type : "POST",//方法类型
-					url : "/recruitms/admin/delDepartment/"+delId,//url
-					success : function(result) {
-						console.log(result);//打印服务端返回的数据(调试用)
-						window.location.reload() = "enrollmentPlan.jsp";
-					},
-					error : function() {
-						alert("删除失败！");
-					}
-				});
-			}
-		
-		function updateInfo() {
-			var dataCollect = $('#form1').serialize();
-			dataCollect = decodeURIComponent(dataCollect, true);//防止中文乱码
-			var jsondata = DataDeal.formToJson(dataCollect);//转化为json
-			//alert(jsondata);
-			$.ajax({
-				//几个参数需要注意一下
-				type : "POST",//方法类型
-				url : "/recruitms/admin/deptInfo?sUsername=admin",//url
-				data : jsondata,
-				headers : {
-					"content-Type" : "application/json",
-				},
-				success : function(result) {
-					console.log(result);//打印服务端返回的数据(调试用)
-					window.location.reload() = "enrollmentPlan.jsp";
-				},
-				error : function() {
-					alert("请输入正确格式的录取人数及补录人数！");
-				}
-			});
-		}
 	</script>
 	<script type="text/javascript">
-		$("#loginout").on("click", function() {
-			localStorage.removeItem("token");
-			location.href = "login.jsp";
+	function logoutForStudent() {
+		$.ajax({
+			type : "get",
+			url : "/recruitms/admin/logout",
+			dataType : 'json',
+			async : true,
+			success : function(resp) {
+				if (resp.code == 0) {
+					//将token存在本地存储，然后跳转到主页面
+					location.href = "/recruitms/admin/login.jsp";
+
+				} else {
+					$('#LoadError').click();
+					return;
+				}
+			}
 		});
+	}
 	</script>
 </body>
 

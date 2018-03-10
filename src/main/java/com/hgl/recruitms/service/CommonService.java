@@ -24,7 +24,7 @@ public interface CommonService<T> {
 	 * @param sPassword
 	 * @return
 	 */
-	boolean checkLogin(String sUsername, String sPassword);
+	String checkLogin(String sUsername, String sPassword,String sUserType);
 
 	/**  
 	 * selectBysUserName:通过账户名查询 <br/>  

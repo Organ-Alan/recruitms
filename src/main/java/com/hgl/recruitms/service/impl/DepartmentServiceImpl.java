@@ -1,5 +1,6 @@
 package com.hgl.recruitms.service.impl;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,12 +19,16 @@ import com.hgl.recruitms.common.bean.EnrolmentInfo;
 import com.hgl.recruitms.dao.DepartmentMapper;
 import com.hgl.recruitms.enums.AuditStatusEnum;
 import com.hgl.recruitms.enums.DataStatusEnum;
+import com.hgl.recruitms.enums.DeptInfoColEnum;
+import com.hgl.recruitms.enums.TBHeaderEnum;
 import com.hgl.recruitms.model.Account;
 import com.hgl.recruitms.model.Department;
 import com.hgl.recruitms.model.DepartmentExample;
 import com.hgl.recruitms.model.DepartmentExample.Criteria;
+import com.hgl.recruitms.model.Dictionary;
 import com.hgl.recruitms.service.CommonService;
 import com.hgl.recruitms.service.DepartmentService;
+import com.hgl.recruitms.service.DictionaryService;
 import com.hgl.recruitms.service.RecruitInfoService;
 
 /**
@@ -44,13 +49,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Autowired
 	private RecruitInfoService recruitInfoService;
+	
+	@Autowired
+	private DictionaryService dictionaryService;
 
 	@Autowired
 	private CommonService<Account> accountService;
 
 	@Override
 	public boolean insertDepartment(Department Department) {
-		int count = departmentMapper.insert(Department);
+		int count = departmentMapper.insertSelective(Department);
 		logger.info("新增院系专业信息:" + Department.toString() + "，结果：" + (count > 0));
 		return count > 0;
 	}
@@ -86,6 +94,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		DepartmentExample example = new DepartmentExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andNDeptNoIsNotNull();
+		criteria.andCValidFlagNotEqualTo(DataStatusEnum.INVALID.getCode());
 		// 模糊查询
 		if (StringUtils.hasText(sDeptCode)) {
 			criteria.andSDeptCodeLike("%" + sDeptCode + "%");
@@ -153,15 +162,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 		HashSet<Integer> nDeptNoSet = new HashSet<Integer>(nDeptNoList);
 		nDeptNoList.clear();
 		nDeptNoList.addAll(nDeptNoSet);
-
 		logger.debug("获取去重后的院系专业内部编码集合为：" + nDeptNoList);
-
-		DepartmentExample DepartmentExample = new DepartmentExample();
-		DepartmentExample.createCriteria().andNDeptNoIn(nDeptNoList);
+		DepartmentExample departmentExample = new DepartmentExample();
+		departmentExample.createCriteria().andNDeptNoIn(nDeptNoList);
 		// 通过从院系专业内部编码查询获取旧的院系专业信息集合
 		List<Department> oldtList = new ArrayList<Department>();
 		if (!AuditStatusEnum.REFUSE.getCode().equals(auditStatus)) {
-			oldtList = departmentMapper.selectByExample(DepartmentExample);
+			oldtList = departmentMapper.selectByExample(departmentExample);
 		}
 		logger.debug("院系专业获取旧的院系专业信息对象集合为：" + oldtList);
 		Account account = accountService.selectBysUserName(sUsername);
@@ -170,10 +177,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 				nDeptNoList, account.getsUserNo(), account.getsUsername());
 
 		if (flag && AuditStatusEnum.PASS.getCode().equals(auditStatus)) {
-			for (Department Department : oldtList) {
-				logger.debug("当前需要更新的基础信息：" + Department);
+			for (Department department : oldtList) {
+				logger.debug("当前需要更新的基础信息：" + department);
 				// 更新院系专业信息
-				int count = departmentMapper.updateByPrimaryKey(Department);
+				int count = departmentMapper.updateByPrimaryKey(department);
 				if (count <= 0) {
 					throw new RuntimeException("审核通过中修改院系专业的基础信息失败");
 				}
@@ -198,6 +205,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	 */
 	@Override
 	public Department getDeptByCode(String sDeptCode) {
+		System.out.println("+++++"+sDeptCode);	
 		DepartmentExample example = new DepartmentExample();
 		// example.createCriteria().andSDeptCodeEqualTo(sDeptCode);
 		if (!StringUtils.hasText(sDeptCode)) {
@@ -263,5 +271,90 @@ public class DepartmentServiceImpl implements DepartmentService {
 		// 获取满足条件的数据
 		List<Department> Departments = departmentMapper.accountDepartments();
 		return new PageInfo<Department>(Departments);
+	}
+
+	@Override
+	public List<List<String>> exportRecruitInfo(String sDeptCode, String sShortName, String sFullName, String sRegion,
+			String dbEnrolScore, List<Integer> nStudentIdList, String exportType) {
+		List<List<String>> table = new ArrayList<>();
+		List<String> line = new ArrayList<>();
+		// 第一行，表头：根据枚举配置表头信息
+		String headsStr = TBHeaderEnum.fromName(exportType).getCode();
+		String[] headArr = headsStr.split(",");
+		for (String head : headArr) {
+
+			// 通过属性获取对应的中文名称
+			String name = DeptInfoColEnum.fromCode(head).getName();
+			line.add(name);
+		}
+		table.add(line);
+
+		PageInfo<Department> pageInfo = listDepartments(0, 0, sDeptCode, sShortName, sFullName, sRegion, dbEnrolScore);
+				
+		List<Department> list = pageInfo.getList();
+		if (list != null && list.size() > 0) {
+			for (Department department : list) {
+				line = new ArrayList<>();
+				for (String head : headArr) {
+					String sValue = "";
+					Field field = null;
+					try {
+						// 在父类中没有获取到属性则去子类中取值，子类中依旧无法找到属性时，抛出异常
+						try {
+							field = Department.class.getDeclaredField(head);
+						} catch (NoSuchFieldException e) {
+							field = Department.class.getDeclaredField(head);
+						}
+						// 设置为可访问recruitInfo内部属性
+						field.setAccessible(true);
+						try {
+							// 处理特殊字段数据：枚举、时间
+							if (head.equals("cValidFlag")) {
+								// 如果是审核状态，则对数据进行处理：1-待审核，2-审核通过，3-审核不通过
+								sValue = (String) field.get(department);
+								if (StringUtils.hasText(sValue)) {
+									sValue = AuditStatusEnum.fromCode(sValue).getName();
+								}
+							} else if (head.equals("sRegion")) {
+								// 如果是录取专业，则调用字典查询接口
+								sValue = (String) field.get(department);
+								if (StringUtils.hasText(sValue)) {
+									Dictionary dictionary = dictionaryService.getDicByItemCodeAndKey("COLLEGE", sValue);
+									if (dictionary == null) {
+										sValue = (String) field.get(department);
+									}else {
+										sValue = dictionary.getsItemValue();
+									}
+								}
+							} else if (head.equals("nCountEnrol")||head.equals("nCountExtRnrol")) {
+								// 如果是是否缴费，则对数据进行处理：0- 未缴费，1-已缴费，2-已缴部分费用
+								Integer i = (Integer) field.get(department);
+								sValue = String.valueOf(i);
+							}else if (head.equals("dbEnrolScore")) {
+								Double temp = (Double) field.get(department);
+								sValue = String.valueOf(temp);
+							} else {
+								sValue = (String) field.get(department);
+							}
+						} catch (IllegalArgumentException e) {
+							logger.error("新生导出出现异常（IllegalArgumentException）：：" + e);
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							logger.error("新生导出出现异常(IllegalAccessException):" + e);
+							e.printStackTrace();
+						}
+					} catch (NoSuchFieldException e) {
+						logger.error("新生导出出现异常(NoSuchFieldException):" + e);
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						logger.error("新生导出出现异常(SecurityException):" + e);
+						e.printStackTrace();
+					}
+					line.add(sValue);
+				}
+				table.add(line);
+			}
+		}
+		return table;
 	}
 }

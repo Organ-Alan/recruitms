@@ -106,62 +106,62 @@ public class AttachExample {
         }
 
         public Criteria andNAttachNoIsNull() {
-            addCriterion("\"N_ATTACH_ _NO\" is null");
+            addCriterion("N_ATTACH_NO is null");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoIsNotNull() {
-            addCriterion("\"N_ATTACH_ _NO\" is not null");
+            addCriterion("N_ATTACH_NO is not null");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoEqualTo(Integer value) {
-            addCriterion("\"N_ATTACH_ _NO\" =", value, "nAttachNo");
+            addCriterion("N_ATTACH_NO =", value, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoNotEqualTo(Integer value) {
-            addCriterion("\"N_ATTACH_ _NO\" <>", value, "nAttachNo");
+            addCriterion("N_ATTACH_NO <>", value, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoGreaterThan(Integer value) {
-            addCriterion("\"N_ATTACH_ _NO\" >", value, "nAttachNo");
+            addCriterion("N_ATTACH_NO >", value, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoGreaterThanOrEqualTo(Integer value) {
-            addCriterion("\"N_ATTACH_ _NO\" >=", value, "nAttachNo");
+            addCriterion("N_ATTACH_NO >=", value, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoLessThan(Integer value) {
-            addCriterion("\"N_ATTACH_ _NO\" <", value, "nAttachNo");
+            addCriterion("N_ATTACH_NO <", value, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoLessThanOrEqualTo(Integer value) {
-            addCriterion("\"N_ATTACH_ _NO\" <=", value, "nAttachNo");
+            addCriterion("N_ATTACH_NO <=", value, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoIn(List<Integer> values) {
-            addCriterion("\"N_ATTACH_ _NO\" in", values, "nAttachNo");
+            addCriterion("N_ATTACH_NO in", values, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoNotIn(List<Integer> values) {
-            addCriterion("\"N_ATTACH_ _NO\" not in", values, "nAttachNo");
+            addCriterion("N_ATTACH_NO not in", values, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoBetween(Integer value1, Integer value2) {
-            addCriterion("\"N_ATTACH_ _NO\" between", value1, value2, "nAttachNo");
+            addCriterion("N_ATTACH_NO between", value1, value2, "nAttachNo");
             return (Criteria) this;
         }
 
         public Criteria andNAttachNoNotBetween(Integer value1, Integer value2) {
-            addCriterion("\"N_ATTACH_ _NO\" not between", value1, value2, "nAttachNo");
+            addCriterion("N_ATTACH_NO not between", value1, value2, "nAttachNo");
             return (Criteria) this;
         }
 

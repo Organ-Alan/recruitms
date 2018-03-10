@@ -33,6 +33,7 @@ public interface RecruitInfoService {
 	 */
 	RecruitInfo getRecruitInfo(Integer nStudentId);
 
+	RecruitInfo getRecruitInfo(String sStudentName);
 	/**
 	 * updateRecruitInfo:(修改新生信息). <br/>
 	 * 
@@ -84,7 +85,7 @@ public interface RecruitInfoService {
 	 *            批量审核接口
 	 * @return
 	 */
-	boolean updateInfoStatus(Integer[] nStudentIds, String action);
+	boolean updateInfoStatus(Integer nStudentId, String action);
 
 	/**
 	 * exportRecruitInfo:根据查询条件，导出结果. <br/>

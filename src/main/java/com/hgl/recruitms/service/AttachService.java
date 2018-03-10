@@ -3,7 +3,6 @@ package com.hgl.recruitms.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Date;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
@@ -41,7 +40,7 @@ public interface AttachService {
 	 * @return
 	 * @throws IOException
 	 */
-	Attach uploadAttach(InputStream is, String fileName, Integer nAttachNoOld, String sCreator,
+	Attach uploadAttach(InputStream is, String fileName,String sAttachType,Integer nAttachNoOld, String sCreator,
 			String sCreatorNo) throws IOException;
 
 	/**
@@ -127,8 +126,7 @@ public interface AttachService {
 	 * @param dCreateTime 创建时间
 	 * @return
 	 */
-	PageInfo<Attach> getAttachListPage(int pageIndex, int pageSize, String sAttachName, String sFileType,
-			Date dCreateTime);
+	PageInfo<Attach> getAttachListPage(int pageIndex, int pageSize, String sAttachName, String sFileType,String sAttachType);
 
 	/**
 	 * updateAttachFileName:修改附件名称. <br/>

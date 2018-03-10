@@ -3,6 +3,7 @@ package com.hgl.recruitms.common.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.controller.response.CommonResponseObject;
@@ -40,7 +42,7 @@ import com.hgl.recruitms.service.CommonService;
  * @version Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.
  */
 @RestController
-@RequestMapping("/{version}/common/attach")
+@RequestMapping("/admin")
 public class AttachController {
 	private static final Logger logger = LogManager.getLogger(AttachController.class);
 
@@ -71,17 +73,33 @@ public class AttachController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/file", method = { RequestMethod.POST })
-	public ResponseObject<?> uploadFile(@RequestParam Part file, @RequestParam String fileName,
+	public ModelAndView uploadFile(@RequestParam Part file, @RequestParam String fileName,
 			@RequestParam String sAttachType, @RequestParam Integer nAttachNoOld, @RequestParam String sUsername)
 			throws IOException {
 		InputStream is = file.getInputStream();
 		if (!attachService.checkFileName(fileName)) {
-			return builder.error(ErrorEnum.FILETYPEERROR.getErrorCode(), "不支持的文件类型！（" + fileName + "）");
+			return new ModelAndView("errorPage.jsp");
 		}
 		Account account = commonService.selectBysUserName(sUsername);
-		Attach attach = attachService.uploadAttach(is, fileName, nAttachNoOld, account.getsUserNo(),
+		@SuppressWarnings("unused")
+		Attach attach = attachService.uploadAttach(is,fileName,sAttachType, nAttachNoOld, account.getsUserNo(),
 				account.getsUsername());
-		return builder.success(attach);
+		return new ModelAndView("attachList.jsp");
+	}
+
+	@RequestMapping(value = "/upload", method = { RequestMethod.POST })
+	public ModelAndView upload(@RequestParam Part file, @RequestParam String fileName,
+			@RequestParam String sAttachType, @RequestParam Integer nAttachNoOld, @RequestParam String sUsername)
+			throws IOException {
+		InputStream is = file.getInputStream();
+		if (!attachService.checkFileName(fileName)) {
+			return new ModelAndView("errorPage.jsp");
+		}
+		Account account = commonService.selectBysUserName(sUsername);
+		@SuppressWarnings("unused")
+		Attach attach = attachService.uploadAttach(is,fileName,sAttachType, nAttachNoOld, account.getsUserNo(),
+				account.getsUsername());
+		return new ModelAndView("allAttachList.jsp");
 	}
 
 	/**
@@ -249,13 +267,26 @@ public class AttachController {
 	 * @param dCreateTime
 	 *            上传时间
 	 * @return
+	 * @throws ParseException 
 	 */
 	@RequestMapping(value = "/attachListPage", method = RequestMethod.GET)
-	public ResponseObject<?> getAttachListPage(@RequestParam int pageIndex, @RequestParam int pageSize,
-			String sAttachName, String sFileType, Date dCreateTime) {
+	public ModelAndView getAttachListPage(HttpServletResponse response, HttpServletRequest request,
+			@RequestParam int pageIndex, @RequestParam int pageSize, String sAttachName, String sFileType,String sAttachType) throws ParseException {
+		
 		PageInfo<Attach> attachList = attachService.getAttachListPage(pageIndex, pageSize, sAttachName.trim(),
-				sFileType.trim(), dCreateTime);
-		return builder.success(attachList);
+				sFileType.trim(),sAttachType.trim());
+		request.getSession().setAttribute("attachListPage", attachList);
+		return new ModelAndView("attachList.jsp");
 	}
+	
+	@RequestMapping(value = "/allAttachList", method = RequestMethod.GET)
+	public ModelAndView allAttachList(HttpServletResponse response, HttpServletRequest request,
+			@RequestParam int pageIndex, @RequestParam int pageSize, String sAttachName, String sFileType,String sAttachType) throws ParseException {
+		PageInfo<Attach> attachList = attachService.getAttachListPage(pageIndex, pageSize, sAttachName.trim(),
+				sFileType.trim(),sAttachType.trim());
+		request.getSession().setAttribute("attachListPages", attachList);
+		return new ModelAndView("allAttachList.jsp");
+	}
+
 
 }

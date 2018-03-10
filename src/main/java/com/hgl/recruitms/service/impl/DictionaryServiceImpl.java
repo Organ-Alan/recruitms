@@ -97,7 +97,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 		if (dictionary == null) {
 			throw new RuntimeException("新增字典信息失败,字典信息为空！");
 		}
-		isSuccess = dictionaryMapper.insert(dictionary);
+		isSuccess = dictionaryMapper.insertSelective(dictionary);
 		return isSuccess > 0;
 	}
 

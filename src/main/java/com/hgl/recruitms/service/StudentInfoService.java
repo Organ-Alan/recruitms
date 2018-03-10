@@ -42,6 +42,8 @@ public interface StudentInfoService {
 	 * @return true修改成功 false修改失败
 	 */
 	boolean updateStudentInfo(StudentInfo studentInfo);
+	
+	boolean unDelStudentInfo(Integer nStudentId);
 
 	/**
 	 * 
@@ -53,7 +55,7 @@ public interface StudentInfoService {
 	 * @return 是否删除成功
 	 * @throws Exception
 	 */
-	boolean deleteStudentInfo(Integer[] nStudentIds) throws IndexOutOfBoundsException;
+	boolean deleteStudentInfo(Integer nStudentId);
 
 	/**
 	 * accountStudent:统计考生数目. <br/>
@@ -98,5 +100,4 @@ public interface StudentInfoService {
 	 */
 	List<List<String>> exportRecruitInfo(String sCandidateNum, String sStudentName, String sNativePlace,
 			String sEnrolMajor, String sDataFlag, List<Integer> nStudentIdList, String exportType);
-
 }

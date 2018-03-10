@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,16 @@ public class StudentScoreServiceImpl implements StudentScoreService {
 		return count > 0;
 	}
 
+	@Override
+	public boolean delScore(Integer nStudentId) {
+		int count = scoreMapper.deleteByPrimaryKey(nStudentId);
+		if (count !=1) {
+			throw new RuntimeException("删除基础信息失败，抛出异常，事务回滚");
+		}
+		logger.info("删除成绩信息:" + count + "，结果：" + (count > 0));
+		return count > 0;
+	}
+	
 	@Override
 	public Score getScore(Integer nStudentId) {
 		Score studentScore = new Score();
@@ -183,6 +194,22 @@ public class StudentScoreServiceImpl implements StudentScoreService {
 			}
 		}
 		return table;
+	}
+
+	/**  
+	 * 通过名字获取成绩
+	 * @see com.hgl.recruitms.service.StudentScoreService#getScoreByName(java.lang.String)  
+	 */
+	@Override
+	public Score getScoreByName(String sStudentName) {
+		ScoreExample example = new ScoreExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNStudentIdIsNotNull().andSStudentNameEqualTo(sStudentName);
+		List<Score> scores = scoreMapper.selectByExample(example);
+		if (CollectionUtils.isEmpty(scores)) {
+			throw new RuntimeException("无法获取成绩，请联系管理员！");
+		}
+		return scores.get(0);
 	}
 
 }

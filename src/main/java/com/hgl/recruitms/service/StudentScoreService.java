@@ -32,6 +32,18 @@ public interface StudentScoreService {
 	 * @return 新生成绩信息类
 	 */
 	Score getScore(Integer nStudentId);
+	
+	Score getScoreByName(String sStudentName);
+	
+	/**
+	 * getScore:(删除新生成绩信息). <br/>
+	 * 
+	 * @author huanggl
+	 * @param nStudentId
+	 *            内部编码
+	 * @return 新生成绩信息类
+	 */
+	boolean delScore(Integer nStudentId);
 
 	/**
 	 * updateScore:(修改新生成绩信息). <br/>

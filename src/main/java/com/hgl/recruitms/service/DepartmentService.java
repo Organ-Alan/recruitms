@@ -110,4 +110,7 @@ public interface DepartmentService {
 	 */
 	PageInfo<Department> listDepartments(Integer pageIndex, Integer pageSize);
 	
+	List<List<String>> exportRecruitInfo(String sDeptCode, String sShortName,
+			String sFullName, String sRegion, String dbEnrolScore,List<Integer> nStudentIdList, String exportType);
+
 }

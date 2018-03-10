@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hgl.recruitms.dao.AttachMapper">
   <resultMap id="BaseResultMap" type="com.hgl.recruitms.model.Attach">
-    <id column="N_ATTACH_ _NO" jdbcType="INTEGER" property="nAttachNo" />
+    <id column="N_ATTACH_NO" jdbcType="INTEGER" property="nAttachNo" />
     <result column="S_ATTACH_NAME" jdbcType="VARCHAR" property="sAttachName" />
     <result column="S_ATTACH_TYPE" jdbcType="VARCHAR" property="sAttachType" />
     <result column="S_PATH" jdbcType="VARCHAR" property="sPath" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    "N_ATTACH_ _NO", S_ATTACH_NAME, S_ATTACH_TYPE, S_PATH, N_VERSION, S_STATUS, D_CREATE_TIME, 
+    N_ATTACH_NO, S_ATTACH_NAME, S_ATTACH_TYPE, S_PATH, N_VERSION, S_STATUS, D_CREATE_TIME, 
     S_CREATOR, S_CREATOR_NO, N_LAST_ATTACH_NO, S_FILE_TYPE, S_SAVE_PATH, S_SUB_PATH
   </sql>
   <select id="selectByExample" parameterType="com.hgl.recruitms.model.AttachExample" resultMap="BaseResultMap">
@@ -96,11 +96,11 @@
     select 
     <include refid="Base_Column_List" />
     from t_rms_attach
-    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+    where N_ATTACH_NO = #{nAttachNo,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_rms_attach
-    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+    where N_ATTACH_NO = #{nAttachNo,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.hgl.recruitms.model.AttachExample">
     delete from t_rms_attach
@@ -109,7 +109,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.hgl.recruitms.model.Attach">
-    insert into t_rms_attach ("N_ATTACH_ _NO", S_ATTACH_NAME, S_ATTACH_TYPE, 
+    insert into t_rms_attach (N_ATTACH_NO, S_ATTACH_NAME, S_ATTACH_TYPE, 
       S_PATH, N_VERSION, S_STATUS, 
       D_CREATE_TIME, S_CREATOR, S_CREATOR_NO, 
       N_LAST_ATTACH_NO, S_FILE_TYPE, S_SAVE_PATH, 
@@ -124,7 +124,7 @@
     insert into t_rms_attach
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="nAttachNo != null">
-        "N_ATTACH_ _NO",
+        N_ATTACH_NO,
       </if>
       <if test="sAttachName != null">
         S_ATTACH_NAME,
@@ -215,7 +215,7 @@
     update t_rms_attach
     <set>
       <if test="record.nAttachNo != null">
-        "N_ATTACH_ _NO" = #{record.nAttachNo,jdbcType=INTEGER},
+        N_ATTACH_NO = #{record.nAttachNo,jdbcType=INTEGER},
       </if>
       <if test="record.sAttachName != null">
         S_ATTACH_NAME = #{record.sAttachName,jdbcType=VARCHAR},
@@ -260,7 +260,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update t_rms_attach
-    set "N_ATTACH_ _NO" = #{record.nAttachNo,jdbcType=INTEGER},
+    set N_ATTACH_NO = #{record.nAttachNo,jdbcType=INTEGER},
       S_ATTACH_NAME = #{record.sAttachName,jdbcType=VARCHAR},
       S_ATTACH_TYPE = #{record.sAttachType,jdbcType=VARCHAR},
       S_PATH = #{record.sPath,jdbcType=VARCHAR},
@@ -317,7 +317,7 @@
         S_SUB_PATH = #{sSubPath,jdbcType=VARCHAR},
       </if>
     </set>
-    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+    where N_ATTACH_NO = #{nAttachNo,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hgl.recruitms.model.Attach">
     update t_rms_attach
@@ -333,6 +333,6 @@
       S_FILE_TYPE = #{sFileType,jdbcType=VARCHAR},
       S_SAVE_PATH = #{sSavePath,jdbcType=VARCHAR},
       S_SUB_PATH = #{sSubPath,jdbcType=VARCHAR}
-    where "N_ATTACH_ _NO" = #{nAttachNo,jdbcType=INTEGER}
+    where N_ATTACH_NO = #{nAttachNo,jdbcType=INTEGER}
   </update>
 </mapper>

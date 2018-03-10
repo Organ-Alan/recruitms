@@ -2,45 +2,44 @@ package com.hgl.recruitms.common.web.filter;
 
 import java.io.IOException;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import com.thetransactioncompany.cors.CORSConfiguration;
-import com.thetransactioncompany.cors.CORSFilter;
-/**
- * 服务端跨域处理过滤器,该过滤器需要依赖cors-filter-2.2.1.jar和java-property-utils-1.9.1.jar
- * @author running@vip.163.com
- *
- */
-@WebFilter(urlPatterns={"/recruitms*"},asyncSupported=true,
-initParams={
-	@WebInitParam(name="cors.allowOrigin",value="*"),
-	@WebInitParam(name="cors.supportedMethods",value="CONNECT, DELETE, GET, HEAD, OPTIONS, POST, PUT, TRACE"),
-	@WebInitParam(name="cors.supportedHeaders",value="token,Accept, Origin, X-Requested-With, Content-Type, Last-Modified"),//注意，如果token字段放在请求头传到后端，这里需要配置
-	@WebInitParam(name="cors.exposedHeaders",value="Set-Cookie"),
-	@WebInitParam(name="cors.supportsCredentials",value="true")
-})
-public class CrossOriginResource extends CORSFilter implements javax.servlet.Filter{
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.util.StringUtils;
 
+public class CrossOriginResource implements Filter {
+	static final Logger logger = LogManager.getLogger(CrossOriginResource.class);
 
-	public void init(FilterConfig config) throws ServletException {
-		System.out.println("跨域资源处理过滤器已初始化");
-		super.init(config);
-	}
-	
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		System.out.println("跨域过滤器");
-		super.doFilter(request, response, chain);
+	@Override
+	public void destroy() {
 	}
 
-
-	public void setConfiguration(CORSConfiguration config) {
-		super.setConfiguration(config);
+	@Override
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
+		//添加跨域CORS
+        String url = request.getHeader("Origin");
+        logger.debug("Access-Control-Allow-Origin:" + url);
+        if (!StringUtils.isEmpty(url)) {
+	        response.setHeader("Access-Control-Allow-Origin", url);
+	        response.setHeader("Access-Control-Allow-Credentials", "true");
+	        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type,token");
+	        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
+        }
+		chain.doFilter(request, response);
 	}
-	
+
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {		
+	}
+
 }

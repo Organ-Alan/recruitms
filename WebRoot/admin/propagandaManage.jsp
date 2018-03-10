@@ -1,5 +1,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="s" uri="/struts-tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -68,47 +70,17 @@
 				</button>
 			</div>
 			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro" id="logout" href="#"
-					title="注销" target="_blank"><i class="lnr lnr-exit"></i> <span>&nbsp;&nbsp;&nbsp;注销</span></a>
+				<a class="btn btn-success update-pro" onclick="logout()" title="注销"
+					target="_blank"><i class="lnr lnr-exit"></i> <span>&nbsp;&nbsp;&nbsp;注销</span></a>
 			</div>
 			<div id="navbar-menu">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown"><a href="#"
-						class="dropdown-toggle icon-menu" data-toggle="dropdown"> <i
-							class="lnr lnr-alarm"></i> <span class="badge bg-danger">5</span>
-					</a>
-						<ul class="dropdown-menu notifications">
-							<li><a href="#" class="notification-item"><span
-									class="dot bg-warning"></span>System space is almost full</a></li>
-							<li><a href="#" class="notification-item"><span
-									class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
-							<li><a href="#" class="notification-item"><span
-									class="dot bg-success"></span>Monthly report is available</a></li>
-							<li><a href="#" class="notification-item"><span
-									class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
-							<li><a href="#" class="notification-item"><span
-									class="dot bg-success"></span>Your request has been approved</a></li>
-							<li><a href="#" class="more">See all notifications</a></li>
-						</ul></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="lnr lnr-question-circle"></i>
-							<span>Help</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Basic Use</a></li>
-							<li><a href="#">Working With Data</a></li>
-							<li><a href="#">Security</a></li>
-							<li><a href="#">Troubleshooting</a></li>
-						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"><img src="../assets/img/user.png"
-							class="img-circle" alt="Avatar"> <span>Samuel</span> <i
+							class="img-circle" alt="Avatar"> <span>Admin</span> <i
 							class="icon-submenu lnr lnr-chevron-down"></i></a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><i class="lnr lnr-user"></i> <span>My
-										Profile</span></a></li>
-							<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
-							<li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
-							<li><a href="#"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+							<li><a onclick="logout()"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
 						</ul></li>
 					<!-- <li>
 							<a class="update-pro" href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
@@ -124,26 +96,17 @@
 				style="width: 260px; height: 560px; overflow: scroll; overflow-y: auto; overflow-x: hidden; border: 1px solid;">
 				<nav>
 				<ul class="nav">
-					<li><a href="index.html" class="active"><i
+					<li><a href="index.jsp" class="active"><i
 							class="lnr lnr-home"></i> <span>首页</span></a></li>
-					<li><a href="#subPages3" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-cog"></i> <span>录取管理</span><i
-							class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages3" class="collapse ">
-							<ul class="nav">
-								<li><a href="page-profile.html" class="">新生录取信息</a></li>
-								<li><a href="page-login.html" class="">录取通知书管理</a></li>
-								<li><a href="page-lockscreen.html" class="">录取场地管理</a></li>
-							</ul>
-						</div></li>
+					
 					<li><a href="#subPages1" data-toggle="collapse"
 						class="collapsed"><i class="lnr lnr-code"></i> <span>考生数据提取</span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
 						<div id="subPages1" class="collapse ">
 							<ul class="nav">
-								<li><a href="studentInfo.jsp" class="">考生信息抽取</a></li>
-								<li><a href="page-login.html" class="">考生成绩抽取</a></li>
-								<li><a href="page-lockscreen.html" class="">档案管理</a></li>
+								<li><a href="studentInfoList.jsp" class="">考生信息提取</a></li>
+								<li><a href="studentScoreList.jsp" class="">考生成绩抽取</a></li>
+								
 							</ul>
 						</div></li>
 					<li><a href="#subPages2" data-toggle="collapse"
@@ -151,8 +114,8 @@
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
 						<div id="subPages2" class="collapse ">
 							<ul class="nav">
-								<li><a href="page-profile.html" class="">招生信息管理</a></li>
-								<li><a href="page-login.html" class="">报考指南管理</a></li>
+								<li><a href="enrollmentPlan.jsp" class="">招生信息管理</a></li>
+								<li><a href="auditList.jsp" class="">招生信息变更审核</a></li>
 							</ul>
 						</div></li>
 					<li><a href="#subPages4" data-toggle="collapse"
@@ -160,18 +123,17 @@
 							class="icon-submenu lnr lnr-chevron-left"></i></a>
 						<div id="subPages4" class="collapse ">
 							<ul class="nav">
-								<li><a href="page-profile.html" class="">招生宣传附件</a></li>
-								<li><a href="page-login.html" class="">宣传设置</a></li>
+								<li><a href="attachList.jsp" class="">招生宣传附件</a></li>
 							</ul>
 						</div></li>
-					<li><a href="#subPages5" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-alarm"></i> <span>新生入学管理</span><i
+						<li><a href="#subPages3" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-cog"></i> <span>录取管理</span><i
 							class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages5" class="collapse ">
+						<div id="subPages3" class="collapse ">
 							<ul class="nav">
-								<li><a href="page-profile.html" class="">新生信息管理</a></li>
-								<li><a href="page-login.html" class="">新生入学须知管理</a></li>
-								<li><a href="page-lockscreen.html" class="">转专业</a></li>
+								<li><a href="recruitInfoList.jsp" class="">新生录取信息</a></li>
+								<li><a href="enrollmentNotice.jsp" class="">录取通知书管理</a></li>
+								<li><a href="enrollmentAudit.jsp" class="">录取审核</a></li>
 							</ul>
 						</div></li>
 					<li><a href="#subPages6" data-toggle="collapse"
@@ -179,20 +141,9 @@
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
 						<div id="subPages6" class="collapse ">
 							<ul class="nav">
-								<li><a href="page-profile.html" class="">基本信息查询</a></li>
-								<li><a href="page-login.html" class="">成绩查询</a></li>
-								<li><a href="page-lockscreen.html" class="">文档查询</a></li>
-							</ul>
-						</div></li>
-					<li><a href="#subPages7" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-dice"></i> <span>统计管理功能</span><i
-							class="icon-submenu lnr lnr-chevron-left"></i> </a>
-						<div id="subPages7" class="collapse ">
-							<ul class="nav">
-								<li><a href="page-profile.html" class="">新生档案信息统计</a></li>
-								<li><a href="page-login.html" class="">新生录取分数统计</a></li>
-								<li><a href="page-lockscreen.html" class="">新生成绩统计</a></li>
-								<li><a href="page-lockscreen.html" class="">新生报到率</a></li>
+								<li><a href="recruitInfoList.jsp" class="">基本信息查询</a></li>
+								<li><a href="studentScoreList.jsp" class="">成绩查询</a></li>
+								<li><a href="allAttachList.jsp" class="">文档查询</a></li>
 							</ul>
 						</div></li>
 					<li><a href="#subPages8" data-toggle="collapse"
@@ -200,19 +151,8 @@
 							class="icon-submenu lnr lnr-chevron-left"></i></a>
 						<div id="subPages8" class="collapse ">
 							<ul class="nav">
-								<li><a href="page-profile.html" class="">字典管理</a></li>
-								<li><a href="page-login.html" class="">账户管理</a></li>
-								<li><a href="page-lockscreen.html" class="">院系专业管理</a></li>
-								<li><a href="page-lockscreen.html" class="">修改审核</a></li>
-							</ul>
-						</div></li>
-					<li><a href="#subPages9" data-toggle="collapse"
-						class="collapsed"><i class="lnr lnr-linearicons"></i> <span>帮助功能</span><i
-							class="icon-submenu lnr lnr-chevron-left"></i></a>
-						<div id="subPages9" class="collapse ">
-							<ul class="nav">
-								<li><a href="page-profile.html" class="">答疑</a></li>
-								<li><a href="page-login.html" class="">咨询服务</a></li>
+								<li><a href="dictionaryList.jsp" class="">字典管理</a></li>
+								<li><a href="accountInfoList.jsp" class="">账户管理</a></li>
 							</ul>
 						</div></li>
 				</ul>
@@ -375,12 +315,7 @@
 		<div class="clearfix"></div>
 	</div>
 	<!-- END WRAPPER -->
-	<script type="text/javascript" src="../js/jquery-1.9.1.js">
-	$("#loginout").on("click",function(){
-		localStorage.removeItem("token");
-		location.href="login.jsp";
-	});
-	</script>
+	<script src="../js/recruitmsFuncJs/initialTool.js"></script>
 	<script>
 	$(function() {
 		var data, options;

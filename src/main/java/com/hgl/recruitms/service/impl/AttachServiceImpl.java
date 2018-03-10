@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.dao.AttachMapper;
+import com.hgl.recruitms.dao.StudentInfoMapper;
 import com.hgl.recruitms.enums.DataStatusEnum;
 import com.hgl.recruitms.enums.DictEnum;
 import com.hgl.recruitms.enums.PathCodeEnum;
@@ -33,6 +34,7 @@ import com.hgl.recruitms.model.Attach;
 import com.hgl.recruitms.model.AttachExample;
 import com.hgl.recruitms.model.AttachExample.Criteria;
 import com.hgl.recruitms.model.Dictionary;
+import com.hgl.recruitms.model.StudentInfo;
 import com.hgl.recruitms.service.AttachService;
 import com.hgl.recruitms.service.DictionaryService;
 
@@ -55,6 +57,9 @@ public class AttachServiceImpl implements AttachService {
 
 	@Autowired
 	private DictionaryService dictionaryService;
+	
+	@Autowired
+	private StudentInfoMapper studentInfoMapper;
 
 	/**
 	 * 根据配置枚举信息，获取文件存储绝对路径.
@@ -105,18 +110,10 @@ public class AttachServiceImpl implements AttachService {
 	 *      java.lang.String, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public Attach uploadAttach(InputStream is, String fileName, Integer nAttachNoOld,
+	public Attach uploadAttach(InputStream is, String fileName, String sAttachType,Integer nAttachNoOld,
 			String sCreator, String sCreatorNo) throws IOException {
 		Integer nVersion = 1;
-		if (nAttachNoOld != null) {
-			Attach attachOld = getAttach(nAttachNoOld);
-			if (attachOld == null) {
-				throw new NullPointerException("更新版本异常！无法根据附件ID（" + nAttachNoOld + "）获取附件信息");
-			}
-			nVersion = attachOld.getnVersion().intValue() + 1;
-		}
-
-		String filePath = getAttachRealPath();// 获取存储目录
+		String filePath = "F:\\GraduationTest\\attach";// 获取存储目录
 		logger.info("文件路径：{}", filePath);
 		if (StringUtils.isEmpty(filePath)) {
 			throw new NullPointerException("获取配置路径错误！（" + filePath + "）");
@@ -125,17 +122,14 @@ public class AttachServiceImpl implements AttachService {
 		Attach attach = new Attach();
 		attach.setsAttachName(fileName);
 		attach.setnVersion(nVersion);
+		attach.setnAttachNo(nAttachNoOld);
+		attach.setsAttachType(sAttachType);
 		attach.setsCreator(sCreator);
+		attach.setdCreateTime(new Date());
 		attach.setsCreatorNo(sCreatorNo);
-		int effect = attachMapper.insertSelective(attach);// 先插入一条附件记录
-		if (effect != 1) {
-			logger.error("插入一条附件记录失败！");
-			throw new RuntimeException("上传附件失败（insert record error）！");
-		}
-
-		Integer nAttachNo = attach.getnAttachNo();
-		String sPath = filePath + sepa + nAttachNo + "_" + fileName;// 组装附件路径：文件格式 附件id+文件名称
+		String sPath = filePath + sepa + "_" + fileName;// 组装附件路径：文件格式 附件id+文件名称
 		// 保存文件到文件系统
+		logger.info("保存文件到文件系统:{}"+sPath);
 		FileOutputStream fos = new FileOutputStream(new File(sPath));
 		byte[] b = new byte[1024];
 		int readed = 0;
@@ -146,22 +140,18 @@ public class AttachServiceImpl implements AttachService {
 		fos.close();
 		// 设置绝对路径
 		attach.setsPath(sPath);
-		attach.setnLastAttachNo(nAttachNo);// 设置 最新 版本附件字段
-		effect = attachMapper.updateByPrimaryKeySelective(attach);
-		// 如果更新结果不等于1，则表示更新信息失败，抛出异常
+		attach.setnLastAttachNo(nVersion);// 设置 最新 版本附件字段
+		int effect = attachMapper.insertSelective(attach);// 先插入一条附件记录
 		if (effect != 1) {
-			logger.error("上传附件失败！{}", attach);
-			throw new RuntimeException("上传附件失败（update path error）！" + attach);
+			logger.error("插入一条附件记录失败！");
+			throw new RuntimeException("上传附件失败（insert record error）！");
 		}
-		if (nAttachNoOld != null) {
-			// 上传附件成功，更新旧版本的附件关联ID
-			Attach record = new Attach();
-			record.setnLastAttachNo(nAttachNo);
-			AttachExample example = new AttachExample();
-			example.createCriteria().andNLastAttachNoEqualTo(nAttachNoOld);
-			attachMapper.updateByExampleSelective(record, example);
+		if (sAttachType.equals("通知书")) {
+			StudentInfo studentInfo = new StudentInfo();
+			studentInfo.setnStudentId(nAttachNoOld);
+			studentInfo.setsDataFlag("2");
+			studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
 		}
-
 		logger.info("上传文件成功！（{},{}）", attach, filePath);
 		return attach;
 	}
@@ -236,7 +226,7 @@ public class AttachServiceImpl implements AttachService {
 	public Attach getAttach(Integer nAttachNo) {
 		return attachMapper.selectByPrimaryKey(nAttachNo);
 	}
-
+ 
 	/**
 	 * zipPackDownload：批量下载
 	 * 
@@ -340,9 +330,9 @@ public class AttachServiceImpl implements AttachService {
 
 	@Override
 	public PageInfo<Attach> getAttachListPage(@RequestParam int pageIndex, @RequestParam int pageSize,
-			String sAttachName, String sFileType, Date dCreateTime) {
+			String sAttachName, String sFileType,String sAttachType) {
 		// 用于查询全部信息，判断是否需要查询全部的信息
-		logger.info("查询附件信息列表：{},{},{},{},{}", pageIndex, pageSize, sAttachName, sFileType, dCreateTime);
+		logger.info("查询附件信息列表：{},{},{},{},{}", pageIndex, pageSize, sAttachName, sFileType);
 		// 拼装条件
 		AttachExample example = new AttachExample();
 		Criteria criteria = example.createCriteria();
@@ -355,7 +345,9 @@ public class AttachServiceImpl implements AttachService {
 		if (StringUtils.hasText(sFileType)) {
 			criteria.andSFileTypeLike("%" + sFileType + "%");
 		}
-		criteria.andDCreateTimeLessThanOrEqualTo(dCreateTime);
+		if (StringUtils.hasText(sAttachType)) {
+			criteria.andSAttachTypeLike("%" + sAttachType + "%");
+		}
 		example.setOrderByClause(" D_CREATE_TIME ASC ");
 		logger.debug("附件信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
 		// 调用静态方法，设置分页参数即可，随后的第一次查询的sql语句会自动被分页插件改装成带有分页查询的sql语句

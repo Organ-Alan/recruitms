@@ -64,7 +64,7 @@
 		<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="brand">
 			<a href="index.jsp"><img src="../images/logo/logo5.jpg"
-				alt="Klorofil Logo" class="img-responsive logo"></a>
+				alt="Klorofil Logo" class="img-responsive logo" /></a>
 		</div>
 		<div class="container-fluid">
 			<div class="navbar-btn">
@@ -72,7 +72,7 @@
 					<i class="lnr lnr-arrow-left-circle"></i>
 				</button>
 			</div>
-			<div class="navbar-btn navbar-btn-right">
+			<<div class="navbar-btn navbar-btn-right">
 				<a class="btn btn-success update-pro" onclick="logout()" title="注销"
 					target="_blank"><i class="lnr lnr-exit"></i> <span>&nbsp;&nbsp;&nbsp;注销</span></a>
 			</div>
@@ -98,7 +98,7 @@
 			<div class="sidebar-scroll"
 				style="width: 260px; height: 560px; overflow: scroll; overflow-y: auto; overflow-x: hidden; border: 1px solid;">
 				<nav>
-<ul class="nav">
+				<ul class="nav">
 					<li><a href="index.jsp" class="active"><i
 							class="lnr lnr-home"></i> <span>首页</span></a></li>
 					<li><a href="#subPages1" data-toggle="collapse"
@@ -178,7 +178,7 @@
 									<h3 class="panel-title">招生宣传相关附件</h3>
 								</div>
 								<div class="panel-body">
-									<form action="/recruitms/admin/attachListPage" method="get">
+									<form action="/recruitms/admin/allAttachList" method="get">
 										<div>
 											<input type="hidden" id="pageIndex" name="pageIndex"
 												value="1" /> <input type="hidden" id="pageSize"
@@ -186,18 +186,13 @@
 												style="margin-left: 10px;">附件名称： <input type="text"
 												class="form-control" id="sAttachName" name="sAttachName"
 												style="width: 90px" />
-											</label> <label class="form-inline" style="margin-left: 10px;">文件类型：
+											</label> <label class="form-inline">文件类型：
 												<input type="text" class="form-control" id="sFileType"
 												name="sFileType" />
-											</label>
-												<input type="hidden" class="form-control" id="sAttachType"
-												name="sAttachType" value="学院宣传"/>
-											 <label class="form-inline" style="margin-left: 10px;">文件状态:
-												<select class="form-control" id="sStatus" name="sStatus"
-												style="width: 100px">
-													<option value="1">正常</option>
-													<option value="2">删除</option>
-											</select>
+											</label> 
+											<label class="form-inline">附件类型：
+												<input type="text" class="form-control" id="sAttachType"
+												name="sAttachType" style="width: 120px;"/>
 											</label> <label class="form-inline" style="margin-left: 10px;">
 												<button class="btn btn-primary" type="submit"
 													style="text-align: center; align-content: right;">查询</button>
@@ -232,14 +227,15 @@
 											<tr>
 												<td><input type="hidden" id="initialPage" /></td>
 											</tr>
-											<c:forEach items="${attachListPage.list}" var="attachList">
+											<c:forEach items="${attachListPages.list}" var="attachList">
 												<tr>
 													<td>${attachList.sAttachName}</td>
 													<td>${attachList.sAttachType}</td>
-													<td>${attachList.nVersion}</td>
-													<td><c:if test="${attachList.sStatus ==1}">有效</c:if>
+													<td>V${attachList.nVersion}.0</td>
+													<td>
+														<c:if test="${attachList.sStatus ==1}">有效</c:if>
 														<c:if test="${attachList.sStatus ==2}">无效</c:if>
-														</td>
+													</td>
 													<td>${attachList.sFileType}</td>
 													<td>${attachList.dCreateTime}</td>
 													<td style="text-align: center;">
@@ -256,7 +252,7 @@
 									<div class="row">
 										<!-- 分页文字信息 ：拿到控制器处理请求时封装在pageInfo里面的分页信息-->
 										<div class="col-md-6" align="left">
-											当前${attachListPage.pageNum}页,共${attachListPage.pages }页,总${attachListPage.total }条记录
+											当前${attachListPages.pageNum}页,共${attachListPages.pages }页,总${attachListPages.total }条记录
 										</div>
 										<!-- 分页码 -->
 										<div class="col-md-6">
@@ -264,40 +260,40 @@
 											<ul class="pagination">
 												<!-- 
 							                        1.pageContext.request.contextPath表示当前项目路径，采用的是绝对路径表达方式。一般为http:localhost:8080/项目名 。
-							                        2.首页，末页的逻辑：pn=1访问第一次，pn=${attachListPage.pages}访问最后一页
+							                        2.首页，末页的逻辑：pn=1访问第一次，pn=${attachListPages.pages}访问最后一页
 							                      -->
 												<li><a
-													href="/recruitms/admin/attachListPage?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传">首页</a>
+													href="/recruitms/admin/allAttachList?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType">首页</a>
 												</li>
 												<!-- 如果还有前页就访问当前页码-1的页面， -->
-												<c:if test="${attachListPage.hasPreviousPage}">
+												<c:if test="${attachListPages.hasPreviousPage}">
 													<li><a
-														href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pageNum-1}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传"
+														href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pageNum-1}&pageSize=6&sAttachName&sFileType&sAttachType"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
 												<li>
 													<!--遍历所有导航页码，如果遍历的页码页当前页码相等就高亮显示，如果相等就普通显示  --> <c:forEach
-														items="${attachListPage.navigatepageNums }"
+														items="${attachListPages.navigatepageNums }"
 														var="page_Nums">
-														<c:if test="${page_Nums==attachListPage.pageNum }">
+														<c:if test="${page_Nums==attachListPages.pageNum }">
 															<li class="active"><a href="#">${page_Nums}</a></li>
 														</c:if>
-														<c:if test="${page_Nums!=attachListPage.pageNum }">
+														<c:if test="${page_Nums!=attachListPages.pageNum }">
 															<li><a
-																href="/recruitms/admin/attachListPage?pageIndex=${page_Nums}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传">${page_Nums}</a></li>
+																href="/recruitms/admin/allAttachList?pageIndex=${page_Nums}&pageSize=6&sAttachName&sFileType&sAttachType">${page_Nums}</a></li>
 														</c:if>
 													</c:forEach>
 												</li>
 												<!-- 如果还有后页就访问当前页码+1的页面， -->
-												<c:if test="${attachListPage.hasNextPage}">
+												<c:if test="${attachListPages.hasNextPage}">
 													<li><a
-														href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pageNum+1}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传"
+														href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pageNum+1}&pageSize=6&sAttachName&sFileType&sAttachType"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
 												<li><a
-													href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pages}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传">末页</a></li>
+													href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pages}&pageSize=6&sAttachName&sFileType&sAttachType">末页</a></li>
 											</ul>
 											</nav>
 										</div>
@@ -316,7 +312,7 @@
 				aria-labelledby="exampleModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
-						<form class="form-horizontal" action="/recruitms/admin/file"
+						<form class="form-horizontal" action="/recruitms/admin/upload"
 							method="post" enctype="multipart/form-data">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal"
@@ -382,7 +378,7 @@
 
 								$.ajax({
 											type : "get",
-											url : "/recruitms/admin/attachListPage?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传",
+											url : "/recruitms/admin/allAttachList?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType",
 											dataType : 'json',
 											async : true,
 											success : function(resp) {
@@ -458,12 +454,6 @@
 					}
 				});
 			}
-		</script>
-		<script type="text/javascript">
-			$("#loginout").on("click", function() {
-				localStorage.removeItem("token");
-				location.href = "login.jsp";
-			});
 		</script>
 </body>
 

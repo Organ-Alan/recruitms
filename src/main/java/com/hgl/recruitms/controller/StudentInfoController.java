@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.controller.response.ErrorEnum;
 import com.hgl.recruitms.common.util.ExportUtil;
+import com.hgl.recruitms.common.util.JsonUtil;
 import com.hgl.recruitms.common.web.restful.response.CommonResponseBuilder;
 import com.hgl.recruitms.common.web.restful.response.ResponseObject;
 import com.hgl.recruitms.enums.TBHeaderEnum;
@@ -34,7 +36,7 @@ import com.hgl.recruitms.service.StudentInfoService;
  * @version Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.
  */
 @RestController
-@RequestMapping("/{version}/student")
+@RequestMapping("/admin")
 public class StudentInfoController {
 	static Logger logger = LoggerFactory.getLogger(StudentInfoController.class);
 	@Autowired
@@ -44,14 +46,31 @@ public class StudentInfoController {
 	private StudentInfoService studentInfoService;
 
 	@RequestMapping(value = "/listStudentInfos", method = { RequestMethod.GET })
-	public ResponseObject<?> listPageStudentInfo(@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
+	public ModelAndView listPageStudentInfo(HttpServletResponse response,HttpServletRequest request,@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
 			String sCandidateNum, String sStudentName, String sNativePlace, String sEnrolMajor, String sDataFlag) {
 		if (pageIndex == null || pageSize == null) {
-			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(), "参数" + pageIndex + "、" + pageSize + "错误！");
+			return new ModelAndView("errorPage.jsp");
 		}
+		request.getSession().setAttribute("studentInfoList", null);
 		PageInfo<StudentInfo> pageInfo = studentInfoService.listStudentInfos(pageIndex, pageSize, sCandidateNum,
 				sStudentName, sNativePlace, sEnrolMajor, sDataFlag);
-		return builder.success(pageInfo);
+		request.getSession().setAttribute("studentInfoList", pageInfo);
+		logger.debug(JsonUtil.serialize(pageInfo));
+		return new ModelAndView("enrollmentNotice.jsp");
+	}
+	
+	@RequestMapping(value = "/listStudentInfosManage", method = { RequestMethod.GET })
+	public ModelAndView listStudentInfosManage(HttpServletResponse response,HttpServletRequest request,@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
+			String sCandidateNum, String sStudentName, String sNativePlace, String sEnrolMajor, String sDataFlag) {
+		if (pageIndex == null || pageSize == null) {
+			return new ModelAndView("errorPage.jsp");
+		}
+		request.getSession().setAttribute("studentInfoManage", null);
+		PageInfo<StudentInfo> pageInfo = studentInfoService.listStudentInfos(pageIndex, pageSize, sCandidateNum,
+				sStudentName, sNativePlace, sEnrolMajor, sDataFlag);
+		request.getSession().setAttribute("studentInfoManage", pageInfo);
+		logger.debug(JsonUtil.serialize(pageInfo));
+		return new ModelAndView("studentInfoList.jsp");
 	}
 
 	/**
@@ -97,7 +116,7 @@ public class StudentInfoController {
 	 * @param studentInfo
 	 * @return
 	 */
-	@RequestMapping(value = "studentInfo", method = { RequestMethod.PUT })
+	@RequestMapping(value = "updateStudentInfo", method = { RequestMethod.POST })
 	public ResponseObject<?> updateStudentInfo(@RequestBody StudentInfo studentInfo) {
 		logger.debug("更新内容为：{}" + studentInfo.toString());
 		boolean flag = studentInfoService.updateStudentInfo(studentInfo);
@@ -105,6 +124,23 @@ public class StudentInfoController {
 			return builder.error(-1, "更改出错！");
 		}
 		return builder.success(studentInfo);
+	}
+	
+	/**
+	 * updateStudentInfo:修改考生信息 <br/>
+	 * 
+	 * @author huanggl
+	 * @param studentInfo
+	 * @return
+	 */
+	@RequestMapping(value = "unDelStudentInfo", method = { RequestMethod.POST })
+	public ResponseObject<?> unDelStudentInfo(@RequestParam Integer nStudentId) {
+		logger.debug("更新内容为：{}" + nStudentId);
+		boolean flag = studentInfoService.unDelStudentInfo(nStudentId);
+		if (!flag) {
+			return builder.error(-1, "更改出错！");
+		}
+		return builder.success();
 	}
 
 	/**
@@ -137,5 +173,20 @@ public class StudentInfoController {
 
 		logger.info("导出完成！{},{},{},{},{}{},{}", sCandidateNum, sStudentName, sNativePlace, sEnrolMajor, sDataFlag,
 				nStudentIdList);
+	}
+	
+	@RequestMapping(value = "/delStudentInfo", method = { RequestMethod.POST })
+	public ResponseObject<Object> delInfo(@RequestParam Integer nStudentId) {
+
+		// 判断集合是否为空
+		if (nStudentId==null) {
+			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(), "参数有误");
+		}
+		// 删除信息
+		Boolean flag = studentInfoService.deleteStudentInfo(nStudentId);
+		if (flag) {
+			return builder.success(flag);
+		}
+		return builder.error(-1, "删除失败");
 	}
 }

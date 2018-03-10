@@ -2,10 +2,8 @@ package com.hgl.recruitms.service.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 
 	@Override
 	public boolean insertStudentInfo(StudentInfo studentInfo) {
-		int count = studentInfoMapper.insert(studentInfo);
+		int count = studentInfoMapper.insertSelective(studentInfo);
 		logger.info("新增新生信息:" + studentInfo.toString() + "，结果：" + (count > 0));
 		return count > 0;
 	}
@@ -70,7 +68,7 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 		int count = studentInfoMapper.updateByPrimaryKey(studentInfo);
 		logger.debug("调用数据库修改学生信息信息的条数为::" + count);
 		// 当修改学生信息信息失败时
-		if (count < 1) {
+		if (count != 1) {
 			logger.error("修改基础信息失败,修改基础信息数据为：" + studentInfo.toString() + "，条件为:" + studentInfo.getnStudentId());
 			throw new RuntimeException("修改基础信息失败，抛出异常，事务回滚");
 		}
@@ -110,7 +108,6 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 		if (StringUtils.hasText(sDataFlag)) {
 			criteria.andSDataFlagEqualTo(sDataFlag);
 		}
-		example.setOrderByClause(" S_CANDIDATE_NUM ASC ");
 		logger.debug("考生信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
 		// 调用静态方法，设置分页参数即可，随后的第一次查询的sql语句会自动被分页插件改装成带有分页查询的sql语句
 		PageHelper.startPage(pageIndex, pageSize);
@@ -125,23 +122,19 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	 * @see com.hgl.recruitms.service.StudentInfoService#delOneToManyBasic(java.lang.Integer[])
 	 */
 	@Override
-	public boolean deleteStudentInfo(Integer[] nStudentIds) throws IndexOutOfBoundsException {
+	public boolean deleteStudentInfo(Integer nStudentId) {
 		StudentInfoExample updateExample = new StudentInfoExample();
 		StudentInfoExample.Criteria updateCriteria = updateExample.createCriteria();
-		List<Integer> listnStudentIds = Arrays.asList(nStudentIds);
-		if (CollectionUtils.isEmpty(listnStudentIds)) {
-			return false;
-		}
-		updateCriteria.andNStudentIdIn(listnStudentIds);
+		updateCriteria.andNStudentIdEqualTo(nStudentId);
 		StudentInfo studentInfo = new StudentInfo();
 		studentInfo.setsDataFlag(DataStatusEnum.INVALID.getCode());
 		int count = studentInfoMapper.updateByExampleSelective(studentInfo, updateExample);
-		if (nStudentIds.length != count) {
+		if (1 != count) {
 			// 当批量删除数量，与受影响行数不符时，抛出异常，事务回滚
-			logger.info("批量删除失败,删除数量与需要删除数量不符：" + listnStudentIds);
-			throw new IndexOutOfBoundsException("批量删除失败");
+			logger.info("删除失败" + nStudentId);
+			throw new IndexOutOfBoundsException("删除失败");
 		}
-		logger.debug("批量删除：" + listnStudentIds.toString() + "考生信息，结果：" + (count > 0));
+		logger.debug("删除：" + nStudentId + "考生信息，结果：" + (count > 0));
 		return count > 0;
 	}
 
@@ -232,6 +225,23 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 			}
 		}
 		return table;
+	}
+
+	@Override
+	public boolean unDelStudentInfo(Integer nStudentId) {
+		StudentInfoExample updateExample = new StudentInfoExample();
+		StudentInfoExample.Criteria updateCriteria = updateExample.createCriteria();
+		updateCriteria.andNStudentIdEqualTo(nStudentId);
+		StudentInfo studentInfo = new StudentInfo();
+		studentInfo.setsDataFlag(DataStatusEnum.VALID.getCode());
+		int count = studentInfoMapper.updateByExampleSelective(studentInfo, updateExample);
+		if (1 != count) {
+			// 当批量删除数量，与受影响行数不符时，抛出异常，事务回滚
+			logger.info("撤销失败" + nStudentId);
+			throw new IndexOutOfBoundsException("撤销失败");
+		}
+		logger.debug("撤销：" + nStudentId + "考生信息，结果：" + (count > 0));
+		return count > 0;
 	}
 
 }

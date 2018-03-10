@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.controller.response.CommonResponseObject;
@@ -31,7 +35,7 @@ import com.hgl.recruitms.service.DictionaryService;
  * Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.  
  */
 @RestController
-@RequestMapping("/{version}/common/dict")
+@RequestMapping("/admin")
 public class DictionaryController {
 	static Logger logger = LoggerFactory.getLogger(DictionaryController.class);
 
@@ -49,12 +53,13 @@ public class DictionaryController {
 	 * @return
 	 */
 	@RequestMapping(value = "/itemNo", method = { RequestMethod.GET })
-	public ResponseObject<?> getDictionaryList(String sItemNos) {
+	public ResponseObject<?> getDictionaryList(HttpServletResponse response,HttpServletRequest request,String sItemNos) {
 		List<String> itemNoList = new ArrayList<String>();
 		// 使用String工具解析sItemNos字符串.
 		if (StringUtils.hasText(sItemNos)) {
 			itemNoList = Arrays.asList(sItemNos.split(","));
 		}
+		request.getSession().setAttribute("itemNoList", itemNoList);
 		return builder.success(dictionaryService.getDictMapByItemCodes(itemNoList));
 	}
 
@@ -73,14 +78,15 @@ public class DictionaryController {
 	 * @return
 	 */
 	@RequestMapping(value = "/listDictionarys", method = { RequestMethod.GET })
-	public ResponseObject<?> listPageDictionary(@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
+	public ModelAndView listPageDictionary(HttpServletResponse response,HttpServletRequest request,@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
 			String sItemValue, String sItemCode) {
 		if (pageIndex == null || pageSize == null) {
-			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(), "参数" + pageIndex + "、" + pageSize + "错误！");
+			return new ModelAndView("errorPage.jsp");
 		}
 		PageInfo<Dictionary> pageInfo = dictionaryService.listDictionaryByNameAndCode(pageIndex, pageSize,
 				sItemValue, sItemCode);
-		return builder.success(pageInfo);
+		request.getSession().setAttribute("listDictionarys", pageInfo);
+		return new ModelAndView("dictionaryList.jsp");
 	}
 
 	/**
@@ -111,6 +117,7 @@ public class DictionaryController {
 		if (dictionary == null) {// 新增信息为空
 			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(), "请求对象出错（" + dictionary + "）");
 		}
+		dictionary.setcValidFlag("1");
 		boolean isSeccess = dictionaryService.insertDictInfo(dictionary);
 		if (isSeccess) {
 			return builder.success(dictionary);
@@ -126,7 +133,7 @@ public class DictionaryController {
 	 * @param dictionary
 	 * @return
 	 */
-	@RequestMapping(value = "/dictionary", method = { RequestMethod.PUT })
+	@RequestMapping(value = "/updateDictionary", method = { RequestMethod.POST })
 	public ResponseObject<?> updateDictInfo(@RequestBody Dictionary dictionary) {
 		logger.info("需要更新的字典信息：{}", dictionary.getnDictNo());
 		boolean isSuccess = dictionaryService.updateDictInfo(dictionary);
@@ -144,7 +151,7 @@ public class DictionaryController {
 	 * @param nDictNo
 	 * @return
 	 */
-	@RequestMapping(value = "/dictionary/{nDictNo}", method = { RequestMethod.POST })
+	@RequestMapping(value = "/delDictionary/{nDictNo}", method = { RequestMethod.POST })
 	public ResponseObject<?> delDictInfo(@PathVariable Integer nDictNo) {
 		logger.info("需要更新的字典信息：{}", nDictNo);
 		boolean isSuccess = dictionaryService.delDictInfo(nDictNo);

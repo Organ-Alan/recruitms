@@ -35,4 +35,36 @@ public class CommonControllerTest extends BaseSpringMvcTest {
                 .param("sStatus", ""));
 		
 	}
+	@Test
+	public void listAttach() throws Exception {
+		perform(
+                MockMvcRequestBuilders.get("/admin/common/attach/attachListPage")
+                .param("pageIndex", "1")
+                .param("pageSize", "10")
+                .param("sAttachName", "14,15")
+                .param("sFileType", "32")
+                .param("dCreateTime", ""));
+		
+	}
+	@Test
+	public void listallAttach() throws Exception {
+		perform(
+                MockMvcRequestBuilders.get("/admin/allAttachList")
+                .param("pageIndex", "3")
+                .param("pageSize", "6")
+                .param("sAttachName", "")
+                .param("sFileType", "")
+                .param("sAttachType", ""));
+		
+	}
+	@Test
+	public void audit() throws Exception {
+		perform(
+                MockMvcRequestBuilders.post("/admin/auditStatus")
+                .param("sAuditNoList", "14,15")
+                .param("nDeptNoList", "32")
+                .param("auditStatus", "2")
+                .param("sUsername", "admin"));
+		
+	}
 }

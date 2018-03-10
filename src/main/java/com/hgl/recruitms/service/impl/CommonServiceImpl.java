@@ -22,13 +22,14 @@ import com.hgl.recruitms.common.util.CompareFieldsUtil;
 import com.hgl.recruitms.dao.AccountMapper;
 import com.hgl.recruitms.dao.AuditInfoMapper;
 import com.hgl.recruitms.enums.AuditStatusEnum;
+import com.hgl.recruitms.enums.UserTypeEnum;
 import com.hgl.recruitms.model.Account;
 import com.hgl.recruitms.model.AccountExample;
 import com.hgl.recruitms.model.AuditInfo;
 import com.hgl.recruitms.model.AuditInfoExample;
+import com.hgl.recruitms.model.AuditInfoExample.Criteria;
 import com.hgl.recruitms.model.Dictionary;
 import com.hgl.recruitms.service.CommonService;
-import com.hgl.recruitms.service.DictionaryService;
 
 @Service
 public class CommonServiceImpl<T> implements CommonService<T> {
@@ -39,9 +40,6 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 	@Autowired
 	private AccountMapper accountMapper;
 
-	@Autowired
-	private DictionaryService dictionaryService;
-
 	/**
 	 * 校验账户登录.
 	 * 
@@ -49,18 +47,30 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 	 *      java.lang.String)
 	 */
 	@Override
-	public boolean checkLogin(String sUsername, String sPassword) {
+	public String checkLogin(String sUsername, String sPassword, String sUserType) {
+		String checkResult = "";
 		AccountExample example = new AccountExample();
 		example.createCriteria().andSUsernameEqualTo(sUsername);
 		List<Account> accounts = accountMapper.selectByExample(example);
 		// 校验返回结果是否为空
 		if (!CollectionUtils.isEmpty(accounts)) {
+			Account account = accounts.get(0);
 			// 判断密码是否正确
-			if (accounts.get(0).getsPassword().equals(sPassword)) {
-				return true;
+			if (account.getsPassword().equals(sPassword.trim()) && account.getsUserType().equals(sUserType)) {
+				if (sUserType.equals(UserTypeEnum.STUDENT.getCode())) {// 学生用户登录
+					checkResult = UserTypeEnum.STUDENT.getCode();
+				} else if (sUserType.equals(UserTypeEnum.D_ADMIN.getCode())) {// 系招生办登录
+					checkResult = UserTypeEnum.D_ADMIN.getCode();
+				} else if (sUserType.equals(UserTypeEnum.F_ADMIN.getCode())) { // 院招生办
+					checkResult = UserTypeEnum.F_ADMIN.getCode();
+				} else {
+					checkResult = "-1";
+				}
+			} else {
+				checkResult = "-1";
 			}
 		}
-		return false;
+		return checkResult;
 	}
 
 	/**
@@ -189,7 +199,7 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 	 */
 	@Override
 	public boolean updateAuditStatus(List<T> oldtList, List<Integer> nAuditNoList, AuditStatusEnum auditStatus,
-			List<Integer> nFundNoList,String sOperatorNo, String sOperator) {
+			List<Integer> nFundNoList, String sOperatorNo, String sOperator) {
 		// 审核状态为空
 		if (StringUtils.isEmpty(auditStatus)) {
 			throw new IllegalArgumentException("审核状态为空");
@@ -226,8 +236,6 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 		updateAuditStatus.setdOperateTime(new Date()); // 审核时间
 		updateAuditStatus.setsOperatorNo(sOperatorNo); // 审核人ID
 		updateAuditStatus.setsOperator(sOperator); // 审核人
-		auditInfoMapper.updateByExampleSelective(updateAuditStatus, example);
-
 		/***
 		 * 需求为： 1.同组数据（院系专业内部编码和业务类型一致），一条不通过，同组数据全部不通过 2.只有当同组数据全部通过后才进行院系专业信息更新操作
 		 * 3.修改内容通过一条更新一条 4.开始运作一条通过同组数据全部通过
@@ -269,9 +277,9 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 		// 修改数据为旧数据
 		if (!CollectionUtils.isEmpty(auditInfoList)) {
 			List<Integer> nAuditNos = auditInfoList.stream().map(AuditInfo::getnAuditNo).collect(Collectors.toList());
+			System.out.println(nAuditNos);
 			example = new AuditInfoExample();
 			example.createCriteria().andNAuditNoIn(nAuditNos);
-			updateAuditStatus = new AuditInfo();
 			auditInfoMapper.updateByExampleSelective(updateAuditStatus, example);
 		}
 
@@ -283,24 +291,29 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 	@Override
 	public PageInfo<AuditInfo> listAuditPage(Integer pageIndex, Integer pageSize, String sDeptCode, String sFullName,
 			String sStatus) {
-		PageHelper.startPage(pageIndex, pageSize);
-		List<AuditInfo> auditList = auditInfoMapper.listAuditPage(sDeptCode, sFullName, sStatus);
-
-		// 获取字典数据
-		String dictionary = "sRegion";
-		HashMap<String, List<Dictionary>> dictMap = dictionaryService.getDictMapByItemCodes(null);
-
-		// 遍历循环设置修改前，修改后返回显示值
-		for (AuditInfo auditInfo : auditList) {
-			String sModifyItemid = auditInfo.getsModifyItemid();
-
-			if (dictionary.contains(sModifyItemid) && dictMap != null && dictMap.size() > 0) { // 从字典转换
-				if ("sRegion".equals(sModifyItemid)) {
-					dictValueChange(auditInfo, dictMap, "College");
-				}
-			}
+		// 用于查询全部信息，判断是否需要查询全部的信息，包括已变更，已删除的产品信息
+		logger.info("查询新生信息列表：{},{},{},{},{}", pageIndex, pageSize, sDeptCode, sFullName, sStatus);
+		// 拼装条件
+		AuditInfoExample example = new AuditInfoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNAuditNoIsNotNull();
+		// 模糊查询
+		if (StringUtils.hasText(sDeptCode)) {
+			criteria.andSDeptCodeLike("%" + sDeptCode + "%");
 		}
-		return new PageInfo<>(auditList);
+		if (StringUtils.hasText(sFullName)) {
+			criteria.andSFullNameLike("%" + sFullName + "%");
+		}
+		if (StringUtils.hasText(sStatus)) {
+			criteria.andSStatusEqualTo(sStatus);
+		}
+		example.setOrderByClause(" D_OPERATE_TIME DESC ");
+		logger.debug("修改审核信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
+		// 调用静态方法，设置分页参数即可，随后的第一次查询的sql语句会自动被分页插件改装成带有分页查询的sql语句
+		PageHelper.startPage(pageIndex, pageSize);
+		// 获取满足条件的数据
+		List<AuditInfo> auditList = auditInfoMapper.selectByExample(example);
+		return new PageInfo<AuditInfo>(auditList);
 	}
 
 	public void dictValueChange(AuditInfo auditInfo, HashMap<String, List<Dictionary>> dictMap, String sItemCode) {
@@ -348,7 +361,7 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 		example.createCriteria().andSUsernameEqualTo(sUsername);
 		List<Account> accounts = accountMapper.selectByExample(example);
 		if (CollectionUtils.isEmpty(accounts)) {
-			throw new RuntimeException("查询账号信息失败！请联系管理员..."+sUsername);
+			throw new RuntimeException("查询账号信息失败！请联系管理员..." + sUsername);
 		}
 		return accounts.get(0);
 	}

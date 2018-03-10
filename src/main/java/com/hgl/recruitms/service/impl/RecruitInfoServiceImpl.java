@@ -3,7 +3,7 @@ package com.hgl.recruitms.service.impl;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -51,6 +51,7 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 	@Override
 	public boolean insertRecruitInfo(RecruitInfo recruitInfo) {
 		recruitInfo.setsStatus(AuditStatusEnum.AUDIT.getCode());
+		recruitInfo.setdOperateTime(new Date());
 		int count = recruitInfoMapper.insert(recruitInfo);
 		logger.info("新增新生信息:" + recruitInfo.toString() + "，结果：" + (count > 0));
 		return count > 0;
@@ -60,7 +61,7 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 	public RecruitInfo getRecruitInfo(Integer nStudentId) {
 		RecruitInfo recruitInfo = new RecruitInfo();
 		RecruitInfoExample recruitInfoExample = new RecruitInfoExample();
-		// 拼装条件（产品内部编码）
+		// 拼装条件（）
 		recruitInfoExample.createCriteria().andNStudentIdEqualTo(nStudentId);
 		List<RecruitInfo> recruitInfoList = recruitInfoMapper.selectByExample(recruitInfoExample);
 		if (recruitInfoList != null && recruitInfoList.size() > 0) {
@@ -68,10 +69,23 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 		}
 		return recruitInfo;
 	}
+	
+	@Override
+	public RecruitInfo getRecruitInfo(String sStudentName) {
+		RecruitInfoExample recruitInfoExample = new RecruitInfoExample();
+		// 拼装条件（）
+		recruitInfoExample.createCriteria().andNStudentIdIsNotNull().andSStudentNameEqualTo(sStudentName);
+		List<RecruitInfo> recruitInfoList = recruitInfoMapper.selectByExample(recruitInfoExample);
+		if (CollectionUtils.isEmpty(recruitInfoList)) {
+			throw new RuntimeException("无法获取信息，请联系管理员！");
+		}
+		return recruitInfoList.get(0);
+	}
 
 	@Override
 	public boolean updateRecruitInfo(RecruitInfo recruitInfo) {
 		// 通过主键学生信息编码进行修改
+		recruitInfo.setdOperateTime(new Date());
 		recruitInfo.setsStatus(AuditStatusEnum.AUDIT.getCode());
 		int count = recruitInfoMapper.updateByPrimaryKey(recruitInfo);
 		logger.debug("调用数据库修改学生信息信息的条数为::" + count);
@@ -119,7 +133,7 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 		if (StringUtils.hasText(sStatus)) {
 			criteria.andSStatusEqualTo(sStatus);
 		}
-		example.setOrderByClause(" S_GRADE ASC ");
+		example.setOrderByClause(" D_OPERATE_TIME desc ");
 		logger.debug("新生信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
 		// 调用静态方法，设置分页参数即可，随后的第一次查询的sql语句会自动被分页插件改装成带有分页查询的sql语句
 		PageHelper.startPage(pageIndex, pageSize);
@@ -146,14 +160,13 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 	 *      java.lang.String)
 	 */
 	@Override
-	public boolean updateInfoStatus(Integer[] nStudentIds, String action) {
+	public boolean updateInfoStatus(Integer nStudentId, String action) {
 		RecruitInfoExample example = new RecruitInfoExample();
 		Criteria criteria = example.createCriteria();
-		List<Integer> listnStudentIds = Arrays.asList(nStudentIds);
-		if (CollectionUtils.isEmpty(listnStudentIds)) {
+		if (nStudentId == null) {
 			return false;
 		}
-		criteria.andNStudentIdIn(listnStudentIds);
+		criteria.andNStudentIdEqualTo(nStudentId);
 		RecruitInfo recruitInfo = new RecruitInfo();
 		int count = 0;
 		// 审核通过
@@ -168,12 +181,12 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 			recruitInfo.setsStatus(AuditStatusEnum.REFUSE.getCode());
 			count = recruitInfoMapper.updateByExampleSelective(recruitInfo, example);
 		}
-		if (listnStudentIds.size() != count) {
+		if (count != 1) {
 			// 当批量删除数量，与受影响行数不符时，抛出异常，事务回滚
-			logger.info("批量审核失败,审核数量与需要审核数量不符：" + listnStudentIds + "  数量为" + count);
+			logger.info("批量审核失败,审核数量与需要审核数量不符：" + count + "  数量为" + count);
 			throw new IndexOutOfBoundsException("批量审核失败");
 		}
-		logger.debug("批量审核：" + listnStudentIds.toString() + "新生信息，结果：" + (count > 0));
+		logger.debug("批量审核：" + nStudentId + "新生信息，结果：" + (count > 0));
 		return count > 0;
 	}
 

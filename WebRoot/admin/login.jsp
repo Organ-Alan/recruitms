@@ -60,6 +60,14 @@
 								<input type="password" class="form-control" name="sPassword"
 									id="sPassword" value="111111" placeholder="Password">
 							</div>
+							<div class="form-group">
+								<label class="control-label sr-only">用户身份</label>
+								<select class="form-control" id="sUserType" name="sUserType">
+										<option value="1">学生</option>
+										<option value="2">系招生办</option>
+										<option value="3">院招生办</option>
+									</select>
+							</div>
 							<div class="form-group clearfix">
 								<label class="fancy-checkbox element-left"> <input
 									type="checkbox"> <span>Remember me</span>
@@ -67,10 +75,6 @@
 							</div>
 							<button type="submit" class="btn btn-primary btn-lg btn-block"
 								id="login">登录</button>
-							<div class="bottom">
-								<span class="helper-text"><i class="fa fa-lock"></i> <a
-									href="#">Forgot password?</a></span>
-							</div>
 						</div>
 					</div>
 					<div class="right">
@@ -123,6 +127,7 @@
 				function(e) {
 					var userName = $.trim($('#sUsername').val());
 					var password = $.trim($('#sPassword').val());
+					var userID = $.trim($('#sUserType').val());
 					//判断用户名是否为空
 					if (userName == "") {
 						$('#checkUsername').click();
@@ -136,18 +141,28 @@
 					}
 					$.ajax({
 						type : "post",
-						url : "/recruitms/v1/common/login?token=1&sUsername="
-								+ userName + "&sPassword=" + password,
+						url : "/recruitms/admin/login?sUsername="
+								+ userName + "&sPassword=" + password+"&sUserType="+userID,
 						/* data : {
 							userName : userName,
 							password : password
 						}, */
 						dataType : 'json',
 						success : function(resp) {
+							
 							if (resp.code == 0) {
-								//将token存在本地存储，然后跳转到主页面
-								localStorage.setItem('token', resp.data.token);
-								location.href = "index.jsp";
+								if (resp.data.checkRerult == "1") {
+									//将token存在本地存储，然后跳转到主页面
+									
+									localStorage.setItem('token', resp.data.token);
+									localStorage.setItem('username',resp.data.UserID)
+									location.href = "/recruitms/student/index.jsp";
+								}
+								if (resp.data.checkRerult == "2") {
+									//将token存在本地存储，然后跳转到主页面
+									localStorage.setItem('token', resp.data.token);
+									location.href = "/recruitms/admin/index.jsp";
+								}
 							}else{
 								$('#checkLogin').click();
 								$('#checkLogin').mouseover();

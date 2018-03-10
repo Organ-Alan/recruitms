@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageInfo;
 import com.hgl.recruitms.common.controller.response.ErrorEnum;
 import com.hgl.recruitms.common.util.ExportUtil;
+import com.hgl.recruitms.common.util.JsonUtil;
 import com.hgl.recruitms.common.web.restful.response.CommonResponseBuilder;
 import com.hgl.recruitms.common.web.restful.response.ResponseObject;
 import com.hgl.recruitms.enums.TBHeaderEnum;
@@ -34,7 +36,7 @@ import com.hgl.recruitms.service.StudentScoreService;
  * @version Copyright (c) 2018, 黄光亮毕业设计----All Rights Reserved.
  */
 @RestController
-@RequestMapping("/{version}/score")
+@RequestMapping("/admin")
 public class ScoreInfoController {
 	static Logger logger = LoggerFactory.getLogger(ScoreInfoController.class);
 	@Autowired
@@ -60,14 +62,17 @@ public class ScoreInfoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/listScoreInfos", method = { RequestMethod.GET })
-	public ResponseObject<?> listPageScoreInfo(@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
+	public ModelAndView listPageScoreInfo(HttpServletResponse response,HttpServletRequest request,@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
 			String sStudentNo, String sStudentName, String sSubjectType, String sTotalScore) {
 		if (pageIndex == null || pageSize == null) {
-			return builder.error(ErrorEnum.IllegalArgument.getErrorCode(), "参数" + pageIndex + "、" + pageSize + "错误！");
+			return new ModelAndView("errorPage.jsp");
 		}
+		request.getSession().setAttribute("listScoreInfos", null);
 		PageInfo<Score> pageInfo = scoreInfoService.listScores(pageIndex, pageSize, sStudentNo, sStudentName,
 				sSubjectType, sTotalScore);
-		return builder.success(pageInfo);
+		request.getSession().setAttribute("listScoreInfos", pageInfo);
+		logger.debug(JsonUtil.serialize(pageInfo));
+		return new ModelAndView("studentScoreList.jsp");
 	}
 
 	/**
@@ -113,7 +118,7 @@ public class ScoreInfoController {
 	 * @param scoreInfo
 	 * @return
 	 */
-	@RequestMapping(value = "scoreInfo", method = { RequestMethod.PUT })
+	@RequestMapping(value = "updateScoreInfo", method = { RequestMethod.POST })
 	public ResponseObject<?> updateScoreInfo(@RequestBody Score scoreInfo) {
 		logger.debug("更新内容为：{}" + scoreInfo.toString());
 		boolean flag = scoreInfoService.updateScore(scoreInfo);
@@ -121,6 +126,23 @@ public class ScoreInfoController {
 			return builder.error(-1, "更改出错！");
 		}
 		return builder.success(scoreInfo);
+	}
+	
+	/**
+	 * updateScoreInfo:删除学生成绩信息 <br/>
+	 * 
+	 * @author huanggl
+	 * @param scoreInfo
+	 * @return
+	 */
+	@RequestMapping(value = "delScoreInfo", method = { RequestMethod.POST })
+	public ResponseObject<?> delScoreInfo(@RequestParam Integer nStudentId) {
+		logger.debug("删除内容为：{}" + nStudentId);
+		boolean flag = scoreInfoService.delScore(nStudentId);
+		if (!flag) {
+			return builder.error(-1, "删除出错！");
+		}
+		return builder.success();
 	}
 
 	@RequestMapping(value = "/export/scoreInfoList", method = { RequestMethod.GET })
