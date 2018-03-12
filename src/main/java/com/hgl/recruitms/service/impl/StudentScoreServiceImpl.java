@@ -81,7 +81,7 @@ public class StudentScoreServiceImpl implements StudentScoreService {
 				+ studentScore.getDbMath();
 		studentScore.setsTotalScore(String.valueOf(result));
 		logger.debug(String.valueOf(result));
-		int count = scoreMapper.updateByPrimaryKey(studentScore);
+		int count = scoreMapper.updateByPrimaryKeySelective(studentScore);
 		// 当修改成绩信息信息失败时
 		if (count < 1) {
 			logger.error("修改基础信息失败,修改基础信息数据为：" + studentScore.toString() + "，条件为:" + studentScore.getnStudentId());
@@ -99,10 +99,9 @@ public class StudentScoreServiceImpl implements StudentScoreService {
 	 */
 	@Override
 	public PageInfo<Score> listScores(Integer pageIndex, Integer pageSize, String sStudentNo, String sStudentName,
-			String sSubjectType, String sTotalScore) {
+			String sSubjectType) {
 		// 用于查询全部信息，判断是否需要查询全部的信息，包括已变更，已删除的产品信息
-		logger.info("查询成绩信息列表：{},{},{},{},{},{},{},{}", pageIndex, pageSize, sStudentNo, sStudentName, sSubjectType,
-				sTotalScore);
+		logger.info("查询成绩信息列表：{},{},{},{},{},{},{},{}", pageIndex, pageSize, sStudentNo, sStudentName, sSubjectType);
 		// 拼装条件
 		ScoreExample example = new ScoreExample();
 		Criteria criteria = example.createCriteria();
@@ -111,8 +110,11 @@ public class StudentScoreServiceImpl implements StudentScoreService {
 		if (StringUtils.hasText(sStudentNo)) {
 			criteria.andSStudentNoLike("%" + sStudentNo + "%");
 		}
-		if (StringUtils.hasText(sTotalScore)) {
-			criteria.andSTotalScoreGreaterThanOrEqualTo(sTotalScore);
+		if (StringUtils.hasText(sStudentName)) {
+			criteria.andSStudentNameLike("%" + sStudentName + "%");
+		}
+		if (StringUtils.hasText(sSubjectType)) {
+			criteria.andSSubjectTypeLike("%" + sSubjectType + "%");
 		}
 		example.setOrderByClause(" S_TOTAL_SCORE,DB_SCORE,DB_CHINSES,DB_ENGLISH,DB_MATH ASC ");
 		logger.debug("成绩信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
@@ -139,8 +141,7 @@ public class StudentScoreServiceImpl implements StudentScoreService {
 		}
 		table.add(line);
 
-		PageInfo<Score> pageInfo = listScores(0, 0, sStudentNo.trim(), sStudentName.trim(), sSubjectType.trim(),
-				sTotalScore);
+		PageInfo<Score> pageInfo = listScores(0, 0, sStudentNo.trim(), sStudentName.trim(), sSubjectType.trim());
 		List<Score> list = pageInfo.getList();
 		if (list != null && list.size() > 0) {
 			for (Score studentScore : list) {

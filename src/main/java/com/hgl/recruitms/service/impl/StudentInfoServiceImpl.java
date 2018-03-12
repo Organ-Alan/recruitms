@@ -65,7 +65,7 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	@Override
 	public boolean updateStudentInfo(StudentInfo studentInfo) {
 		// 通过主键学生信息编码进行修改
-		int count = studentInfoMapper.updateByPrimaryKey(studentInfo);
+		int count = studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
 		logger.debug("调用数据库修改学生信息信息的条数为::" + count);
 		// 当修改学生信息信息失败时
 		if (count != 1) {
@@ -84,10 +84,10 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	 */
 	@Override
 	public PageInfo<StudentInfo> listStudentInfos(Integer pageIndex, Integer pageSize, String sCandidateNum,
-			String sStudentName, String sNativePlace, String sEnrolMajor, String sDataFlag) {
+			String sStudentName, String sNativePlace, String sEnrolMajor, String sNoticeFlag) {
 		// 用于查询全部信息，判断是否需要查询全部的信息，包括已变更，已删除的产品信息
 		logger.info("查询考生信息列表：{},{},{},{},{},{},{},{}", pageIndex, pageSize, sCandidateNum, sStudentName, sNativePlace,
-				sEnrolMajor, sDataFlag);
+				sEnrolMajor, sNoticeFlag);
 		// 拼装条件
 		StudentInfoExample example = new StudentInfoExample();
 		Criteria criteria = example.createCriteria();
@@ -105,8 +105,8 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 		if (StringUtils.hasText(sEnrolMajor)) {
 			criteria.andSEnrolMajorLike("%" + sEnrolMajor + "%");
 		}
-		if (StringUtils.hasText(sDataFlag)) {
-			criteria.andSDataFlagEqualTo(sDataFlag);
+		if (StringUtils.hasText(sNoticeFlag)) {
+			criteria.andSNoticeFlagEqualTo(sNoticeFlag);
 		}
 		logger.debug("考生信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);
 		// 调用静态方法，设置分页参数即可，随后的第一次查询的sql语句会自动被分页插件改装成带有分页查询的sql语句

@@ -63,13 +63,13 @@ public class ScoreInfoController {
 	 */
 	@RequestMapping(value = "/listScoreInfos", method = { RequestMethod.GET })
 	public ModelAndView listPageScoreInfo(HttpServletResponse response,HttpServletRequest request,@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
-			String sStudentNo, String sStudentName, String sSubjectType, String sTotalScore) {
+			String sStudentNo, String sStudentName, String sSubjectType) {
 		if (pageIndex == null || pageSize == null) {
 			return new ModelAndView("errorPage.jsp");
 		}
 		request.getSession().setAttribute("listScoreInfos", null);
 		PageInfo<Score> pageInfo = scoreInfoService.listScores(pageIndex, pageSize, sStudentNo, sStudentName,
-				sSubjectType, sTotalScore);
+				sSubjectType);
 		request.getSession().setAttribute("listScoreInfos", pageInfo);
 		logger.debug(JsonUtil.serialize(pageInfo));
 		return new ModelAndView("studentScoreList.jsp");

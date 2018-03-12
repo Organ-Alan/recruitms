@@ -361,10 +361,10 @@
 								<label  class="col-sm-3 control-label">政治面貌：</label>
 								<div class="col-sm-3">
 									<select class="form-control" id="sPolitiis" name="sPolitiis">
+										<option value="qz">群众</option>
 										<option value="zgdy">中共党员</option>
 										<option value="zgybdy">中共预备党员</option>
 										<option value="gqty">共青团员</option>
-										<option value="qz">群众</option>
 									</select>
 								</div>
 							</div>
@@ -604,7 +604,7 @@
 										});
 								$.ajax({
 									type : "get",
-									url : "/recruitms/admin/listStudentInfosManage?pageIndex=1&pageSize=6&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag=2",
+									url : "/recruitms/admin/listStudentInfosManage?pageIndex=1&pageSize=6&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag",
 									dataType : 'json',
 									async : true,
 									success : function(resp) {

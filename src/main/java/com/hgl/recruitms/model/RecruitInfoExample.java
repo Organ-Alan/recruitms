@@ -985,76 +985,6 @@ public class RecruitInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andSGradeIsNull() {
-            addCriterion("S_GRADE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeIsNotNull() {
-            addCriterion("S_GRADE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeEqualTo(String value) {
-            addCriterion("S_GRADE =", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeNotEqualTo(String value) {
-            addCriterion("S_GRADE <>", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeGreaterThan(String value) {
-            addCriterion("S_GRADE >", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeGreaterThanOrEqualTo(String value) {
-            addCriterion("S_GRADE >=", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeLessThan(String value) {
-            addCriterion("S_GRADE <", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeLessThanOrEqualTo(String value) {
-            addCriterion("S_GRADE <=", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeLike(String value) {
-            addCriterion("S_GRADE like", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeNotLike(String value) {
-            addCriterion("S_GRADE not like", value, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeIn(List<String> values) {
-            addCriterion("S_GRADE in", values, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeNotIn(List<String> values) {
-            addCriterion("S_GRADE not in", values, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeBetween(String value1, String value2) {
-            addCriterion("S_GRADE between", value1, value2, "sGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andSGradeNotBetween(String value1, String value2) {
-            addCriterion("S_GRADE not between", value1, value2, "sGrade");
-            return (Criteria) this;
-        }
-
         public Criteria andSRegisterFlagIsNull() {
             addCriterion("S_REGISTER_FLAG is null");
             return (Criteria) this;
@@ -1122,6 +1052,76 @@ public class RecruitInfoExample {
 
         public Criteria andSRegisterFlagNotBetween(String value1, String value2) {
             addCriterion("S_REGISTER_FLAG not between", value1, value2, "sRegisterFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeIsNull() {
+            addCriterion("S_GRADE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeIsNotNull() {
+            addCriterion("S_GRADE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeEqualTo(String value) {
+            addCriterion("S_GRADE =", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeNotEqualTo(String value) {
+            addCriterion("S_GRADE <>", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeGreaterThan(String value) {
+            addCriterion("S_GRADE >", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeGreaterThanOrEqualTo(String value) {
+            addCriterion("S_GRADE >=", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeLessThan(String value) {
+            addCriterion("S_GRADE <", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeLessThanOrEqualTo(String value) {
+            addCriterion("S_GRADE <=", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeLike(String value) {
+            addCriterion("S_GRADE like", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeNotLike(String value) {
+            addCriterion("S_GRADE not like", value, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeIn(List<String> values) {
+            addCriterion("S_GRADE in", values, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeNotIn(List<String> values) {
+            addCriterion("S_GRADE not in", values, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeBetween(String value1, String value2) {
+            addCriterion("S_GRADE between", value1, value2, "sGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSGradeNotBetween(String value1, String value2) {
+            addCriterion("S_GRADE not between", value1, value2, "sGrade");
             return (Criteria) this;
         }
 
@@ -1585,13 +1585,13 @@ public class RecruitInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andSGradeLikeInsensitive(String value) {
-            addCriterion("upper(S_GRADE) like", value.toUpperCase(), "sGrade");
+        public Criteria andSRegisterFlagLikeInsensitive(String value) {
+            addCriterion("upper(S_REGISTER_FLAG) like", value.toUpperCase(), "sRegisterFlag");
             return (Criteria) this;
         }
 
-        public Criteria andSRegisterFlagLikeInsensitive(String value) {
-            addCriterion("upper(S_REGISTER_FLAG) like", value.toUpperCase(), "sRegisterFlag");
+        public Criteria andSGradeLikeInsensitive(String value) {
+            addCriterion("upper(S_GRADE) like", value.toUpperCase(), "sGrade");
             return (Criteria) this;
         }
 

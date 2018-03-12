@@ -197,7 +197,7 @@
 													</c:forEach>
 
 											</select></label> <label class="form-inline">是否已发放:<select
-												id="sDataFlag" name="sDataFlag" class="form-control"
+												id="sNoticeFlag" name="sNoticeFlag" class="form-control"
 												style="width: 80px">
 													<option value="">全部</option>
 													<option value="1">未发放</option>
@@ -218,13 +218,14 @@
 										<thead>
 											<tr>
 												<th><input id="checkboxAll" type="checkbox"></th>
-												<th>准考证</th>
-												<th>姓名</th>
-												<th>年龄</th>
-												<th>报考专业</th>
-												<th>通讯地址</th>
-												<th>联系方式</th>
-												<th>是否已发放</th>
+												<th style="text-align: center;">准考证</th>
+												<th style="text-align: center;">姓名</th>
+												<th style="text-align: center;">年龄</th>
+												<th style="text-align: center;">报考专业</th>
+												<th style="text-align: center;">通讯地址</th>
+												<th style="text-align: center;">联系方式</th>
+												<th style="text-align: center;">是否已发放</th>
+												<th style="text-align: center;">发放操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -235,17 +236,17 @@
 												<tr>
 													<td><input id="checkBox" type="checkbox" name="che" /></td>
 													<td><a data-toggle="modal" data-target="#myModal">${studentInfo.sCandidateNum}</a></td>
-													<td>${studentInfo.sStudentName}</td>
-													<td>${studentInfo.nAge}</td>
-													<td>${studentInfo.sEnrolMajor}</td>
-													<td>${studentInfo.sAddress}</td>
-													<td>${studentInfo.sContact}</td>
-													<td>
-														<c:if test="${studentInfo.sDataFlag ==1}">已发放</c:if>
-														<c:if test="${studentInfo.sDataFlag ==2}">未发放</c:if>
+													<td style="text-align: center;">${studentInfo.sStudentName}</td>
+													<td style="text-align: center;">${studentInfo.nAge}</td>
+													<td style="text-align: center;">${studentInfo.sEnrolMajor}</td>
+													<td style="text-align: center;">${studentInfo.sAddress}</td>
+													<td style="text-align: center;">${studentInfo.sContact}</td>
+													<td style="text-align: center;">
+														<c:if test="${studentInfo.sNoticeFlag ==2}">已发放</c:if>
+														<c:if test="${studentInfo.sNoticeFlag ==1}">未发放</c:if>
 													</td>
 													<td  style="text-align: center;">
-													<c:if test="${studentInfo.sDataFlag ==2}">
+													<c:if test="${studentInfo.sNoticeFlag ==1}">
 													<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#sendNoticeFile" data-whatever="${studentInfo.nStudentId}">发放通知书</button>
 													</c:if>
 												</td>
@@ -269,12 +270,12 @@
 							                        2.首页，末页的逻辑：pn=1访问第一次，pn=${studentInfoList.pages}访问最后一页
 							                      -->
 												<li><a
-													href="/recruitms/admin/listStudentInfos?pageIndex=1&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag">首页</a>
+													href="/recruitms/admin/listStudentInfos?pageIndex=1&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sNoticeFlag">首页</a>
 												</li>
 												<!-- 如果还有前页就访问当前页码-1的页面， -->
 												<c:if test="${studentInfoList.hasPreviousPage}">
 													<li><a
-														href="/recruitms/admin/listStudentInfos?pageIndex=${studentInfoList.pageNum-1}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag"
+														href="/recruitms/admin/listStudentInfos?pageIndex=${studentInfoList.pageNum-1}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sNoticeFlag"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -286,19 +287,19 @@
 														</c:if>
 														<c:if test="${page_Nums!=studentInfoList.pageNum }">
 															<li><a
-																href="/recruitms/admin/listStudentInfos?pageIndex=${page_Nums}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag">${page_Nums}</a></li>
+																href="/recruitms/admin/listStudentInfos?pageIndex=${page_Nums}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sNoticeFlag">${page_Nums}</a></li>
 														</c:if>
 													</c:forEach>
 												</li>
 												<!-- 如果还有后页就访问当前页码+1的页面， -->
 												<c:if test="${studentInfoList.hasNextPage}">
 													<li><a
-														href="/recruitms/admin/listStudentInfos?pageIndex=${studentInfoList.pageNum+1}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag"
+														href="/recruitms/admin/listStudentInfos?pageIndex=${studentInfoList.pageNum+1}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sNoticeFlag"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
 												<li><a
-													href="/recruitms/admin/listStudentInfos?pageIndex=${studentInfoList.pages}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag">末页</a></li>
+													href="/recruitms/admin/listStudentInfos?pageIndex=${studentInfoList.pages}&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sNoticeFlag">末页</a></li>
 											</ul>
 											</nav>
 										</div>
@@ -470,7 +471,7 @@
 								
 										$.ajax({
 											type : "get",
-											url : "/recruitms/admin/listStudentInfos?pageIndex=1&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sDataFlag",
+											url : "/recruitms/admin/listStudentInfos?pageIndex=1&pageSize=8&sCandidateNum&sStudentName&sNativePlace&sEnrolMajor&sNoticeFlag",
 											dataType : 'json',
 											async : true,
 											success : function(resp) {
@@ -482,7 +483,7 @@
 										});
 							})
 
-			$('#').on('show.bs.modal', function(event) {
+			$('#sendNoticeFile').on('show.bs.modal', function(event) {
 				var button = $(event.relatedTarget) // Button that triggered the modal
 				var recipient = button.data('whatever') // Extract info from data-* attributes
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).

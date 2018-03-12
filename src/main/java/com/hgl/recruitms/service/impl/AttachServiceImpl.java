@@ -127,7 +127,7 @@ public class AttachServiceImpl implements AttachService {
 		attach.setsCreator(sCreator);
 		attach.setdCreateTime(new Date());
 		attach.setsCreatorNo(sCreatorNo);
-		String sPath = filePath + sepa + "_" + fileName;// 组装附件路径：文件格式 附件id+文件名称
+		String sPath = filePath + sepa +"_" + fileName;// 组装附件路径：文件格式 附件id+文件名称
 		// 保存文件到文件系统
 		logger.info("保存文件到文件系统:{}"+sPath);
 		FileOutputStream fos = new FileOutputStream(new File(sPath));
@@ -149,7 +149,7 @@ public class AttachServiceImpl implements AttachService {
 		if (sAttachType.equals("通知书")) {
 			StudentInfo studentInfo = new StudentInfo();
 			studentInfo.setnStudentId(nAttachNoOld);
-			studentInfo.setsDataFlag("2");
+			studentInfo.setsNoticeFlag("2");
 			studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
 		}
 		logger.info("上传文件成功！（{},{}）", attach, filePath);
@@ -330,7 +330,7 @@ public class AttachServiceImpl implements AttachService {
 
 	@Override
 	public PageInfo<Attach> getAttachListPage(@RequestParam int pageIndex, @RequestParam int pageSize,
-			String sAttachName, String sFileType,String sAttachType) {
+			String sAttachName, String sFileType,String sAttachType,String sStatus) {
 		// 用于查询全部信息，判断是否需要查询全部的信息
 		logger.info("查询附件信息列表：{},{},{},{},{}", pageIndex, pageSize, sAttachName, sFileType);
 		// 拼装条件
@@ -347,6 +347,9 @@ public class AttachServiceImpl implements AttachService {
 		}
 		if (StringUtils.hasText(sAttachType)) {
 			criteria.andSAttachTypeLike("%" + sAttachType + "%");
+		}
+		if (StringUtils.hasText(sStatus)) {
+			criteria.andSStatusLike("%" + sStatus + "%");
 		}
 		example.setOrderByClause(" D_CREATE_TIME ASC ");
 		logger.debug("附件信息列表当前显示第" + pageIndex + "页且当前页面展示的条数" + pageSize);

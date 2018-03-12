@@ -190,6 +190,13 @@
 												<input type="text" class="form-control" id="sFileType"
 												name="sFileType" />
 											</label> 
+											<label class="form-inline" style="margin-left: 10px;">文件状态:
+												<select class="form-control" id="sStatus" name="sStatus"
+												style="width: 100px">
+													<option value="1">正常</option>
+													<option value="2">删除</option>
+											</select>
+											</label>
 											<label class="form-inline">附件类型：
 												<input type="text" class="form-control" id="sAttachType"
 												name="sAttachType" style="width: 120px;"/>
@@ -229,15 +236,15 @@
 											</tr>
 											<c:forEach items="${attachListPages.list}" var="attachList">
 												<tr>
-													<td>${attachList.sAttachName}</td>
-													<td>${attachList.sAttachType}</td>
-													<td>V${attachList.nVersion}.0</td>
-													<td>
+													<td style="text-align: center;">${attachList.sAttachName}</td>
+													<td style="text-align: center;">${attachList.sAttachType}</td>
+													<td style="text-align: center;">V${attachList.nVersion}</td>
+													<td style="text-align: center;">
 														<c:if test="${attachList.sStatus ==1}">有效</c:if>
 														<c:if test="${attachList.sStatus ==2}">无效</c:if>
 													</td>
-													<td>${attachList.sFileType}</td>
-													<td>${attachList.dCreateTime}</td>
+													<td style="text-align: center;">${attachList.sFileType}</td>
+													<td style="text-align: center;">${attachList.dCreateTime}</td>
 													<td style="text-align: center;">
 														<button type="button" class="btn btn-primary btn-xs"
 															onclick="window.location.href='/recruitms/admin/file/${attachList.nAttachNo}'"
@@ -263,12 +270,12 @@
 							                        2.首页，末页的逻辑：pn=1访问第一次，pn=${attachListPages.pages}访问最后一页
 							                      -->
 												<li><a
-													href="/recruitms/admin/allAttachList?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType">首页</a>
+													href="/recruitms/admin/allAttachList?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType&sStatus">首页</a>
 												</li>
 												<!-- 如果还有前页就访问当前页码-1的页面， -->
 												<c:if test="${attachListPages.hasPreviousPage}">
 													<li><a
-														href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pageNum-1}&pageSize=6&sAttachName&sFileType&sAttachType"
+														href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pageNum-1}&pageSize=6&sAttachName&sFileType&sAttachType&sStatus"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -281,19 +288,19 @@
 														</c:if>
 														<c:if test="${page_Nums!=attachListPages.pageNum }">
 															<li><a
-																href="/recruitms/admin/allAttachList?pageIndex=${page_Nums}&pageSize=6&sAttachName&sFileType&sAttachType">${page_Nums}</a></li>
+																href="/recruitms/admin/allAttachList?pageIndex=${page_Nums}&pageSize=6&sAttachName&sFileType&sAttachType&sStatus">${page_Nums}</a></li>
 														</c:if>
 													</c:forEach>
 												</li>
 												<!-- 如果还有后页就访问当前页码+1的页面， -->
 												<c:if test="${attachListPages.hasNextPage}">
 													<li><a
-														href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pageNum+1}&pageSize=6&sAttachName&sFileType&sAttachType"
+														href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pageNum+1}&pageSize=6&sAttachName&sFileType&sAttachType&sStatus"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
 												<li><a
-													href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pages}&pageSize=6&sAttachName&sFileType&sAttachType">末页</a></li>
+													href="/recruitms/admin/allAttachList?pageIndex=${attachListPages.pages}&pageSize=6&sAttachName&sFileType&sAttachType&sStatus">末页</a></li>
 											</ul>
 											</nav>
 										</div>
@@ -378,7 +385,7 @@
 
 								$.ajax({
 											type : "get",
-											url : "/recruitms/admin/allAttachList?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType",
+											url : "/recruitms/admin/allAttachList?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType&sStatus",
 											dataType : 'json',
 											async : true,
 											success : function(resp) {

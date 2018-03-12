@@ -126,7 +126,7 @@ public interface AttachService {
 	 * @param dCreateTime 创建时间
 	 * @return
 	 */
-	PageInfo<Attach> getAttachListPage(int pageIndex, int pageSize, String sAttachName, String sFileType,String sAttachType);
+	PageInfo<Attach> getAttachListPage(int pageIndex, int pageSize, String sAttachName, String sFileType,String sAttachType,String sStatus);
 
 	/**
 	 * updateAttachFileName:修改附件名称. <br/>

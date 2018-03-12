@@ -364,7 +364,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary"
+							<button type="button" class="btn btn-danger"
 								onclick="failPass()">不通过</button>
 						</div>
 					</div>

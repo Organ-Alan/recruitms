@@ -85,9 +85,17 @@ public class RecruitInfoServiceImpl implements RecruitInfoService {
 	@Override
 	public boolean updateRecruitInfo(RecruitInfo recruitInfo) {
 		// 通过主键学生信息编码进行修改
+		int count = 0;
+		//如果该学生未被审核通过就交学费，就提示审核未通过，不允许交学费。
+		RecruitInfo recruitInfoCpm = recruitInfoMapper.selectByPrimaryKey(recruitInfo.getnStudentId());
+		if (!recruitInfo.getsPayFlag().equals("")) {
+			if (recruitInfoCpm.getsStatus().equals(AuditStatusEnum.REFUSE.getCode())) {
+				throw new RuntimeException("修改基础信息失败，该学生未被审核，不允许缴费！");
+			}
+		}
 		recruitInfo.setdOperateTime(new Date());
 		recruitInfo.setsStatus(AuditStatusEnum.AUDIT.getCode());
-		int count = recruitInfoMapper.updateByPrimaryKey(recruitInfo);
+		count = recruitInfoMapper.updateByPrimaryKeySelective(recruitInfo);
 		logger.debug("调用数据库修改学生信息信息的条数为::" + count);
 		// 当修改学生信息信息失败时
 		if (count < 1) {

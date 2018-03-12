@@ -75,7 +75,7 @@ public class AccountServiceImpl implements AccountInfoService {
 	@Override
 	public boolean updateAccountInfo(Account account) {
 		// 通过主键账户信息编码进行修改
-		int count = accountMapper.updateByPrimaryKey(account);
+		int count = accountMapper.updateByPrimaryKeySelective(account);
 		logger.debug("调用数据库修改账户信息信息的条数为::" + count);
 		// 当修改账户信息信息失败时
 		if (count != 1) {

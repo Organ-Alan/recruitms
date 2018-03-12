@@ -43,4 +43,12 @@ public class RecruitInfoServiceTest extends BaseSpringContextTest {
 		PageInfo<RecruitInfo> dictionarys = recruitInfoService.listRecruitInfos(pageIndex, pageSize, sStudentNo, sStudentName, sAdmitedMajor, sGrade, sPayFlag, sStatus);
 		System.out.println(JsonUtil.serialize(dictionarys));
 	}
+	@Test
+	public void update() {
+		RecruitInfo recruitInfo = new RecruitInfo();
+		recruitInfo.setnStudentId(11001);
+		recruitInfo.setsPayFlag("1");
+		boolean result = recruitInfoService.updateRecruitInfo(recruitInfo);
+		System.out.println(result);
+	}
 }

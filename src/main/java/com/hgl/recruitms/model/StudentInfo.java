@@ -17,6 +17,8 @@ public class StudentInfo {
 
     private String sContact;
 
+    private String sNoticeFlag;
+
     private String sEmail;
 
     private String sOtherCtact;
@@ -131,6 +133,19 @@ public class StudentInfo {
         this.sContact = sContact == null ? null : sContact.trim();
     }
 
+    public String getsNoticeFlag() {
+        return sNoticeFlag;
+    }
+
+    public StudentInfo withsNoticeFlag(String sNoticeFlag) {
+        this.setsNoticeFlag(sNoticeFlag);
+        return this;
+    }
+
+    public void setsNoticeFlag(String sNoticeFlag) {
+        this.sNoticeFlag = sNoticeFlag == null ? null : sNoticeFlag.trim();
+    }
+
     public String getsEmail() {
         return sEmail;
     }
@@ -210,6 +225,7 @@ public class StudentInfo {
         sb.append(", sNativePlace=").append(sNativePlace);
         sb.append(", sAddress=").append(sAddress);
         sb.append(", sContact=").append(sContact);
+        sb.append(", sNoticeFlag=").append(sNoticeFlag);
         sb.append(", sEmail=").append(sEmail);
         sb.append(", sOtherCtact=").append(sOtherCtact);
         sb.append(", sEnrolMajor=").append(sEnrolMajor);

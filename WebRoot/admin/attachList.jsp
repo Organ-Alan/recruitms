@@ -234,14 +234,14 @@
 											</tr>
 											<c:forEach items="${attachListPage.list}" var="attachList">
 												<tr>
-													<td>${attachList.sAttachName}</td>
-													<td>${attachList.sAttachType}</td>
-													<td>${attachList.nVersion}</td>
-													<td><c:if test="${attachList.sStatus ==1}">有效</c:if>
+													<td style="text-align: center;">${attachList.sAttachName}</td>
+													<td style="text-align: center;">${attachList.sAttachType}</td>
+													<td style="text-align: center;">V${attachList.nVersion}</td>
+													<td style="text-align: center;"><c:if test="${attachList.sStatus ==1}">有效</c:if>
 														<c:if test="${attachList.sStatus ==2}">无效</c:if>
 														</td>
-													<td>${attachList.sFileType}</td>
-													<td>${attachList.dCreateTime}</td>
+													<td style="text-align: center;">${attachList.sFileType}</td>
+													<td style="text-align: center;">${attachList.dCreateTime}</td>
 													<td style="text-align: center;">
 														<button type="button" class="btn btn-primary btn-xs"
 															onclick="window.location.href='/recruitms/admin/file/${attachList.nAttachNo}'"
@@ -267,12 +267,12 @@
 							                        2.首页，末页的逻辑：pn=1访问第一次，pn=${attachListPage.pages}访问最后一页
 							                      -->
 												<li><a
-													href="/recruitms/admin/attachListPage?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传">首页</a>
+													href="/recruitms/admin/attachListPage?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传&sStatus">首页</a>
 												</li>
 												<!-- 如果还有前页就访问当前页码-1的页面， -->
 												<c:if test="${attachListPage.hasPreviousPage}">
 													<li><a
-														href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pageNum-1}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传"
+														href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pageNum-1}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传&sStatus"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -285,19 +285,19 @@
 														</c:if>
 														<c:if test="${page_Nums!=attachListPage.pageNum }">
 															<li><a
-																href="/recruitms/admin/attachListPage?pageIndex=${page_Nums}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传">${page_Nums}</a></li>
+																href="/recruitms/admin/attachListPage?pageIndex=${page_Nums}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传&sStatus">${page_Nums}</a></li>
 														</c:if>
 													</c:forEach>
 												</li>
 												<!-- 如果还有后页就访问当前页码+1的页面， -->
 												<c:if test="${attachListPage.hasNextPage}">
 													<li><a
-														href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pageNum+1}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传"
+														href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pageNum+1}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传&sStatus"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
 												<li><a
-													href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pages}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传">末页</a></li>
+													href="/recruitms/admin/attachListPage?pageIndex=${attachListPage.pages}&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传&sStatus">末页</a></li>
 											</ul>
 											</nav>
 										</div>
@@ -382,7 +382,7 @@
 
 								$.ajax({
 											type : "get",
-											url : "/recruitms/admin/attachListPage?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传",
+											url : "/recruitms/admin/attachListPage?pageIndex=1&pageSize=6&sAttachName&sFileType&sAttachType=学院宣传&sStatus",
 											dataType : 'json',
 											async : true,
 											success : function(resp) {

@@ -29,9 +29,9 @@ public class RecruitInfo {
 
     private Integer sAdmitedNo;
 
-    private String sGrade;
-
     private String sRegisterFlag;
+
+    private String sGrade;
 
     private String sPolitiis;
 
@@ -214,19 +214,6 @@ public class RecruitInfo {
         this.sAdmitedNo = sAdmitedNo;
     }
 
-    public String getsGrade() {
-        return sGrade;
-    }
-
-    public RecruitInfo withsGrade(String sGrade) {
-        this.setsGrade(sGrade);
-        return this;
-    }
-
-    public void setsGrade(String sGrade) {
-        this.sGrade = sGrade == null ? null : sGrade.trim();
-    }
-
     public String getsRegisterFlag() {
         return sRegisterFlag;
     }
@@ -238,6 +225,19 @@ public class RecruitInfo {
 
     public void setsRegisterFlag(String sRegisterFlag) {
         this.sRegisterFlag = sRegisterFlag == null ? null : sRegisterFlag.trim();
+    }
+
+    public String getsGrade() {
+        return sGrade;
+    }
+
+    public RecruitInfo withsGrade(String sGrade) {
+        this.setsGrade(sGrade);
+        return this;
+    }
+
+    public void setsGrade(String sGrade) {
+        this.sGrade = sGrade == null ? null : sGrade.trim();
     }
 
     public String getsPolitiis() {
@@ -337,8 +337,8 @@ public class RecruitInfo {
         sb.append(", sEnrolMajor=").append(sEnrolMajor);
         sb.append(", sAdmitedMajor=").append(sAdmitedMajor);
         sb.append(", sAdmitedNo=").append(sAdmitedNo);
-        sb.append(", sGrade=").append(sGrade);
         sb.append(", sRegisterFlag=").append(sRegisterFlag);
+        sb.append(", sGrade=").append(sGrade);
         sb.append(", sPolitiis=").append(sPolitiis);
         sb.append(", sPayFlag=").append(sPayFlag);
         sb.append(", sOperator=").append(sOperator);

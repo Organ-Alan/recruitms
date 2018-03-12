@@ -205,12 +205,14 @@
 											</select></label> <label class="form-inline">审核状态:<select
 												class="form-control" id="sStatus" name="sStatus"
 												style="width: 100px">
+													<option value="">全部</option>
 													<option value="1">待审核</option>
 													<option value="2">审核通过</option>
 													<option value="3">审核不通过</option>
 											</select></label> <label class="form-inline">年级:<select
 												class="form-control" id="sGrade" name="sGrade"
-												style="width: 70px">
+												style="width: 120px">
+													<option value="">全部</option>
 													<option value="2014">14级</option>
 													<option value="2015">15级</option>
 													<option value="2016">16级</option>
@@ -223,7 +225,7 @@
 													data-target="#myModal">新增</button></label> <label
 												class="form-inline"><button class="btn btn-primary"
 													type="button"
-													onclick="window.location.href='/recruitms/admin/export/recruitInfoList?sStudentNo&sStudentName&sAdmitedMajor&sGrade&sPayFlag&sStatus&nStudentIdList='">
+													onclick="window.location.href='/recruitms/admin/export/recruitInfoList?sStudentNo&sStudentName&sAdmitedMajor&sGrade&sPayFlag&sStatus=2&nStudentIdList='">
 导出</button></label>
 											<label class="form-inline"><button
 													class="btn btn-primary" type="submit"
@@ -388,7 +390,13 @@
 							<div class="form-group">
 								<label  class="col-sm-3 control-label">政治面貌：</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" id="sPolitiis1" name="sPolitiis" placeholder="请输入政治面貌">
+										<select
+										id="sPolitiis1" name="sPolitiis" class="form-control">
+											<option value="qz">群众</option>
+											<option value="gqty">共青团员</option>
+											<option value="zgybdy">中共预备党员</option>
+											<option value="zgdy">中共党员</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -410,7 +418,7 @@
 								<div class="col-sm-6">
 									<select
 										id="sPayFlag1" name="sPayFlag" class="form-control"
-										style="width: 80px" value="">
+										style="width: 200px" value="">
 											<option value="">全部</option>
 											<option value="0">未缴费</option>
 											<option value="1">已缴费</option>
@@ -419,23 +427,11 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label  class="col-sm-3 control-label">审核状态:</label>
-								<div class="col-sm-6">
-									<select
-										class="form-control" id="sStatus1" name="sStatus"
-										style="width: 100px" value="">
-											<option value="1">待审核</option>
-											<option value="2">审核通过</option>
-											<option value="3">审核不通过</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
 								<label  class="col-sm-3 control-label">年级：</label>
 								<div class="col-sm-6">
 									<select
 										class="form-control" id="sGrade1" name="sGrade"
-										style="width: 70px" value="">
+										style="width: 200px" value="">
 											<option value="2014">14级</option>
 											<option value="2015">15级</option>
 											<option value="2016">16级</option>
@@ -473,13 +469,7 @@
 								<label  class="col-sm-3 control-label">学生姓名：</label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control" id="" id="sStudentName"
-										name="sStudentName" placeholder="请输入专业全称">
-								</div>
-							</div>
-							<div class="form-group">
-								<label  class="col-sm-3 control-label">专业简称：</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control" id="" placeholder="请输入专业简称">
+										name="sStudentName" placeholder="请输入学生姓名">
 								</div>
 							</div>
 							<div class="form-group">
@@ -509,7 +499,13 @@
 							<div class="form-group">
 								<label  class="col-sm-3 control-label">政治面貌：</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" id="sPolitiis" name="sPolitiis" placeholder="请输入政治面貌">
+									<select
+										id="sPolitiis" name="sPolitiis" class="form-control" >
+											<option value="qz">群众</option>
+											<option value="gqty">共青团员</option>
+											<option value="zgybdy">中共预备党员</option>
+											<option value="zgdy">中共党员</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -691,7 +687,6 @@
 							modal.find('#sPolitiis1').val(result.data.sPolitiis);
 							modal.find('#sAdmitedMajor1').val(result.data.sAdmitedMajor);
 							modal.find('#sPayFlag1').val(result.data.sPayFlag);
-							modal.find('#sStatus1').val(result.data.sStatus);
 							modal.find('#sGrade1').val(result.data.sGrade);
 						},
 						error : function() {
@@ -717,7 +712,7 @@
 						window.location.reload() = "recruitInfoList.jsp";
 					},
 					error : function() {
-						
+						alert("修改基础信息失败，该学生未被审核，不允许缴费！");
 					}
 				});
 			}

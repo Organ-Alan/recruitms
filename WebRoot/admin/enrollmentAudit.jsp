@@ -211,7 +211,7 @@
 									<br>
 									<!-- end search -->
 									<!-- TABLE HOVER -->
-									<table class="table table-hover">
+									<table class="table table-hover" style="table-layout: fixed;">
 										<thead>
 											<tr>
 												<th>学号</th>
@@ -237,7 +237,9 @@
 													<td>${recruitInfo.sStudentName}</td>
 													<td>${recruitInfo.nAge}</td>
 													<td>${recruitInfo.sAdmitedMajor}</td>
-													<td>${recruitInfo.sAddress}</td>
+													<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+														data-toggle="tooltip" data-placement="right"
+														title="${recruitInfo.sAddress}">${recruitInfo.sAddress}</td>
 													<td>${recruitInfo.sContact}</td>
 													<td>${recruitInfo.sGrade}</td>
 													<td>
@@ -246,17 +248,19 @@
 														<c:if test="${recruitInfo.sPayFlag ==2}">已缴部分费用</c:if>
 													</td>
 													<td><c:if test="${recruitInfo.sStatus ==1}">待审核</c:if>
-														<c:if test="${recruitInfo.sStatus ==2}">已审核</c:if>
+														<c:if test="${recruitInfo.sStatus ==2}">审核已通过</c:if>
 														<c:if test="${recruitInfo.sStatus ==3}">审核不通过</c:if></td>
 													<td style="text-align: center;">
+														<c:if test="${recruitInfo.sStatus ==1}">
 														<button type="button" class="btn btn-primary btn-xs"
 															data-whatever="${recruitInfo.nStudentId}"
-															class="btn btn-primary" data-toggle="modal"
-															data-target="#passModal">审核通过</button>
+															 data-toggle="modal"
+															data-target="#passModal">&nbsp;审&nbsp;核&nbsp;通&nbsp;过</button>
 														<button type="button" class="btn btn-danger btn-xs"
 															data-whatever="${recruitInfo.nStudentId}"
-															class="btn btn-primary" data-toggle="modal"
+														 data-toggle="modal"
 															data-target="#falseModal">审核不通过</button>
+															</c:if>
 													</td>
 												</tr>
 											</c:forEach>
@@ -421,7 +425,7 @@
 
 								$.ajaxSetup({
 											type : "get",
-											url : "/recruitms/admin/listRecruitAuditInfos?pageIndex=1&pageSize=8&sStudentNo&sStudentName&sAdmitedMajor&sGrade=2016&sPayFlag&sStatus=1",
+											url : "/recruitms/admin/listRecruitAuditInfos?pageIndex=1&pageSize=8&sStudentNo&sStudentName&sAdmitedMajor&sGrade=2014&sPayFlag&sStatus=1",
 											dataType : 'json',
 											cache:false,
 											async : true,

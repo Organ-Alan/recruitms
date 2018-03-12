@@ -222,27 +222,25 @@
 											<table class="table table-striped">
 												<thead>
 													<tr>
-														<th>序号.</th>
-														<th>院系</th>
-														<th>招生人数</th>
-														<th>录取人数</th>
-														<th>是否已完成招生</th>
+														<th style="text-align: center;">序号.</th>
+														<th style="text-align: center;">院系</th>
+														<th style="text-align: center;">招生人数</th>
+														<th style="text-align: center;">是否已完成招生</th>
 													</tr>
 												</thead>
 												<tbody>
 													<c:forEach items="${enrolmentInfo.departments.list}"
 														var="department">
 														<tr>
-															<td><a href="#">${department.nSortNum}</a></td>
-															<td>${department.sDepartmenName}</td>
-															<td>${department.nCountEnrol}</td>
-															<td>${department.nCountEnrol}</td>
+															<td style="text-align: center;"><a href="#">${department.nSortNum}</a></td>
+															<td style="text-align: center;">${department.sDepartmenName}</td>
+															<td style="text-align: center;">${department.nCountEnrol}</td>
 															<c:choose>
 																<c:when test="${department.completeFlag== '0'}">
-																	<td><span class="label label-success">已完成招生</span></td>
+																	<td style="text-align: center;"><span class="label label-success">已完成招生</span></td>
 																</c:when>
 																<c:otherwise>
-																	<td><span class="label label-warning">未完成</span></td>
+																	<td style="text-align: center;"><span class="label label-warning">未完成</span></td>
 
 																</c:otherwise>
 															</c:choose>

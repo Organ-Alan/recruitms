@@ -81,6 +81,7 @@ public class AttachController {
 			return new ModelAndView("errorPage.jsp");
 		}
 		Account account = commonService.selectBysUserName(sUsername);
+		sAttachType = "学院宣传";
 		@SuppressWarnings("unused")
 		Attach attach = attachService.uploadAttach(is,fileName,sAttachType, nAttachNoOld, account.getsUserNo(),
 				account.getsUsername());
@@ -271,19 +272,19 @@ public class AttachController {
 	 */
 	@RequestMapping(value = "/attachListPage", method = RequestMethod.GET)
 	public ModelAndView getAttachListPage(HttpServletResponse response, HttpServletRequest request,
-			@RequestParam int pageIndex, @RequestParam int pageSize, String sAttachName, String sFileType,String sAttachType) throws ParseException {
+			@RequestParam int pageIndex, @RequestParam int pageSize, String sAttachName, String sFileType,String sAttachType,String sStatus) throws ParseException {
 		
 		PageInfo<Attach> attachList = attachService.getAttachListPage(pageIndex, pageSize, sAttachName.trim(),
-				sFileType.trim(),sAttachType.trim());
+				sFileType.trim(),sAttachType.trim(),sStatus);
 		request.getSession().setAttribute("attachListPage", attachList);
 		return new ModelAndView("attachList.jsp");
 	}
 	
 	@RequestMapping(value = "/allAttachList", method = RequestMethod.GET)
 	public ModelAndView allAttachList(HttpServletResponse response, HttpServletRequest request,
-			@RequestParam int pageIndex, @RequestParam int pageSize, String sAttachName, String sFileType,String sAttachType) throws ParseException {
+			@RequestParam int pageIndex, @RequestParam int pageSize, String sAttachName, String sFileType,String sAttachType,String sStatus) throws ParseException {
 		PageInfo<Attach> attachList = attachService.getAttachListPage(pageIndex, pageSize, sAttachName.trim(),
-				sFileType.trim(),sAttachType.trim());
+				sFileType.trim(),sAttachType.trim(),sStatus);
 		request.getSession().setAttribute("attachListPages", attachList);
 		return new ModelAndView("allAttachList.jsp");
 	}

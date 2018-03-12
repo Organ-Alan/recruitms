@@ -180,7 +180,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			for (Department department : oldtList) {
 				logger.debug("当前需要更新的基础信息：" + department);
 				// 更新院系专业信息
-				int count = departmentMapper.updateByPrimaryKey(department);
+				int count = departmentMapper.updateByPrimaryKeySelective(department);
 				if (count <= 0) {
 					throw new RuntimeException("审核通过中修改院系专业的基础信息失败");
 				}

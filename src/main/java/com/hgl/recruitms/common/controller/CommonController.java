@@ -152,9 +152,10 @@ public class CommonController {
 		File file = new File("F:\\GraduattionSources\\GraduationProject\\document\\dockerUpload\\temp\\录取通知书.jpg");
 		InputStream inputStream = new FileInputStream(file);
 		RecruitInfo recruitInfo = recruitInfoService.getRecruitInfo(nStudentId);
-		String fileName =recruitInfo.getsStudentName()+"_录取通知书";
+		String fileName =recruitInfo.getsStudentName()+"_录取通知书"+".jpg";
+		System.out.println(fileName);
 		String sAttachType = "通知书";
-		Attach attach = attachService.uploadAttach(inputStream,sAttachType, fileName, nStudentId,"admin",
+		Attach attach = attachService.uploadAttach(inputStream,fileName, sAttachType, nStudentId,"admin",
 				"院招生办");
 		if (attach == null) {
 			return new ModelAndView("errorPage.jsp");

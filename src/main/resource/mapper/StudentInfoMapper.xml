@@ -6,10 +6,11 @@
     <result column="S_CANDIDATE_NUM" jdbcType="VARCHAR" property="sCandidateNum" />
     <result column="S_STUDENT_NAME" jdbcType="VARCHAR" property="sStudentName" />
     <result column="N_AGE" jdbcType="INTEGER" property="nAge" />
-    <result column="C_SEX" jdbcType="CHAR" property="cSex" />
+    <result column="C_SEX" jdbcType="VARCHAR" property="cSex" />
     <result column="S_NATIVE_PLACE" jdbcType="VARCHAR" property="sNativePlace" />
     <result column="S_ADDRESS" jdbcType="VARCHAR" property="sAddress" />
     <result column="S_CONTACT" jdbcType="VARCHAR" property="sContact" />
+    <result column="S_NOTICE_FLAG" jdbcType="VARCHAR" property="sNoticeFlag" />
     <result column="S_EMAIL" jdbcType="VARCHAR" property="sEmail" />
     <result column="S_OTHER_CTACT" jdbcType="VARCHAR" property="sOtherCtact" />
     <result column="S_ENROL_MAJOR" jdbcType="VARCHAR" property="sEnrolMajor" />
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List">
     N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, N_AGE, C_SEX, S_NATIVE_PLACE, S_ADDRESS, 
-    S_CONTACT, S_EMAIL, S_OTHER_CTACT, S_ENROL_MAJOR, S_POLITIIS, S_DATA_FLAG
+    S_CONTACT, S_NOTICE_FLAG, S_EMAIL, S_OTHER_CTACT, S_ENROL_MAJOR, S_POLITIIS, S_DATA_FLAG
   </sql>
   <select id="selectByExample" parameterType="com.hgl.recruitms.model.StudentInfoExample" resultMap="BaseResultMap">
     select
@@ -111,14 +112,14 @@
   <insert id="insert" parameterType="com.hgl.recruitms.model.StudentInfo">
     insert into t_rms_studentinfo (N_STUDENT_ID, S_CANDIDATE_NUM, S_STUDENT_NAME, 
       N_AGE, C_SEX, S_NATIVE_PLACE, 
-      S_ADDRESS, S_CONTACT, S_EMAIL, 
-      S_OTHER_CTACT, S_ENROL_MAJOR, S_POLITIIS, 
-      S_DATA_FLAG)
+      S_ADDRESS, S_CONTACT, S_NOTICE_FLAG, 
+      S_EMAIL, S_OTHER_CTACT, S_ENROL_MAJOR, 
+      S_POLITIIS, S_DATA_FLAG)
     values (#{nStudentId,jdbcType=INTEGER}, #{sCandidateNum,jdbcType=VARCHAR}, #{sStudentName,jdbcType=VARCHAR}, 
-      #{nAge,jdbcType=INTEGER}, #{cSex,jdbcType=CHAR}, #{sNativePlace,jdbcType=VARCHAR}, 
-      #{sAddress,jdbcType=VARCHAR}, #{sContact,jdbcType=VARCHAR}, #{sEmail,jdbcType=VARCHAR}, 
-      #{sOtherCtact,jdbcType=VARCHAR}, #{sEnrolMajor,jdbcType=VARCHAR}, #{sPolitiis,jdbcType=VARCHAR}, 
-      #{sDataFlag,jdbcType=VARCHAR})
+      #{nAge,jdbcType=INTEGER}, #{cSex,jdbcType=VARCHAR}, #{sNativePlace,jdbcType=VARCHAR}, 
+      #{sAddress,jdbcType=VARCHAR}, #{sContact,jdbcType=VARCHAR}, #{sNoticeFlag,jdbcType=VARCHAR}, 
+      #{sEmail,jdbcType=VARCHAR}, #{sOtherCtact,jdbcType=VARCHAR}, #{sEnrolMajor,jdbcType=VARCHAR}, 
+      #{sPolitiis,jdbcType=VARCHAR}, #{sDataFlag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hgl.recruitms.model.StudentInfo">
     insert into t_rms_studentinfo
@@ -146,6 +147,9 @@
       </if>
       <if test="sContact != null">
         S_CONTACT,
+      </if>
+      <if test="sNoticeFlag != null">
+        S_NOTICE_FLAG,
       </if>
       <if test="sEmail != null">
         S_EMAIL,
@@ -177,7 +181,7 @@
         #{nAge,jdbcType=INTEGER},
       </if>
       <if test="cSex != null">
-        #{cSex,jdbcType=CHAR},
+        #{cSex,jdbcType=VARCHAR},
       </if>
       <if test="sNativePlace != null">
         #{sNativePlace,jdbcType=VARCHAR},
@@ -187,6 +191,9 @@
       </if>
       <if test="sContact != null">
         #{sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="sNoticeFlag != null">
+        #{sNoticeFlag,jdbcType=VARCHAR},
       </if>
       <if test="sEmail != null">
         #{sEmail,jdbcType=VARCHAR},
@@ -227,7 +234,7 @@
         N_AGE = #{record.nAge,jdbcType=INTEGER},
       </if>
       <if test="record.cSex != null">
-        C_SEX = #{record.cSex,jdbcType=CHAR},
+        C_SEX = #{record.cSex,jdbcType=VARCHAR},
       </if>
       <if test="record.sNativePlace != null">
         S_NATIVE_PLACE = #{record.sNativePlace,jdbcType=VARCHAR},
@@ -237,6 +244,9 @@
       </if>
       <if test="record.sContact != null">
         S_CONTACT = #{record.sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sNoticeFlag != null">
+        S_NOTICE_FLAG = #{record.sNoticeFlag,jdbcType=VARCHAR},
       </if>
       <if test="record.sEmail != null">
         S_EMAIL = #{record.sEmail,jdbcType=VARCHAR},
@@ -264,10 +274,11 @@
       S_CANDIDATE_NUM = #{record.sCandidateNum,jdbcType=VARCHAR},
       S_STUDENT_NAME = #{record.sStudentName,jdbcType=VARCHAR},
       N_AGE = #{record.nAge,jdbcType=INTEGER},
-      C_SEX = #{record.cSex,jdbcType=CHAR},
+      C_SEX = #{record.cSex,jdbcType=VARCHAR},
       S_NATIVE_PLACE = #{record.sNativePlace,jdbcType=VARCHAR},
       S_ADDRESS = #{record.sAddress,jdbcType=VARCHAR},
       S_CONTACT = #{record.sContact,jdbcType=VARCHAR},
+      S_NOTICE_FLAG = #{record.sNoticeFlag,jdbcType=VARCHAR},
       S_EMAIL = #{record.sEmail,jdbcType=VARCHAR},
       S_OTHER_CTACT = #{record.sOtherCtact,jdbcType=VARCHAR},
       S_ENROL_MAJOR = #{record.sEnrolMajor,jdbcType=VARCHAR},
@@ -290,7 +301,7 @@
         N_AGE = #{nAge,jdbcType=INTEGER},
       </if>
       <if test="cSex != null">
-        C_SEX = #{cSex,jdbcType=CHAR},
+        C_SEX = #{cSex,jdbcType=VARCHAR},
       </if>
       <if test="sNativePlace != null">
         S_NATIVE_PLACE = #{sNativePlace,jdbcType=VARCHAR},
@@ -300,6 +311,9 @@
       </if>
       <if test="sContact != null">
         S_CONTACT = #{sContact,jdbcType=VARCHAR},
+      </if>
+      <if test="sNoticeFlag != null">
+        S_NOTICE_FLAG = #{sNoticeFlag,jdbcType=VARCHAR},
       </if>
       <if test="sEmail != null">
         S_EMAIL = #{sEmail,jdbcType=VARCHAR},
@@ -324,10 +338,11 @@
     set S_CANDIDATE_NUM = #{sCandidateNum,jdbcType=VARCHAR},
       S_STUDENT_NAME = #{sStudentName,jdbcType=VARCHAR},
       N_AGE = #{nAge,jdbcType=INTEGER},
-      C_SEX = #{cSex,jdbcType=CHAR},
+      C_SEX = #{cSex,jdbcType=VARCHAR},
       S_NATIVE_PLACE = #{sNativePlace,jdbcType=VARCHAR},
       S_ADDRESS = #{sAddress,jdbcType=VARCHAR},
       S_CONTACT = #{sContact,jdbcType=VARCHAR},
+      S_NOTICE_FLAG = #{sNoticeFlag,jdbcType=VARCHAR},
       S_EMAIL = #{sEmail,jdbcType=VARCHAR},
       S_OTHER_CTACT = #{sOtherCtact,jdbcType=VARCHAR},
       S_ENROL_MAJOR = #{sEnrolMajor,jdbcType=VARCHAR},

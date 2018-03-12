@@ -47,13 +47,13 @@ public class StudentInfoController {
 
 	@RequestMapping(value = "/listStudentInfos", method = { RequestMethod.GET })
 	public ModelAndView listPageStudentInfo(HttpServletResponse response,HttpServletRequest request,@RequestParam Integer pageIndex, @RequestParam Integer pageSize,
-			String sCandidateNum, String sStudentName, String sNativePlace, String sEnrolMajor, String sDataFlag) {
+			String sCandidateNum, String sStudentName, String sNativePlace, String sEnrolMajor, String sNoticeFlag) {
 		if (pageIndex == null || pageSize == null) {
 			return new ModelAndView("errorPage.jsp");
 		}
 		request.getSession().setAttribute("studentInfoList", null);
 		PageInfo<StudentInfo> pageInfo = studentInfoService.listStudentInfos(pageIndex, pageSize, sCandidateNum,
-				sStudentName, sNativePlace, sEnrolMajor, sDataFlag);
+				sStudentName, sNativePlace, sEnrolMajor, sNoticeFlag);
 		request.getSession().setAttribute("studentInfoList", pageInfo);
 		logger.debug(JsonUtil.serialize(pageInfo));
 		return new ModelAndView("enrollmentNotice.jsp");

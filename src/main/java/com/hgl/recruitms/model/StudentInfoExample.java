@@ -644,6 +644,76 @@ public class StudentInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andSNoticeFlagIsNull() {
+            addCriterion("S_NOTICE_FLAG is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagIsNotNull() {
+            addCriterion("S_NOTICE_FLAG is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagEqualTo(String value) {
+            addCriterion("S_NOTICE_FLAG =", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagNotEqualTo(String value) {
+            addCriterion("S_NOTICE_FLAG <>", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagGreaterThan(String value) {
+            addCriterion("S_NOTICE_FLAG >", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("S_NOTICE_FLAG >=", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagLessThan(String value) {
+            addCriterion("S_NOTICE_FLAG <", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagLessThanOrEqualTo(String value) {
+            addCriterion("S_NOTICE_FLAG <=", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagLike(String value) {
+            addCriterion("S_NOTICE_FLAG like", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagNotLike(String value) {
+            addCriterion("S_NOTICE_FLAG not like", value, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagIn(List<String> values) {
+            addCriterion("S_NOTICE_FLAG in", values, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagNotIn(List<String> values) {
+            addCriterion("S_NOTICE_FLAG not in", values, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagBetween(String value1, String value2) {
+            addCriterion("S_NOTICE_FLAG between", value1, value2, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagNotBetween(String value1, String value2) {
+            addCriterion("S_NOTICE_FLAG not between", value1, value2, "sNoticeFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andSEmailIsNull() {
             addCriterion("S_EMAIL is null");
             return (Criteria) this;
@@ -1021,6 +1091,11 @@ public class StudentInfoExample {
 
         public Criteria andSContactLikeInsensitive(String value) {
             addCriterion("upper(S_CONTACT) like", value.toUpperCase(), "sContact");
+            return (Criteria) this;
+        }
+
+        public Criteria andSNoticeFlagLikeInsensitive(String value) {
+            addCriterion("upper(S_NOTICE_FLAG) like", value.toUpperCase(), "sNoticeFlag");
             return (Criteria) this;
         }
 

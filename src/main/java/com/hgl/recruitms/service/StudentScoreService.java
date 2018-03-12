@@ -72,7 +72,7 @@ public interface StudentScoreService {
 	 * @return
 	 */
 	PageInfo<Score> listScores(Integer pageIndex, Integer pageSize, String sStudentNo, String sStudentName,
-			String sSubjectType, String sTotalScore);
+			String sSubjectType);
 
 	/**
 	 * exportScoreInfo:导出成绩信息. <br/>

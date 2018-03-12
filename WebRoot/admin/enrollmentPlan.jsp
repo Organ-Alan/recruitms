@@ -43,9 +43,9 @@
 <link rel="icon" type="image/png" sizes="96x96"
 	href="../assets/img/favicon.png">
 <link rel="stylesheet" href="../assets/css/myPage.css">
-<script src="../assets/vendor/page/myPage.js" type="text/javascript"></script>
+<%-- <script src="../assets/vendor/page/myPage.js" type="text/javascript"></script>
 <script src="../assets/vendor/page/jqPaginator.min.js"
-	type="text/javascript"></script>
+	type="text/javascript"></script> --%>
 </head>
 
 <body>
@@ -274,7 +274,7 @@
 												<!-- 如果还有前页就访问当前页码-1的页面， -->
 												<c:if test="${departmentListDic.hasPreviousPage}">
 													<li><a
-														href="/recruitms/admin/listDepartments?pageIndex=${page_Nums}&pageSize=${departmentListDic.pageNum-1}&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore"
+														href="/recruitms/admin/listDepartments?pageIndex=${departmentListDic.pageNum-1}&pageSize=6&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -590,7 +590,7 @@
 							$
 									.ajax({
 										type : "get",
-										url : "/recruitms/admin/listDepartments?pageIndex=1&pageSize=8&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore",
+										url : "/recruitms/admin/listDepartments?pageIndex=1&pageSize=6&sDeptCode&sShortName&sFullName&sRegion&dbEnrolScore",
 										dataType : 'json',
 										async : true,
 										success : function(resp) {
